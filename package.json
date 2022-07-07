@@ -10,9 +10,13 @@
   "author": "Elizabeth <33760912+MinakovaLisa@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
+    "start": "turbo run start",
     "build": "turbo run build"
   },
   "devDependencies": {
     "turbo": "latest"
+  },
+  "resolutions": {
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@^5.8.0"
   }
 }
