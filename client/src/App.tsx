@@ -1,4 +1,5 @@
 import React from "react";
+import { AppContainer } from "./features/AppContainer";
 
 import { Provider, useDispatch } from "react-redux";
 
@@ -75,6 +76,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <GetApp />
+      <AppContainer />;
     </Provider>
   );
 };
