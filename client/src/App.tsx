@@ -75,7 +75,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <GetApp />
+      {/* <GetApp /> */}
       <AppContainer />;
     </Provider>
   );

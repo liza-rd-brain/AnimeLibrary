@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 import logo from "../assets/pikachu_64.png";
 
@@ -8,7 +9,17 @@ const StyledHeader = styled.div`
   width: 100%;
   height: 80px;
   display: grid;
-  grid-template-columns: 50px 1fr;
+  gap: 10px;
+  grid-template-columns: 50px 300px 60px;
+`;
+
+const StyledTextInput = styled(TextField)`
+  width: 300px;
+`;
+
+const StyledButton = styled(Button)`
+  width: 56px;
+  height: 56px;
 `;
 
 const Logo = styled.div`
@@ -21,7 +32,10 @@ export const Header = () => {
   return (
     <StyledHeader>
       <Logo />
-      <TextField />
+      <div>
+        <StyledTextInput />
+      </div>
+      <StyledButton variant="outlined">add</StyledButton>
     </StyledHeader>
   );
 };
