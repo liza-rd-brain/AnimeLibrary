@@ -1441,4 +1441,144 @@
 [35mmy-app:start: [0m
 [35mmy-app:start: [0m[1m[33mWARNING[39m[22m in [1m[eslint] 
 [35mmy-app:start: [0msrc\App.tsx
-[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[39m[22m
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mwebpack compiled with [1m[33m1 warning[39m[22m
+[35mmy-app:start: [0mFiles successfully emitted, waiting for typecheck results...
+[35mmy-app:start: [0mIssues checking in progress...
+[35mmy-app:start: [0mNo issues found.
+[35mmy-app:start: [0mCompiling...
+[35mmy-app:start: [0mCompiled with warnings.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mSearch for the keywords to learn more about each warning.
+[35mmy-app:start: [0mTo ignore, add // eslint-disable-next-line to the line before.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[1m[33mWARNING[39m[22m in [1m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[39m[22m
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mwebpack compiled with [1m[33m1 warning[39m[22m
+[35mmy-app:start: [0mFiles successfully emitted, waiting for typecheck results...
+[35mmy-app:start: [0mIssues checking in progress...
+[35mmy-app:start: [0mNo issues found.
+[35mmy-app:start: [0mCompiling...
+[35mmy-app:start: [0mCompiled with warnings.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mSearch for the keywords to learn more about each warning.
+[35mmy-app:start: [0mTo ignore, add // eslint-disable-next-line to the line before.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[1m[33mWARNING[39m[22m in [1m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[39m[22m
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mwebpack compiled with [1m[33m1 warning[39m[22m
+[35mmy-app:start: [0mFiles successfully emitted, waiting for typecheck results...
+[35mmy-app:start: [0mIssues checking in progress...
+[35mmy-app:start: [0mNo issues found.
+[35mmy-app:start: [0mCompiling...
+[35mmy-app:start: [0mCompiled with warnings.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mSearch for the keywords to learn more about each warning.
+[35mmy-app:start: [0mTo ignore, add // eslint-disable-next-line to the line before.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[1m[33mWARNING[39m[22m in [1m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[39m[22m
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mwebpack compiled with [1m[33m1 warning[39m[22m
+[35mmy-app:start: [0mFiles successfully emitted, waiting for typecheck results...
+[35mmy-app:start: [0mIssues checking in progress...
+[35mmy-app:start: [0mNo issues found.
+[35mmy-app:start: [0mCompiling...
+[35mmy-app:start: [0mCompiled with warnings.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mSearch for the keywords to learn more about each warning.
+[35mmy-app:start: [0mTo ignore, add // eslint-disable-next-line to the line before.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[1m[33mWARNING[39m[22m in [1m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[39m[22m
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mwebpack compiled with [1m[33m1 warning[39m[22m
+[35mmy-app:start: [0mFiles successfully emitted, waiting for typecheck results...
+[35mmy-app:start: [0mIssues checking in progress...
+[35mmy-app:start: [0mNo issues found.
+[35mmy-app:start: [0mCompiling...
+[35mmy-app:start: [0mCompiled with warnings.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mSearch for the keywords to learn more about each warning.
+[35mmy-app:start: [0mTo ignore, add // eslint-disable-next-line to the line before.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[1m[33mWARNING[39m[22m in [1m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[39m[22m
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mwebpack compiled with [1m[33m1 warning[39m[22m
+[35mmy-app:start: [0mFiles successfully emitted, waiting for typecheck results...
+[35mmy-app:start: [0mIssues checking in progress...
+[35mmy-app:start: [0mNo issues found.
+[35mmy-app:start: [0mCompiling...
+[35mmy-app:start: [0mCompiled with warnings.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mSearch for the keywords to learn more about each warning.
+[35mmy-app:start: [0mTo ignore, add // eslint-disable-next-line to the line before.
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[1m[33mWARNING[39m[22m in [1m[eslint] 
+[35mmy-app:start: [0msrc\App.tsx
+[35mmy-app:start: [0m  Line 10:6:  'DataBase' is defined but never used         @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m  Line 36:7:  'GetApp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+[35mmy-app:start: [0m
+[35mmy-app:start: [0m[39m[22m
+[35mmy-app:start: [0m
+[35mmy-app:start: [0mwebpack compiled with [1m[33m1 warning[39m[22m
+[35mmy-app:start: [0mFiles successfully emitted, waiting for typecheck results...
+[35mmy-app:start: [0mIssues checking in progress...
+[35mmy-app:start: 
