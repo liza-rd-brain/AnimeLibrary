@@ -2,7 +2,6 @@
   "name": "server",
   "version": "1.0.0",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "start": "node -r esbuild-register ./src/index.ts"
   },
