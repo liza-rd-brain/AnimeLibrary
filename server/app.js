@@ -12,8 +12,8 @@ const menuNavSelector = "#menubtn";
 const searchFormSelector = "#m_search";
 const searchInputSelector = "#story";
 const searchButtonSelector = ".m_search_btn";
-const screenshotPath_1 = "anime_1.png";
-const screenshotPath = "anime_2.png";
+
+const screenshotPath = "anime.png";
 
 const articleSelector = "article.shortstory";
 
@@ -34,9 +34,42 @@ async function makeScraping(browser) {
     const newList = list.reduce((prev, item, index) => {
       //Почему const titleSelector  не определена
       const titleElem = item.querySelector(".titleup");
-      const titleText = titleElem.innerText;
+      // const titleText = titleElem.innerText;
 
-      return [...prev, titleText];
+      const rusNameElem = titleElem.querySelector(".ntitle");
+      const romanNameElem = titleElem.querySelector(".romanji");
+
+      const rusNameText = rusNameElem.innerText;
+      const romanNameText = romanNameElem.innerText;
+
+      const pictureSelector = "picture source[type='image/jpeg'] ";
+      const pictureElem = item.querySelector(pictureSelector);
+      const pictureURL = pictureElem.srcset;
+
+      const descElemSelector = ".blkdesc";
+
+      const descriptionBlockElem = item.querySelector(pictureSelector);
+      const descCollection = descriptionBlockElem.children;
+      const descList = Array.from(descCollection);
+
+      const descObj = descList.reduce((prevDesc, descItem, descItemIndex) => {
+        if (descItemIndex > 1) {
+          const currKey = getKeyName(descItemIndex);
+          const currText = descItem.innerText;
+          return { ...prevDesc, [currKey]: currText };
+        } else {
+          return prevDesc;
+        }
+      }, {});
+
+      const currObjAnime = {
+        ...descObj,
+        rusName: rusNameText,
+        romanName: romanNameText,
+        picture: pictureURL,
+      };
+
+      return [...prev, currObjAnime];
     }, []);
 
     return newList;
@@ -46,6 +79,46 @@ async function makeScraping(browser) {
 
   await page.screenshot({ path: screenshotPath });
 }
+
+const getKeyName = (key) => {
+  switch (key) {
+    case 2: {
+      return "season";
+    }
+    case 3: {
+      return "genre";
+    }
+    case 4: {
+      return "country";
+    }
+    case 5: {
+      return "episodeNumbers";
+    }
+    case 6: {
+      return "releaseDate";
+    }
+
+    case 7: {
+      return "releaseDate";
+    }
+    case 7: {
+      return "director";
+    }
+    case 8: {
+      return "scenario";
+    }
+    case 9: {
+      return "studio";
+    }
+    case 10: {
+      return "rating";
+    }
+
+    default: {
+      break;
+    }
+  }
+};
 
 app.get("/", (req, res) => {
   puppeteer.launch().then(async function (browser) {
