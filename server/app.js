@@ -1,5 +1,8 @@
 const express = require("express");
+const { resolve } = require("path");
 const puppeteer = require("puppeteer");
+
+const { store } = require("./data");
 
 const app = express();
 const port = 3000;
@@ -29,12 +32,86 @@ async function makeScraping(browser) {
   await page.waitForNavigation();
   // await page.screenshot({ path: `${Math.random()}.png` });
 
-  // const titleSelector = ".titleup";
   const animeList = await page.$$eval(articleSelector, (list) => {
+    // const getKeyName = (key) => {
+    //   switch (key) {
+    //     case 2: {
+    //       return "season";
+    //     }
+    //     case 3: {
+    //       return "genre";
+    //     }
+    //     case 4: {
+    //       return "country";
+    //     }
+    //     case 5: {
+    //       return "episodeNumbers";
+    //     }
+    //     case 6: {
+    //       return "releaseDate";
+    //     }
+
+    //     case 7: {
+    //       return "releaseDate";
+    //     }
+    //     case 7: {
+    //       return "director";
+    //     }
+    //     case 8: {
+    //       return "scenario";
+    //     }
+    //     case 9: {
+    //       return "studio";
+    //     }
+    //     case 10: {
+    //       return "rating";
+    //     }
+
+    //     default: {
+    //       break;
+    //     }
+    //   }
+    // };
+
+    const getKey = (name) => {
+      switch (name) {
+        case "Сезон": {
+          return "season";
+        }
+        case "Жанр": {
+          return "genre";
+        }
+        case "Страна": {
+          return "country";
+        }
+        case "Количество серий": {
+          return "episodeNumbers";
+        }
+        case "Дата выпуска": {
+          return "releaseDate";
+        }
+
+        case "Режиссер": {
+          return "director";
+        }
+        case "Сценарий": {
+          return "scenario";
+        }
+        case "Студия": {
+          return "studio";
+        }
+        case "Рейтинг": {
+          return "rating";
+        }
+
+        default: {
+          break;
+        }
+      }
+    };
+
     const newList = list.reduce((prev, item, index) => {
-      //Почему const titleSelector  не определена
       const titleElem = item.querySelector(".titleup");
-      // const titleText = titleElem.innerText;
 
       const rusNameElem = titleElem.querySelector(".ntitle");
       const romanNameElem = titleElem.querySelector(".romanji");
@@ -46,24 +123,34 @@ async function makeScraping(browser) {
       const pictureElem = item.querySelector(pictureSelector);
       const pictureURL = pictureElem.srcset;
 
-      const descElemSelector = ".blkdesc";
+      const detailElemSelector = ".blkdesc";
+      const descriptionElemSelector = ".pcdescr";
 
-      const descriptionBlockElem = item.querySelector(pictureSelector);
-      const descCollection = descriptionBlockElem.children;
-      const descList = Array.from(descCollection);
+      const detailBlockElem = item.querySelector(detailElemSelector);
+      const [descName, descText] = item
+        .querySelector(descriptionElemSelector)
+        .innerText.split(":");
 
-      const descObj = descList.reduce((prevDesc, descItem, descItemIndex) => {
-        if (descItemIndex > 1) {
-          const currKey = getKeyName(descItemIndex);
-          const currText = descItem.innerText;
-          return { ...prevDesc, [currKey]: currText };
+      const detailCollection = detailBlockElem.children;
+
+      const detailList = Array.from(detailCollection);
+
+      const detailObj = detailList.reduce((prevDetail, detailItem) => {
+        const currText = detailItem.innerText;
+
+        const [keyName, value] = currText.split(":");
+        const key = getKey(keyName);
+
+        if (key) {
+          return { ...prevDetail, [key]: value };
         } else {
-          return prevDesc;
+          return prevDetail;
         }
       }, {});
 
       const currObjAnime = {
-        ...descObj,
+        ...detailObj,
+        description: descText,
         rusName: rusNameText,
         romanName: romanNameText,
         picture: pictureURL,
@@ -75,50 +162,12 @@ async function makeScraping(browser) {
     return newList;
   });
 
+  store.data = animeList;
+
   console.log(animeList);
 
   await page.screenshot({ path: screenshotPath });
 }
-
-const getKeyName = (key) => {
-  switch (key) {
-    case 2: {
-      return "season";
-    }
-    case 3: {
-      return "genre";
-    }
-    case 4: {
-      return "country";
-    }
-    case 5: {
-      return "episodeNumbers";
-    }
-    case 6: {
-      return "releaseDate";
-    }
-
-    case 7: {
-      return "releaseDate";
-    }
-    case 7: {
-      return "director";
-    }
-    case 8: {
-      return "scenario";
-    }
-    case 9: {
-      return "studio";
-    }
-    case 10: {
-      return "rating";
-    }
-
-    default: {
-      break;
-    }
-  }
-};
 
 app.get("/", (req, res) => {
   puppeteer.launch().then(async function (browser) {
@@ -130,6 +179,8 @@ app.get("/", (req, res) => {
       await browser.close();
     }
   });
+
+  return res.send(store.data);
 });
 
 app.listen(port, () => {
