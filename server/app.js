@@ -1,11 +1,14 @@
 const express = require("express");
 const { resolve } = require("path");
 const puppeteer = require("puppeteer");
+const cors = require("cors");
 
 const { store } = require("./data");
 
 const app = express();
 const port = 3000;
+
+app.use(cors());
 
 const url = "https://animejoy.ru";
 const animeName = "Созданный в бездне";
@@ -33,46 +36,6 @@ async function makeScraping(browser) {
   // await page.screenshot({ path: `${Math.random()}.png` });
 
   const animeList = await page.$$eval(articleSelector, (list) => {
-    // const getKeyName = (key) => {
-    //   switch (key) {
-    //     case 2: {
-    //       return "season";
-    //     }
-    //     case 3: {
-    //       return "genre";
-    //     }
-    //     case 4: {
-    //       return "country";
-    //     }
-    //     case 5: {
-    //       return "episodeNumbers";
-    //     }
-    //     case 6: {
-    //       return "releaseDate";
-    //     }
-
-    //     case 7: {
-    //       return "releaseDate";
-    //     }
-    //     case 7: {
-    //       return "director";
-    //     }
-    //     case 8: {
-    //       return "scenario";
-    //     }
-    //     case 9: {
-    //       return "studio";
-    //     }
-    //     case 10: {
-    //       return "rating";
-    //     }
-
-    //     default: {
-    //       break;
-    //     }
-    //   }
-    // };
-
     const getKey = (name) => {
       switch (name) {
         case "Сезон": {
@@ -135,6 +98,7 @@ async function makeScraping(browser) {
 
       const detailList = Array.from(detailCollection);
 
+      // TODO:genre - вынести в массив
       const detailObj = detailList.reduce((prevDetail, detailItem) => {
         const currText = detailItem.innerText;
 
@@ -170,6 +134,19 @@ async function makeScraping(browser) {
 }
 
 app.get("/", (req, res) => {
+  // puppeteer.launch().then(async function (browser) {
+  //   try {
+  //     await makeScraping(browser);
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     await browser.close();
+  //   }
+  // });
+  // return res.send(store.data);
+});
+
+app.get("/findName", (req, res) => {
   puppeteer.launch().then(async function (browser) {
     try {
       await makeScraping(browser);
@@ -179,7 +156,6 @@ app.get("/", (req, res) => {
       await browser.close();
     }
   });
-
   return res.send(store.data);
 });
 

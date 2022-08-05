@@ -12,6 +12,7 @@
     "@types/node": "^16.11.43",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "axios": "^0.27.2",
     "react": "^18.2.0",
     "react-app-rewire-styled-components": "^3.0.2",
     "react-app-rewired": "^2.2.1",

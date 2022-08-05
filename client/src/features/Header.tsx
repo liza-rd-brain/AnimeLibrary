@@ -5,6 +5,8 @@ import Button from "@mui/material/Button";
 
 import logo from "../assets/pikachu_64.png";
 
+const axios = require("axios");
+
 const StyledHeader = styled.div`
   width: 100%;
   height: 80px;
@@ -29,13 +31,30 @@ const Logo = styled.div`
 `;
 
 export const Header = () => {
+  async function makeRequest() {
+    const config = {
+      method: "get",
+      url: "http://localhost:3000/findName",
+    };
+
+    let res = await axios(config);
+
+    console.log(res.data);
+  }
+
+  const findElem = () => {
+    makeRequest();
+  };
+
   return (
     <StyledHeader>
       <Logo />
       <div>
         <StyledTextInput />
       </div>
-      <StyledButton variant="outlined">add</StyledButton>
+      <StyledButton variant="outlined" onClick={findElem}>
+        add
+      </StyledButton>
     </StyledHeader>
   );
 };
