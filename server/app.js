@@ -23,8 +23,17 @@ const screenshotPath = "anime.png";
 
 const articleSelector = "article.shortstory";
 
+const chromeOptions = {
+  headless: false,
+  defaultViewport: null,
+  slowMo: 100,
+};
+
 async function makeScraping(browser) {
   const page = await browser.newPage();
+  page.setUserAgent(
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36"
+  );
 
   await page.goto(url);
   await page.click(menuNavSelector);
@@ -147,7 +156,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/findName", (req, res) => {
-  puppeteer.launch().then(async function (browser) {
+  puppeteer.launch(chromeOptions).then(async function (browser) {
     try {
       await makeScraping(browser);
     } catch (err) {

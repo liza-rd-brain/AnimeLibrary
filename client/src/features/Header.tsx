@@ -44,6 +44,7 @@ export const Header = () => {
 
   const findElem = () => {
     makeRequest();
+    // setInterval(makeRequest, 10000);
   };
 
   return (
