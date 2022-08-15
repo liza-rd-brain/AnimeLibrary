@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const { store } = require("./data");
 const takeLinkList = require("./business/takeLinkList");
-const getDescItem = require("./business/getDescItem");
+const getDetailList = require("./business/getDetailList");
 
 const app = express();
 const port = 3000;
@@ -30,19 +30,21 @@ app.get("/findName", (req, res) => {
 
       console.log(list);
       //запись в переменную всех items
-
+      let detailList = [];
       for (let i = 0; i < list.length; i++) {
-        console.log(list[i].urlItem);
-        const itemUrl = await getDescItem(list[i], page);
-        console.log(itemUrl);
+        const detailItem = await getDetailList(list[i], page);
+        detailList.push(detailItem);
       }
+      store.data = detailList;
+      console.log(store);
     } catch (err) {
       console.log(err);
     } finally {
       await browser.close();
     }
   });
-  return res.send(store.data);
+
+  res.send(store.data);
 });
 
 app.listen(port, () => {

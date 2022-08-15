@@ -1,3 +1,3 @@
 module.exports = {
-  store: {},
+  store: { 1: 1 },
 };

@@ -1,29 +1,10 @@
-//--главные
-//picture
-//description
-
 const { format } = require("path");
 
-//Other names
-//Status
-//Studio
-//Scores -  отрежем до разделителя
-//Genre - array
-
-//--опциональные (показывать только в карточке?)
-// Country: Japan
-// Episode: 13 / 13
-// Duration: 24 min/ep
-// Date release: 2015-10-03
-// Date aired: 2015-10-03 - 2015-12-26
-
-async function getDescItem(item, page) {
+async function getDetailList(item, page) {
   const descBlockItems = ".dp-i-content";
 
-  // await newPage.waitForNavigation();
-  await page.goto(item.urlItem);
-  await page.screenshot({ path: `./screenshot/${Math.random()}.png` });
-  // await page.waitForTimeout(10000);
+  await page.goto(item);
+  // await page.screenshot({ path: `./screenshot/${Math.random()}.png` });
 
   const animeDescList = await page.$eval(descBlockItems, (item) => {
     const getKey = (name) => {
@@ -41,7 +22,7 @@ async function getDescItem(item, page) {
     };
 
     const getStructuredObj = (obj) => {
-      //проверить наличие  полей scores,
+      //проверить наличие  полей scores,genre
       const prevScore = obj.scores;
       const [currScore, maxScore] = prevScore.split("/");
       const newScore = currScore.trim();
@@ -79,4 +60,4 @@ async function getDescItem(item, page) {
   return animeDescList;
 }
 
-module.exports = getDescItem;
+module.exports = getDetailList;

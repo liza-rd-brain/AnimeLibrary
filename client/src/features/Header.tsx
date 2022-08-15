@@ -37,9 +37,11 @@ export const Header = () => {
       url: "http://localhost:3000/findName",
     };
 
-    let res = await axios(config);
+    let res = await axios(config).then((res: any) => {
+      console.log(res.data);
+    });
 
-    console.log(res.data);
+    console.log(res);
   }
 
   const findElem = () => {

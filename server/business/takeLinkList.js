@@ -10,8 +10,6 @@ async function takeLinkList(page) {
   await page.waitForNavigation();
   await page.screenshot({ path: `./screenshot/${Math.random()}.png` });
 
-  // await page.waitForTimeout(5000);
-
   const animeContainerSelector = ".flw-item";
   const animeList = await page.$$eval(animeContainerSelector, (listAnime) => {
     // const changeUrl = (url) => {};
@@ -32,17 +30,14 @@ async function takeLinkList(page) {
       const animeHref = `${url}${animePart}${animeToken}`;
       //разделение по словам
 
-      return { titleText, urlItem: animeHref };
+      // return { titleText, urlItem: animeHref };
+      return animeHref;
     });
 
     return animeTitleList;
   });
 
-  // console.log(animeList);
-  // await page.close();
   return animeList;
-
-  //   await page.screenshot({ path: screenshotPath });
 }
 
 module.exports = takeLinkList;
