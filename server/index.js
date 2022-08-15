@@ -1,3 +1,5 @@
+// import { Page } from "puppeteer";
+
 const express = require("express");
 const { resolve } = require("path");
 const puppeteer = require("puppeteer");
@@ -5,7 +7,7 @@ const cors = require("cors");
 
 const { store } = require("./data");
 const takeLinkList = require("./business/takeLinkList");
-const getDetailList = require("./business/getDetailList");
+const getAnimeDetail = require("./business/getAnimeDetail.ts");
 
 const app = express();
 const port = 3000;
@@ -23,8 +25,8 @@ app.use(cors());
 
 app.get("/findName", (req, res) => {
   puppeteer.launch(chromeOptions).then(async function (browser) {
+    // const page: Promise<Page> = await browser.newPage();
     const page = await browser.newPage();
-
     try {
       const list = await takeLinkList(page);
 
@@ -32,7 +34,7 @@ app.get("/findName", (req, res) => {
       //запись в переменную всех items
       let detailList = [];
       for (let i = 0; i < list.length; i++) {
-        const detailItem = await getDetailList(list[i], page);
+        const detailItem = await getAnimeDetail(list[i], page);
         detailList.push(detailItem);
       }
       store.data = detailList;
