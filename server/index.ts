@@ -1,13 +1,15 @@
 // import { Page } from "puppeteer";
 
+import { DetailAnime } from "./types";
+
 const express = require("express");
 const { resolve } = require("path");
 const puppeteer = require("puppeteer");
 const cors = require("cors");
 
 const { store } = require("./data");
+const getAnimeDetail = require("./business/getAnimeDetail");
 const takeLinkList = require("./business/takeLinkList");
-const getAnimeDetail = require("./business/getAnimeDetail.ts");
 
 const app = express();
 const port = 3000;
@@ -32,9 +34,9 @@ app.get("/findName", (req, res) => {
 
       console.log(list);
       //запись в переменную всех items
-      let detailList = [];
+      let detailList: Array<DetailAnime> = [];
       for (let i = 0; i < list.length; i++) {
-        const detailItem = await getAnimeDetail(list[i], page);
+        const detailItem: DetailAnime = await getAnimeDetail(list[i], page);
         detailList.push(detailItem);
       }
       store.data = detailList;
