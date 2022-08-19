@@ -50,19 +50,26 @@ async function getAnimeDetail(item, page) {
 
       const detailTextList = entityItemList.map((item) => item.innerText);
 
-      const detailObjRaw = detailTextList.reduce((prevDetail, detailItem) => {
-        const [keyName, value] = detailItem.split(":");
-        const key = getKey(keyName);
+      const detailObjRaw = detailTextList.reduce(
+        (prevDetail: {} | DetailAnime, detailItem) => {
+          const [keyName, value] = detailItem.split(":");
+          const key = getKey(keyName);
 
-        return { ...prevDetail, [key]: value.trim() };
-      }, {});
+          const newDetail = { [key]: value.trim() };
 
-      const detailObjStructured: DetailObj = getStructuredObj(detailObjRaw);
+          return prevDetail
+            ? { ...prevDetail, ...newDetail }
+            : { ...newDetail };
+        },
+        {}
+      ) as DetailAnime;
+
+      // const detailObjStructured: DetailObj = getStructuredObj(detailObjRaw);
 
       const newDetailItem: DetailAnime = {
         pictureUrl,
         description,
-        ...detailObjStructured,
+        ...detailObjRaw,
       };
       return newDetailItem;
     }
