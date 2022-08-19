@@ -1,3 +1,1 @@
-module.exports = {
-  store: { 1: 1 },
-};
+export const store = {};

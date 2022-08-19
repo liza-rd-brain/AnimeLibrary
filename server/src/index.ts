@@ -1,15 +1,13 @@
-// import { Page } from "puppeteer";
-
-import { DetailAnime } from "./types";
-
-const express = require("express");
-const { resolve } = require("path");
-const puppeteer = require("puppeteer");
 const cors = require("cors");
+const express = require("express");
+const puppeteer = require("puppeteer");
 
-const { store } = require("./data");
-const getAnimeDetail = require("./business/getAnimeDetail");
-const takeLinkList = require("./business/takeLinkList");
+import { store } from "./data";
+import { animeName } from "./shared/const";
+import { DetailAnime, RawDetailAnime } from "./types";
+import { takeLinkList } from "./business/takeLinkList";
+import { getAnimeDetail } from "./business/getAnimeDetail";
+import { getStructuredDetail } from "./business/getStructuredDetail";
 
 const app = express();
 const port = 3000;
@@ -20,26 +18,26 @@ const chromeOptions = {
   slowMo: 100,
 };
 
-// const searchInputSelector = ".search input";
-// const url = "https://gogoanime.nl/";
-
 app.use(cors());
 
 app.get("/findName", (req, res) => {
   puppeteer.launch(chromeOptions).then(async function (browser) {
-    // const page: Promise<Page> = await browser.newPage();
     const page = await browser.newPage();
     try {
       const list = await takeLinkList(page);
 
-      console.log(list);
-      //запись в переменную всех items
-      let detailList: Array<DetailAnime> = [];
+      let detailList: Array<RawDetailAnime> = [];
+
       for (let i = 0; i < list.length; i++) {
-        const detailItem: DetailAnime = await getAnimeDetail(list[i], page);
+        const detailItem: RawDetailAnime = await getAnimeDetail(list[i], page);
         detailList.push(detailItem);
       }
-      store.data = detailList;
+
+      const structuredDetailList: DetailAnime[] = await getStructuredDetail(
+        detailList
+      );
+
+      store[animeName] = structuredDetailList;
       console.log(store);
     } catch (err) {
       console.log(err);
@@ -48,7 +46,7 @@ app.get("/findName", (req, res) => {
     }
   });
 
-  res.send(store.data);
+  res.send(store);
 });
 
 app.listen(port, () => {

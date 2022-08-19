@@ -1,16 +1,24 @@
 export type DetailAnime = {
-  pictureUrl?: string;
-  description?: string;
-  otherNames?: string;
   status?: string;
+  scores?: string;
   studio?: string;
-  genre?: string;
+  genre?: string[];
   country?: string;
   episode?: string;
   duration?: string;
-  dateRelease?: string;
   dateAired?: string;
-  // detailTextList: string[];
+  pictureUrl?: string;
+  otherNames?: string;
+  description?: string;
+  dateRelease?: string;
 };
 
-export type DetailObj = Omit<DetailAnime, "pictureUrl" | "description">;
+export type UnStructuredDetailAnime = Partial<Omit<DetailAnime, "genre">> & {
+  genre?: string;
+};
+
+export type RawDetailAnime = Pick<DetailAnime, "pictureUrl" | "description"> & {
+  detailTextList: Array<string>;
+};
+
+// export type DetailObj = Omit<DetailAnime, "pictureUrl" | "description">;
