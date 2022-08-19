@@ -20,33 +20,38 @@ const chromeOptions = {
 
 app.use(cors());
 
-app.get("/findName", (req, res) => {
-  puppeteer.launch(chromeOptions).then(async function (browser) {
-    const page = await browser.newPage();
-    try {
-      const list = await takeLinkList(page);
+const makeScraping = async () => {
+  const browser = await puppeteer.launch(chromeOptions);
+  const page = await browser.newPage();
 
-      let detailList: Array<RawDetailAnime> = [];
+  let detailList: Array<RawDetailAnime> = [];
 
-      for (let i = 0; i < list.length; i++) {
-        const detailItem: RawDetailAnime = await getAnimeDetail(list[i], page);
-        detailList.push(detailItem);
-      }
+  try {
+    const list = await takeLinkList(page);
 
-      const structuredDetailList: DetailAnime[] = await getStructuredDetail(
-        detailList
-      );
-
-      store[animeName] = structuredDetailList;
-      console.log(store);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      await browser.close();
+    for (let i = 0; i < list.length; i++) {
+      const detailItem: RawDetailAnime = await getAnimeDetail(list[i], page);
+      detailList.push(detailItem);
     }
+    const structuredDetailList: DetailAnime[] = getStructuredDetail(detailList);
+    store[animeName] = structuredDetailList;
+    console.log(store);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    await browser.close();
+    return store;
+  }
+};
+
+app.get("/findName", (req, res) => {
+  const scrapedDate = new Promise((resolve, reject) => {
+    makeScraping()
+      .then((data) => resolve(data))
+      .catch((err) => reject(" scrape failed"));
   });
 
-  res.send(store);
+  scrapedDate.then((resolve) => res.send(resolve));
 });
 
 app.listen(port, () => {
