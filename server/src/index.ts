@@ -1,11 +1,13 @@
 const cors = require("cors");
 const express = require("express");
 const puppeteer = require("puppeteer");
+const bodyParser = require("body-parser");
 
 import { store } from "./data";
 import { animeName } from "./shared/const";
 import { DetailAnime, RawDetailAnime } from "./types";
 import { takeLinkList } from "./business/takeLinkList";
+import { Request, Response } from "express";
 import { getAnimeDetail } from "./business/getAnimeDetail";
 import { getStructuredDetail } from "./business/getStructuredDetail";
 
@@ -19,6 +21,7 @@ const chromeOptions = {
 };
 
 app.use(cors());
+app.use(bodyParser.json());
 
 const makeScraping = async () => {
   const browser = await puppeteer.launch(chromeOptions);
@@ -44,7 +47,20 @@ const makeScraping = async () => {
   }
 };
 
-app.get("/findName", (req, res) => {
+// app.get("/findName", (req, res) => {
+//   console.log("req", req);
+//   const scrapedDate = new Promise((resolve, reject) => {
+//     makeScraping()
+//       .then((data) => resolve(data))
+//       .catch((err) => reject(" scrape failed"));
+//   });
+
+//   scrapedDate.then((resolve) => res.send(resolve));
+// });
+
+app.post("/findName", (req: Request, res) => {
+  console.log("req", req.body.name);
+  // console.log("req", req.params.name);
   const scrapedDate = new Promise((resolve, reject) => {
     makeScraping()
       .then((data) => resolve(data))

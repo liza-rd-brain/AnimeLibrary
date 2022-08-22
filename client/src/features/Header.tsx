@@ -30,6 +30,28 @@ const Logo = styled.div`
   background-size: 46px;
 `;
 
+//общий с сервером
+type DetailAnime = {
+  status?: string;
+  scores?: string;
+  studio?: string;
+  genre?: string[];
+  country?: string;
+  episode?: string;
+  duration?: string;
+  dateAired?: string;
+  pictureUrl?: string;
+  otherNames?: string;
+  description?: string;
+  dateRelease?: string;
+};
+
+type ResponseType = {
+  data: DetailAnime[];
+};
+
+const TEST_NAME = "Candy Candy";
+
 export const Header = () => {
   async function makeRequest() {
     const config = {
@@ -37,15 +59,32 @@ export const Header = () => {
       url: "http://localhost:3000/findName",
     };
 
-    let res = await axios(config).then((res: any) => {
+    const res = await axios(config).then((res: ResponseType) => {
+      // записать данные/ куда?
       console.log(res.data);
+      return res;
     });
+  }
 
-    console.log(res);
+  async function makePostRequest() {
+    const config = {
+      method: "post",
+      url: "http://localhost:3000/findName",
+      data: {
+        name: TEST_NAME,
+      },
+    };
+
+    const res = await axios(config).then((res: ResponseType) => {
+      // записать данные/ куда?
+      console.log(res.data);
+      return res;
+    });
   }
 
   const findElem = () => {
-    makeRequest();
+    // makeRequest();
+    makePostRequest();
     // setInterval(makeRequest, 10000);
   };
 
