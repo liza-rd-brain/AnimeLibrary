@@ -1,9 +1,9 @@
-import { url, animeName } from "../shared/const";
+import { url, DEFAULT_ANIME_NAME } from "../shared/const";
 
 const searchInputSelector = ".search-content  input";
 const animeContainerSelector = ".flw-item";
 
-export async function takeLinkList(page) {
+export async function takeLinkList(page, animeName: string) {
   await page.goto(url);
   await page.focus(searchInputSelector);
   await page.type(searchInputSelector, animeName);
@@ -20,12 +20,13 @@ export async function takeLinkList(page) {
       const titleTextElem = descriptionItem.querySelector(titleSelector);
 
       const titleText = titleTextElem.innerText;
+
       //TODO: вынести в отдельную функцию преобразование ссылки?
       const urlItem = titleTextElem.href;
-      var arr = ["watch", "-episode"];
+      const arr = ["watch", "-episode"];
       const animePart = "anime";
 
-      var a = new RegExp(arr.join("|"), "i");
+      const a = new RegExp(arr.join("|"), "i");
       const [url, animeToken] = urlItem.split(a);
       const animeHref = `${url}${animePart}${animeToken}`;
       return animeHref;

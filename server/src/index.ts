@@ -4,7 +4,6 @@ const puppeteer = require("puppeteer");
 const bodyParser = require("body-parser");
 
 import { store } from "./data";
-import { animeName } from "./shared/const";
 import { DetailAnime, RawDetailAnime } from "./types";
 import { takeLinkList } from "./business/takeLinkList";
 import { Request, Response } from "express";
@@ -23,14 +22,15 @@ const chromeOptions = {
 app.use(cors());
 app.use(bodyParser.json());
 
-const makeScraping = async () => {
+const makeScraping = async (animeName: string) => {
   const browser = await puppeteer.launch(chromeOptions);
   const page = await browser.newPage();
 
   let detailList: Array<RawDetailAnime> = [];
 
   try {
-    const list = await takeLinkList(page);
+    const list = await takeLinkList(page, animeName);
+    console.log(list);
 
     for (let i = 0; i < list.length; i++) {
       const detailItem: RawDetailAnime = await getAnimeDetail(list[i], page);
@@ -59,10 +59,11 @@ const makeScraping = async () => {
 // });
 
 app.post("/findName", (req: Request, res) => {
-  console.log("req", req.body.name);
+  const animeName = req.body.name;
+
   // console.log("req", req.params.name);
   const scrapedDate = new Promise((resolve, reject) => {
-    makeScraping()
+    makeScraping(animeName)
       .then((data) => resolve(data))
       .catch((err) => reject(" scrape failed"));
   });

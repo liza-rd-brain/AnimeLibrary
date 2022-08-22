@@ -1,2 +1,2 @@
 export const url = "https://gogoanime1.be/";
-export const animeName = "Dorohedoro";
+export const DEFAULT_ANIME_NAME = "Dorohedoro";

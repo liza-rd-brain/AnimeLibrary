@@ -27,23 +27,27 @@ const getStructuredObj = (rawObj: UnStructuredDetailAnime): DetailAnime => {
 };
 
 export const getStructuredDetail = (detailList: RawDetailAnime[]) => {
+  console.log(detailList);
   const detailTextList = detailList.map((item) => {
-    const unStructuredAnimeItem: UnStructuredDetailAnime =
-      item.detailTextList.reduce(
-        (prevDetail: {} | UnStructuredDetailAnime, detailItem) => {
-          const [keyName, value] = detailItem.split(":");
-          const key = getKey(keyName);
+    if (item.detailTextList) {
+      const unStructuredAnimeItem: UnStructuredDetailAnime =
+        item.detailTextList.reduce(
+          (prevDetail: {} | UnStructuredDetailAnime, detailItem: string) => {
+            const [keyName, value] = detailItem.split(":");
+            const key = getKey(keyName);
 
-          const newDetail = { [key]: value.trim() };
+            const newDetail = { [key]: value.trim() };
 
-          return prevDetail
-            ? { ...prevDetail, ...newDetail }
-            : { ...newDetail };
-        },
-        {}
-      );
-    const detailObjStructured = getStructuredObj(unStructuredAnimeItem);
-    return detailObjStructured;
+            return prevDetail
+              ? { ...prevDetail, ...newDetail }
+              : { ...newDetail };
+          },
+          {}
+        );
+
+      const detailObjStructured = getStructuredObj(unStructuredAnimeItem);
+      return detailObjStructured;
+    }
   });
 
   return detailTextList;

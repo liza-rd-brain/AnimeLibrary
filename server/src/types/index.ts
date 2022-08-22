@@ -18,7 +18,7 @@ export type UnStructuredDetailAnime = Partial<Omit<DetailAnime, "genre">> & {
 };
 
 export type RawDetailAnime = Pick<DetailAnime, "pictureUrl" | "description"> & {
-  detailTextList: Array<string>;
+  detailTextList?: Array<string>;
 };
 
 // export type DetailObj = Omit<DetailAnime, "pictureUrl" | "description">;
