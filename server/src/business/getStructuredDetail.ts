@@ -28,7 +28,9 @@ const getStructuredObj = (rawObj: UnStructuredDetailAnime): DetailAnime => {
 
 export const getStructuredDetail = (detailList: RawDetailAnime[]) => {
   console.log(detailList);
+
   const detailTextList = detailList.map((item) => {
+    const { detailTextList, ...restDetail } = item;
     if (item.detailTextList) {
       const unStructuredAnimeItem: UnStructuredDetailAnime =
         item.detailTextList.reduce(
@@ -46,7 +48,7 @@ export const getStructuredDetail = (detailList: RawDetailAnime[]) => {
         );
 
       const detailObjStructured = getStructuredObj(unStructuredAnimeItem);
-      return detailObjStructured;
+      return { ...detailObjStructured, ...restDetail };
     }
   });
 

@@ -41,7 +41,9 @@ const makeScraping = async (animeName: string) => {
       );
       detailList.push(detailItem);
     }
+
     const structuredDetailList: DetailAnime[] = getStructuredDetail(detailList);
+
     store[animeName] = structuredDetailList;
     console.log(store);
   } catch (err) {

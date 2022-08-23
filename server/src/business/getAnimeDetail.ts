@@ -13,8 +13,10 @@ export async function getAnimeDetail(item, page) {
         const descriptionSelector = ".description p";
         const pictureSelector = ".film-poster-img";
         const detailSelector = ".elements .row-line";
+        const animeNameSelector = ".heading-name";
 
         const pictureUrl: string = item.querySelector(pictureSelector).src;
+        const animeName = item.querySelector(animeNameSelector).innerText;
 
         const description: string =
           item.querySelector(descriptionSelector).innerText;
@@ -25,6 +27,7 @@ export async function getAnimeDetail(item, page) {
         const detailTextList = entityItemList.map((item) => item.innerText);
 
         const newDetailItem: RawDetailAnime = {
+          animeName,
           pictureUrl,
           description,
           detailTextList,
