@@ -18,18 +18,9 @@ export async function takeLinkList(page, animeName: string) {
 
       const titleSelector = ".film-name a";
       const titleTextElem = descriptionItem.querySelector(titleSelector);
-
-      const titleText = titleTextElem.innerText;
-
-      //TODO: вынести в отдельную функцию преобразование ссылки?
       const urlItem = titleTextElem.href;
-      const arr = ["watch", "-episode"];
-      const animePart = "anime";
 
-      const a = new RegExp(arr.join("|"), "i");
-      const [url, animeToken] = urlItem.split(a);
-      const animeHref = `${url}${animePart}${animeToken}`;
-      return animeHref;
+      return urlItem;
     });
 
     return animeTitleList;

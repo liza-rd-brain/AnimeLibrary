@@ -9,6 +9,7 @@ import { takeLinkList } from "./business/takeLinkList";
 import { Request, Response } from "express";
 import { getAnimeDetail } from "./business/getAnimeDetail";
 import { getStructuredDetail } from "./business/getStructuredDetail";
+import { getDetailLinkList } from "./business/getDetailLinkList";
 
 const app = express();
 const port = 3000;
@@ -29,11 +30,15 @@ const makeScraping = async (animeName: string) => {
   let detailList: Array<RawDetailAnime> = [];
 
   try {
-    const list = await takeLinkList(page, animeName);
-    console.log(list);
+    const initialList = await takeLinkList(page, animeName);
+    console.log(initialList);
+    const listWithDetails = getDetailLinkList(initialList);
 
-    for (let i = 0; i < list.length; i++) {
-      const detailItem: RawDetailAnime = await getAnimeDetail(list[i], page);
+    for (let i = 0; i < listWithDetails.length; i++) {
+      const detailItem: RawDetailAnime = await getAnimeDetail(
+        listWithDetails[i],
+        page
+      );
       detailList.push(detailItem);
     }
     const structuredDetailList: DetailAnime[] = getStructuredDetail(detailList);
