@@ -39,6 +39,6 @@ export async function getAnimeDetail(item, page) {
 
     return animeDetailItem;
   } catch (err) {
-    return {};
+    return null;
   }
 }

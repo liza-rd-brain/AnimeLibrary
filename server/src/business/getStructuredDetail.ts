@@ -1,4 +1,9 @@
-import { DetailAnime, RawDetailAnime, UnStructuredDetailAnime } from "../types";
+import {
+  AnimeCollection,
+  DetailAnime,
+  RawDetailAnime,
+  UnStructuredDetailAnime,
+} from "../types";
 
 const getKey = (name: string) => {
   const [firstWord, secondWord] = name.split(" ");
@@ -26,31 +31,53 @@ const getStructuredObj = (rawObj: UnStructuredDetailAnime): DetailAnime => {
   return { ...rawObj, scores: newScore, genre: genreList };
 };
 
-export const getStructuredDetail = (detailList: RawDetailAnime[]) => {
-  console.log(detailList);
+export const getStructuredDetail = (
+  detailList: RawDetailAnime[]
+): AnimeCollection => {
+  // console.log(detailList);
 
-  const detailTextList = detailList.map((item) => {
-    const { detailTextList, ...restDetail } = item;
-    if (item.detailTextList) {
-      const unStructuredAnimeItem: UnStructuredDetailAnime =
-        item.detailTextList.reduce(
-          (prevDetail: {} | UnStructuredDetailAnime, detailItem: string) => {
-            const [keyName, value] = detailItem.split(":");
-            const key = getKey(keyName);
+  const detailTextList = detailList.reduce(
+    (resultList: AnimeCollection, item: RawDetailAnime) => {
+      if (item) {
+        const { detailTextList, animeName, ...restDetail } = item;
 
-            const newDetail = { [key]: value.trim() };
+        if (item.detailTextList) {
+          const unStructuredAnimeItem: UnStructuredDetailAnime =
+            item.detailTextList.reduce(
+              (
+                prevDetail: {} | UnStructuredDetailAnime,
+                detailItem: string
+              ) => {
+                const [keyName, value] = detailItem.split(":");
+                const key = getKey(keyName);
 
-            return prevDetail
-              ? { ...prevDetail, ...newDetail }
-              : { ...newDetail };
-          },
-          {}
-        );
+                const newDetail = { [key]: value.trim() };
 
-      const detailObjStructured = getStructuredObj(unStructuredAnimeItem);
-      return { ...detailObjStructured, ...restDetail };
-    }
-  });
+                return prevDetail
+                  ? { ...prevDetail, ...newDetail }
+                  : { ...newDetail };
+              },
+              {}
+            );
+
+          const detailObjStructured = getStructuredObj(unStructuredAnimeItem);
+
+          const newAnimeItem: AnimeCollection = {
+            [animeName]: { ...detailObjStructured, ...restDetail },
+          };
+
+          return {
+            ...resultList,
+            ...newAnimeItem,
+          };
+        } else {
+          const newAnimeItem = { [animeName]: { ...restDetail } };
+          return { ...resultList, ...newAnimeItem };
+        }
+      } else return resultList;
+    },
+    {}
+  );
 
   return detailTextList;
 };
