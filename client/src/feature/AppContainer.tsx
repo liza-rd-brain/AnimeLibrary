@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Header } from "./Header";
+import { useScrapeData } from "../effect";
+import { SearchItem } from "./SearchItem";
 
 const StyledContainer = styled.div`
   margin: 20px auto 0;
@@ -12,9 +13,11 @@ const StyledContainer = styled.div`
 `;
 
 export const AppContainer = () => {
+  useScrapeData();
+
   return (
     <StyledContainer>
-      <Header />
+      <SearchItem />
     </StyledContainer>
   );
 };

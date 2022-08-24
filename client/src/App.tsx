@@ -1,5 +1,5 @@
 import React from "react";
-import { AppContainer } from "./features/AppContainer";
+import { AppContainer } from "./feature/AppContainer";
 
 import { Provider, useDispatch } from "react-redux";
 

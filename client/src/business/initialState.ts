@@ -1,6 +1,7 @@
 import { State } from "../types";
 
 export const initialState: State = {
-  phase: "waiting",
-  dataBase: null,
+  phase: "idle",
+  data: null,
+  doEffect: null,
 };

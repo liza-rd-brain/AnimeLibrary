@@ -1,23 +1,28 @@
-import { State } from "../types";
+import { AnimeCollection, State } from "../types";
 import { initialState } from "./initialState";
 
 export type ActionType =
   | {
       type: "appLoading";
     }
-  | { type: "loadedDB"; payload: IDBDatabase };
+  | { type: "loadedDB"; payload: IDBDatabase }
+  | { type: "startedAnimeScraping"; payload: string }
+  | {
+      type: "dataReceived";
+      payload: AnimeCollection;
+    };
 
 export const reducer = (
   state: State = initialState,
   action: ActionType
 ): State => {
-  switch (action.type) {
+  /*   switch (action.type) {
     case "loadedDB": {
       console.log("action", action);
 
       const newState: State = {
         ...state,
-        dataBase: action.payload,
+        data: action.payload,
       };
 
       return newState;
@@ -26,15 +31,28 @@ export const reducer = (
     default: {
       return state;
     }
+  } */
+
+  switch (state.phase) {
+    case "idle": {
+      switch (action.type) {
+        case "startedAnimeScraping": {
+          const newState: State = {
+            ...state,
+            phase: "dataScraping",
+            doEffect: { type: "!dataScrape", data: action.payload },
+          };
+          return newState;
+        }
+
+        default: {
+          return state;
+        }
+      }
+    }
+
+    default: {
+      return state;
+    }
   }
-
-  // switch (state.phase) {
-  //   // switch(action.type){
-
-  //   //   }
-
-  //   default: {
-  //     return state;
-  //   }
-  // }
 };
