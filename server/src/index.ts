@@ -4,7 +4,7 @@ const puppeteer = require("puppeteer");
 const bodyParser = require("body-parser");
 
 import { store } from "./data";
-import { AnimeCollection, DetailAnime, RawDetailAnime } from "./types";
+import { AnimeHashTable, DetailAnime, RawDetailAnime } from "./types";
 import { takeLinkList } from "./business/takeLinkList";
 import { Request, Response } from "express";
 import { getAnimeDetail } from "./business/getAnimeDetail";
@@ -41,15 +41,16 @@ const makeScraping = async (animeName: string) => {
       detailList.push(detailItem);
     }
 
-    const structuredDetailList: AnimeCollection =
+    const structuredDetailList: AnimeHashTable =
       getStructuredDetail(detailList);
 
+    // store.data = { ...store.data, ...structuredDetailList };
     store.data = { ...store.data, ...structuredDetailList };
   } catch (err) {
     console.log(err);
   } finally {
     await browser.close();
-    return store;
+    return store.data;
   }
 };
 

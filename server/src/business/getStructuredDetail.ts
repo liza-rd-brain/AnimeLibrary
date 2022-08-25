@@ -1,5 +1,5 @@
 import {
-  AnimeCollection,
+  AnimeHashTable,
   DetailAnime,
   RawDetailAnime,
   UnStructuredDetailAnime,
@@ -33,11 +33,9 @@ const getStructuredObj = (rawObj: UnStructuredDetailAnime): DetailAnime => {
 
 export const getStructuredDetail = (
   detailList: RawDetailAnime[]
-): AnimeCollection => {
-  // console.log(detailList);
-
+): DetailAnime[] => {
   const detailTextList = detailList.reduce(
-    (resultList: AnimeCollection, item: RawDetailAnime) => {
+    (resultList: DetailAnime, item: RawDetailAnime) => {
       if (item) {
         const { detailTextList, animeName, ...restDetail } = item;
 
@@ -62,7 +60,7 @@ export const getStructuredDetail = (
 
           const detailObjStructured = getStructuredObj(unStructuredAnimeItem);
 
-          const newAnimeItem: AnimeCollection = {
+          const newAnimeItem: AnimeHashTable = {
             [animeName]: { ...detailObjStructured, ...restDetail },
           };
 

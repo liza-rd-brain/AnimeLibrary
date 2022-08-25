@@ -14,7 +14,7 @@ export type DetailAnime = {
   dateRelease?: string;
 };
 
-export type AnimeCollection = Record<string, Omit<DetailAnime, "animeName">>;
+export type AnimeHashTable = Record<string, Omit<DetailAnime, "animeName">>;
 
 export type UnStructuredDetailAnime = Partial<Omit<DetailAnime, "genre">> & {
   genre?: string;

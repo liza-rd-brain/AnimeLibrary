@@ -7,8 +7,8 @@ import TextField from "@mui/material/TextField";
 
 import logo from "../assets/pikachu_64.png";
 
-const StyledHeader = styled.div`
-  width: 100%;
+const StyledSearchItem = styled.div`
+  /* width: 100%; */
   height: 80px;
   display: grid;
   gap: 10px;
@@ -61,7 +61,7 @@ export const SearchItem = () => {
   };
 
   return (
-    <StyledHeader>
+    <StyledSearchItem>
       <Logo />
       <div>
         <StyledTextInput inputRef={textInput} />
@@ -74,6 +74,6 @@ export const SearchItem = () => {
       >
         add
       </StyledButton>
-    </StyledHeader>
+    </StyledSearchItem>
   );
 };

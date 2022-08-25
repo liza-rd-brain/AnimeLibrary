@@ -12,7 +12,13 @@ export function useScrapeData() {
       case "!dataScrape": {
         const data = findAnime(doEffect.data);
         data.then(
-          (res) => console.log("res", res),
+          (res) => {
+            console.log("res", res);
+            dispatch({
+              type: "dataReceived",
+              payload: res,
+            });
+          },
           (rej) => {
             console.log("rej", rej);
           }
@@ -24,5 +30,6 @@ export function useScrapeData() {
         break;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doEffect]);
 }

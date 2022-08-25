@@ -1,4 +1,4 @@
-import { AnimeCollection, State } from "../types";
+import { AnimeHashTable, State } from "../types";
 import { initialState } from "./initialState";
 
 export type ActionType =
@@ -9,7 +9,7 @@ export type ActionType =
   | { type: "startedAnimeScraping"; payload: string }
   | {
       type: "dataReceived";
-      payload: AnimeCollection;
+      payload: AnimeHashTable;
     };
 
 export const reducer = (
@@ -45,6 +45,22 @@ export const reducer = (
           return newState;
         }
 
+        default: {
+          return state;
+        }
+      }
+    }
+
+    case "dataScraping": {
+      switch (action.type) {
+        case "dataReceived": {
+          const newState: State = {
+            ...state,
+            doEffect: null,
+            data: action.payload,
+          };
+          return newState;
+        }
         default: {
           return state;
         }
