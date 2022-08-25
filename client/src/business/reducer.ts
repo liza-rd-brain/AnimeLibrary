@@ -1,4 +1,4 @@
-import { AnimeHashTable, State } from "../types";
+import { AnimeHashTable, DetailAnimeList, State } from "../types";
 import { initialState } from "./initialState";
 
 export type ActionType =
@@ -9,7 +9,7 @@ export type ActionType =
   | { type: "startedAnimeScraping"; payload: string }
   | {
       type: "dataReceived";
-      payload: AnimeHashTable;
+      payload: DetailAnimeList;
     };
 
 export const reducer = (

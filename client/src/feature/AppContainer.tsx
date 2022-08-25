@@ -5,22 +5,25 @@ import { useSelector, useDispatch } from "react-redux";
 import { useScrapeData } from "../effect";
 import { SearchItem } from "./SearchItem";
 import { AnimeListType, State } from "../types";
+
 import { Error } from "./Error";
+import { Card } from "../component/Card";
 
 const StyledContainer = styled.div`
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   margin: 20px auto 0;
   min-width: 320px;
   max-width: 1200px;
   width: 100%;
-  min-height: 600px;
+  /* min-height: 600px; */
   padding-top: 100px;
 `;
 
 const getAnimeList = (animeList: AnimeListType) => {
   if (animeList) {
-    const animeListNotEmpty = Boolean(Object.values(animeList).length);
+    const animeListNotEmpty = animeList.length;
     if (animeListNotEmpty) {
       return <AnimeList />;
     } else {
@@ -32,8 +35,12 @@ const getAnimeList = (animeList: AnimeListType) => {
 //вынести в feature
 const AnimeList = () => {
   const [animeList] = useSelector((state: State) => [state.data]);
+  // const animeCardList=animeList?.map(animeItem:DetailAnime=><Card data={animeItem}/>)
+  const animeCardList = animeList?.map((animeItem, index) => (
+    <Card key={index} data={animeItem} />
+  ));
 
-  return <div></div>;
+  return <div>{animeCardList}</div>;
 };
 
 export const AppContainer = () => {

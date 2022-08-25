@@ -1,6 +1,7 @@
 import {
   AnimeHashTable,
   DetailAnime,
+  DetailAnimeList,
   RawDetailAnime,
   UnStructuredDetailAnime,
 } from "../types";
@@ -84,9 +85,9 @@ const getStructuredObj = (rawObj: UnStructuredDetailAnime): DetailAnime => {
 
 export const getStructuredDetail = (
   detailList: RawDetailAnime[]
-): DetailAnime[] => {
+): DetailAnimeList => {
   const detailTextList = detailList.reduce(
-    (resultList: DetailAnime[], item: RawDetailAnime) => {
+    (resultList: DetailAnimeList, item: RawDetailAnime) => {
       if (item) {
         const { detailTextList, ...restDetail } = item;
 

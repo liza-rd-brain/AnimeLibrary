@@ -4,7 +4,7 @@ export type State = {
   doEffect: EffectType;
 };
 
-export type AnimeListType = AnimeHashTable | null;
+export type AnimeListType = DetailAnimeList | null;
 
 export type ErrorType = "err";
 
@@ -33,8 +33,10 @@ export type DetailAnime = {
   dateRelease?: string;
 };
 
+export type DetailAnimeList = Array<DetailAnime>;
+
 export type AnimeHashTable = Record<string, Omit<DetailAnime, "animeName">>;
 
 export type ResponseType = {
-  data: AnimeHashTable;
+  data: DetailAnimeList;
 };
