@@ -31,13 +31,64 @@ const getStructuredObj = (rawObj: UnStructuredDetailAnime): DetailAnime => {
   return { ...rawObj, scores: newScore, genre: genreList };
 };
 
+// export const getStructuredDetail = (
+//   detailList: RawDetailAnime[]
+// ): AnimeHashTable => {
+
+//   const detailTextList = detailList.reduce(
+//     (resultList: AnimeHashTable, item: RawDetailAnime) => {
+//       if (item) {
+//         const { detailTextList, animeName, ...restDetail } = item;
+
+//         if (item.detailTextList) {
+
+//           const unStructuredAnimeItem: UnStructuredDetailAnime =
+//             item.detailTextList.reduce(
+//               (
+//                 prevDetail: {} | UnStructuredDetailAnime,
+//                 detailItem: string
+//               ) => {
+//                 const [keyName, value] = detailItem.split(":");
+//                 const key = getKey(keyName);
+
+//                 const newDetail = { [key]: value.trim() };
+
+//                 return prevDetail
+//                   ? { ...prevDetail, ...newDetail }
+//                   : { ...newDetail };
+//               },
+//               {}
+//             );
+
+//           const detailObjStructured = getStructuredObj(unStructuredAnimeItem);
+
+//           const newAnimeItem: AnimeHashTable = {
+//             [animeName]: { ...detailObjStructured, ...restDetail },
+//           };
+
+//           return {
+//             ...resultList,
+//             ...newAnimeItem,
+//           };
+//         } else {
+//           const newAnimeItem = { [animeName]: { ...restDetail } };
+//           return { ...resultList, ...newAnimeItem };
+//         }
+//       } else return resultList;
+//     },
+//     {}
+//   );
+
+//   return detailTextList;
+// };
+
 export const getStructuredDetail = (
   detailList: RawDetailAnime[]
 ): DetailAnime[] => {
   const detailTextList = detailList.reduce(
-    (resultList: DetailAnime, item: RawDetailAnime) => {
+    (resultList: DetailAnime[], item: RawDetailAnime) => {
       if (item) {
-        const { detailTextList, animeName, ...restDetail } = item;
+        const { detailTextList, ...restDetail } = item;
 
         if (item.detailTextList) {
           const unStructuredAnimeItem: UnStructuredDetailAnime =
@@ -59,22 +110,15 @@ export const getStructuredDetail = (
             );
 
           const detailObjStructured = getStructuredObj(unStructuredAnimeItem);
+          const newAnimeName = { ...detailObjStructured, ...restDetail };
 
-          const newAnimeItem: AnimeHashTable = {
-            [animeName]: { ...detailObjStructured, ...restDetail },
-          };
-
-          return {
-            ...resultList,
-            ...newAnimeItem,
-          };
+          return [...resultList, newAnimeName];
         } else {
-          const newAnimeItem = { [animeName]: { ...restDetail } };
-          return { ...resultList, ...newAnimeItem };
+          return [...resultList, restDetail];
         }
       } else return resultList;
     },
-    {}
+    []
   );
 
   return detailTextList;
