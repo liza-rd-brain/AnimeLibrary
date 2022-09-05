@@ -21,6 +21,11 @@ const StyledContainer = styled.div`
   padding-top: 100px;
 `;
 
+const AnimeListContainer = styled.div`
+  display: grid;
+  gap: 20px;
+`;
+
 const getAnimeList = (animeList: AnimeListType) => {
   if (animeList) {
     const animeListNotEmpty = animeList.length;
@@ -40,7 +45,7 @@ const AnimeList = () => {
     <Card key={index} data={animeItem} />
   ));
 
-  return <div>{animeCardList}</div>;
+  return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
 };
 
 export const AppContainer = () => {

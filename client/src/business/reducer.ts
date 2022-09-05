@@ -58,6 +58,7 @@ export const reducer = (
             ...state,
             doEffect: null,
             data: action.payload,
+            phase: "idle",
           };
           return newState;
         }

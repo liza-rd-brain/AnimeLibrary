@@ -1,26 +1,82 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 
+import Button from "@mui/material/Button";
+
 import { DetailAnime } from "../types";
 
-const StyledCardContainer = styled.div`
+const CardContainer = styled.div`
   display: grid;
-  grid-template-columns: 300px 400px;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 1px 20px lightgrey;
+
+  /* grid-template-columns: 300px 400px; */
 `;
 
-const StyledTable = styled.div``;
+const CardItem = styled.div`
+  display: grid;
+  gap: 15px;
+  grid-template-columns: 280px 400px;
+`;
 
-const StyledImg = styled.img``;
+const Table = styled.div`
+  display: grid;
+  gap: 15px;
+`;
 
-const StyledTitle = styled.div`
+const ImageContainer = styled.div`
+  /* display: block; */
+`;
+
+const StyledButton = styled(Button)`
+  width: 56px;
+  height: 56px;
+`;
+
+// const StyledImage = styled.div<{ pictureUrl?: string }>`
+//   height: 100%;
+//   background-position: center;
+//   background-size: 250px;
+//   border-radius: 5px;
+//   background-image: ${(props) => {
+//     return `url(${props.pictureUrl})`;
+//   }};
+// `;
+
+const StyledImage = styled.img`
+  border-radius: 5px;
+  width: 280px;
+`;
+
+const StyledHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-size: 30px;
   font-weight: bold;
 `;
 
 const StyledRow = styled.div`
   width: 100%;
-  display: grid;
-  grid-template-columns: 150px 150px;
+  /* display: grid;
+  gap: 15px; */
+  /* grid-template-columns: 150px 150px; */
+`;
+
+const StyledTitle = styled.span`
+  font-weight: bold;
+`;
+
+const Description = styled.span`
+  /* height: 60px;
+  width: 500px;
+  text-overflow: ellipsis; */
+  /* width: 300px; */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 `;
 
 // const RowItem: FC;
@@ -35,8 +91,8 @@ export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
       const [key, value] = item;
       return (
         <StyledRow key={index}>
-          <div>{key}</div>
-          <div>{value}</div>
+          <StyledTitle>{`${key}: `}</StyledTitle>
+          <span>{value}</span>
         </StyledRow>
       );
       //   const [key, value] = item;
@@ -51,12 +107,27 @@ export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
   };
 
   return (
-    <StyledCardContainer>
-      <StyledImg src={pictureUrl} />
-      <div>
-        <StyledTitle>{animeName}</StyledTitle>
-        <StyledTable>{getDetailTable()}</StyledTable>
-      </div>
-    </StyledCardContainer>
+    <CardContainer>
+      <StyledHeader>
+        {animeName}{" "}
+        <StyledButton
+          variant="outlined"
+          onClick={() => {
+            console.log("add");
+          }}
+        >
+          add
+        </StyledButton>
+      </StyledHeader>
+      <CardItem>
+        <ImageContainer>
+          {/* <StyledImage pictureUrl={pictureUrl} /> */}
+          <StyledImage src={pictureUrl} alt="" />
+        </ImageContainer>
+
+        <Table>{getDetailTable()}</Table>
+      </CardItem>
+      <Description>{description}</Description>
+    </CardContainer>
   );
 };
