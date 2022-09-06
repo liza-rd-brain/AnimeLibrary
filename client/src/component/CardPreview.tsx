@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
 
 import Button from "@mui/material/Button";
 
@@ -10,17 +11,17 @@ const CardContainer = styled.div`
   gap: 15px;
   padding: 20px;
   border-radius: 10px;
-  /* box-shadow: 0px 1px 20px lightgrey; */
-  background: white;
-  color: black;
-  max-width: 800px;
+  box-shadow: 0px 1px 20px lightgrey;
+  width: 300px;
+  cursor: pointer;
+
   /* grid-template-columns: 300px 400px; */
 `;
 
 const CardItem = styled.div`
   display: grid;
   gap: 15px;
-  grid-template-columns: 280px 400px;
+  /* grid-template-columns: 280px 400px; */
 `;
 
 const Table = styled.div`
@@ -34,7 +35,7 @@ const ImageContainer = styled.div`
 
 const StyledButton = styled(Button)`
   width: 56px;
-  height: 56px;
+  height: 40px;
 `;
 
 // const StyledImage = styled.div<{ pictureUrl?: string }>`
@@ -49,14 +50,20 @@ const StyledButton = styled(Button)`
 
 const StyledImage = styled.img`
   border-radius: 5px;
-  width: 280px;
+  width: 300px;
 `;
 
-const StyledHeader = styled.div`
+const Header = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: start;
+  width: 100%;
+  gap: 10px;
   font-size: 30px;
   font-weight: bold;
+`;
+const Title = styled.div`
+  line-height: 31px;
 `;
 
 const StyledRow = styled.div`
@@ -74,7 +81,7 @@ const Description = styled.span`
   /* height: 60px;
   width: 500px;
   text-overflow: ellipsis; */
-  /* width: 300px; */
+  width: 300px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -83,8 +90,10 @@ const Description = styled.span`
 
 // const RowItem: FC;
 
-export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
+export const CardPreview: FC<{ data: DetailAnime }> = ({ data }) => {
   const { pictureUrl, animeName, description, ...detailTable } = data;
+
+  const dispatch = useDispatch();
 
   const detailList = Object.entries(detailTable);
 
@@ -110,28 +119,30 @@ export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
 
   return (
     <CardContainer
-      onClick={(e) => {
-        e.stopPropagation();
+      onClick={() => {
+        console.log("click card");
+        dispatch({ type: "cardOpened", payload: data });
       }}
     >
-      <StyledHeader>
-        {animeName}{" "}
+      <Header>
+        <Title>{animeName}</Title>
         <StyledButton
           variant="outlined"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             console.log("add");
           }}
         >
           add
         </StyledButton>
-      </StyledHeader>
+      </Header>
       <CardItem>
         <ImageContainer>
           {/* <StyledImage pictureUrl={pictureUrl} /> */}
           <StyledImage src={pictureUrl} alt="" />
         </ImageContainer>
 
-        <Table>{getDetailTable()}</Table>
+        {/* <Table>{getDetailTable()}</Table> */}
       </CardItem>
       <Description>{description}</Description>
     </CardContainer>

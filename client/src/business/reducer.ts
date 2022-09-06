@@ -1,4 +1,4 @@
-import { AnimeHashTable, DetailAnimeList, State } from "../types";
+import { DetailAnime, DetailAnimeList, State } from "../types";
 import { initialState } from "./initialState";
 
 export type ActionType =
@@ -10,6 +10,17 @@ export type ActionType =
   | {
       type: "dataReceived";
       payload: DetailAnimeList;
+    }
+  | {
+      type: "cardOpened";
+      payload: DetailAnime;
+    }
+  | {
+      type: "closeCard";
+    }
+  | {
+      type: "addToList";
+      payload: DetailAnime;
     };
 
 export const reducer = (
@@ -44,6 +55,14 @@ export const reducer = (
           };
           return newState;
         }
+        case "cardOpened": {
+          const newState: State = {
+            ...state,
+            openedCard: action.payload,
+            phase: "cardIsOpen",
+          };
+          return newState;
+        }
 
         default: {
           return state;
@@ -61,6 +80,26 @@ export const reducer = (
             phase: "idle",
           };
           return newState;
+        }
+        default: {
+          return state;
+        }
+      }
+    }
+
+    case "cardIsOpen": {
+      switch (action.type) {
+        case "closeCard": {
+          const newState: State = {
+            ...state,
+            openedCard: null,
+            phase: "idle",
+          };
+          console.log(newState);
+          return newState;
+        }
+        case "addToList": {
+          return state;
         }
         default: {
           return state;

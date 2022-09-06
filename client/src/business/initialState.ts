@@ -4,4 +4,5 @@ export const initialState: State = {
   phase: "idle",
   data: null,
   doEffect: null,
+  openedCard: null,
 };

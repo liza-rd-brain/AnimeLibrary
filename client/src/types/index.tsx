@@ -2,6 +2,7 @@ export type State = {
   phase: PhaseType;
   data: AnimeListType;
   doEffect: EffectType;
+  openedCard: DetailAnime | null;
 };
 
 export type AnimeListType = DetailAnimeList | null;
@@ -9,7 +10,7 @@ export type AnimeListType = DetailAnimeList | null;
 export type ErrorType = "err";
 
 //TODO: dataScraping - рисуем прелоадер и заму
-export type PhaseType = "idle" | "waiting" | "dataScraping";
+export type PhaseType = "idle" | "waiting" | "dataScraping" | "cardIsOpen";
 
 //data - имя аниме не нужно только для скрейпинга, хранить в сущности эффекта?
 
