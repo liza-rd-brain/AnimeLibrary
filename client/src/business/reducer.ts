@@ -45,6 +45,23 @@ export const reducer = (
   } */
 
   switch (state.phase) {
+    case "waiting": {
+      switch (action.type) {
+        case "startedAnimeScraping": {
+          const newState: State = {
+            ...state,
+            phase: "dataScraping",
+            doEffect: { type: "!dataScrape", data: action.payload },
+          };
+          return newState;
+        }
+
+        default: {
+          return state;
+        }
+      }
+    }
+
     case "idle": {
       switch (action.type) {
         case "startedAnimeScraping": {

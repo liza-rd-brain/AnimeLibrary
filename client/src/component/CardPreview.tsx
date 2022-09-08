@@ -15,6 +15,10 @@ const CardContainer = styled.div`
   width: 300px;
   cursor: pointer;
 
+  /* &:hover {
+    box-shadow: 0px 1px 20px gray;
+  } */
+
   /* grid-template-columns: 300px 400px; */
 `;
 
@@ -34,19 +38,10 @@ const ImageContainer = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  width: 56px;
-  height: 40px;
-`;
+  width: 100%;
 
-// const StyledImage = styled.div<{ pictureUrl?: string }>`
-//   height: 100%;
-//   background-position: center;
-//   background-size: 250px;
-//   border-radius: 5px;
-//   background-image: ${(props) => {
-//     return `url(${props.pictureUrl})`;
-//   }};
-// `;
+  height: 50px;
+`;
 
 const StyledImage = styled.img`
   border-radius: 5px;
@@ -59,18 +54,20 @@ const Header = styled.div`
   align-items: start;
   width: 100%;
   gap: 10px;
-  font-size: 30px;
+  font-size: 23px;
   font-weight: bold;
+  height: 60px;
 `;
 const Title = styled.div`
-  line-height: 31px;
+  /* line-height: 31px; */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 `;
 
 const StyledRow = styled.div`
   width: 100%;
-  /* display: grid;
-  gap: 15px; */
-  /* grid-template-columns: 150px 150px; */
 `;
 
 const StyledTitle = styled.span`
@@ -78,9 +75,6 @@ const StyledTitle = styled.span`
 `;
 
 const Description = styled.span`
-  /* height: 60px;
-  width: 500px;
-  text-overflow: ellipsis; */
   width: 300px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -124,18 +118,6 @@ export const CardPreview: FC<{ data: DetailAnime }> = ({ data }) => {
         dispatch({ type: "cardOpened", payload: data });
       }}
     >
-      <Header>
-        <Title>{animeName}</Title>
-        <StyledButton
-          variant="outlined"
-          onClick={(e) => {
-            e.stopPropagation();
-            console.log("add");
-          }}
-        >
-          add
-        </StyledButton>
-      </Header>
       <CardItem>
         <ImageContainer>
           {/* <StyledImage pictureUrl={pictureUrl} /> */}
@@ -144,7 +126,20 @@ export const CardPreview: FC<{ data: DetailAnime }> = ({ data }) => {
 
         {/* <Table>{getDetailTable()}</Table> */}
       </CardItem>
-      <Description>{description}</Description>
+
+      <Header>
+        <Title>{animeName}</Title>
+      </Header>
+      <StyledButton
+        variant="outlined"
+        onClick={(e) => {
+          e.stopPropagation();
+          console.log("add");
+        }}
+      >
+        add
+      </StyledButton>
+      {/* <Description>{description}</Description> */}
     </CardContainer>
   );
 };

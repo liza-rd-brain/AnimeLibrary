@@ -77,7 +77,7 @@ const Description = styled.span`
   /* width: 300px; */
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  /* -webkit-line-clamp: 3; */
   overflow: hidden;
 `;
 
@@ -127,7 +127,6 @@ export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
       </StyledHeader>
       <CardItem>
         <ImageContainer>
-          {/* <StyledImage pictureUrl={pictureUrl} /> */}
           <StyledImage src={pictureUrl} alt="" />
         </ImageContainer>
 
