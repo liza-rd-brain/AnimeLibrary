@@ -11,6 +11,7 @@ const StyledImage = styled.img`
 const StyledProgress = styled(LinearProgress)`
   transform: scale(-1, 1);
 `;
+
 export const Preloader = () => {
   return (
     <div>

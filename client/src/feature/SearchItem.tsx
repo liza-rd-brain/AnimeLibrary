@@ -12,18 +12,18 @@ import { State } from "../types";
 
 const StyledSearchItem = styled.div`
   /* width: 100%; */
-  height: 100px;
+  /* height: 100px; */
   display: grid;
   gap: 10px;
-  grid-template-columns: 100px 300px 60px;
+  grid-template-columns: /* 100px */ 300px 60px;
 `;
 
 const StyledSearchItemInitial = styled.div`
   /* width: 100%; */
-  height: 80px;
+  /* height: 80px; */
   display: grid;
   gap: 10px;
-  grid-template-rows: 100px 300px;
+  grid-template-rows: 150px 100px;
 `;
 
 const StyledTextInput = styled(TextField)`
@@ -35,18 +35,11 @@ const StyledButton = styled(Button)`
   height: 56px;
 `;
 
-const Logo = styled.div`
-  background: url(${logo});
-  background-repeat: no-repeat;
-  background-size: 112px;
-  background-position: -10px -10px;
-  transform: scale(-1, 1);
-  height: 100px;
-  width: 100px;
-`;
-
-const LogoAnimated = styled.div`
-  background: url(${logoAnimated});
+const Logo = styled.div<{ isAnimated?: boolean }>`
+  /* background: url(${logoAnimated}); */
+  background: ${({ isAnimated }) => {
+    return isAnimated ? `url(${logoAnimated})` : `url(${logo})`;
+  }};
   background-repeat: no-repeat;
   background-size: 300px;
   background-position: center;
@@ -54,7 +47,7 @@ const LogoAnimated = styled.div`
 `;
 
 export const SearchItem: FC<{
-  refState: React.MutableRefObject<{
+  refState?: React.MutableRefObject<{
     value: string | null;
   }>;
 }> = ({ refState }) => {
@@ -63,24 +56,13 @@ export const SearchItem: FC<{
   const [phase] = useSelector((state: State) => [state.phase]);
 
   const textInput = useRef<HTMLInputElement>(null);
-  console.log(textInput.current);
-
-  // async function makeRequest() {
-  //   const config = {
-  //     method: "get",
-  //     url: "http://localhost:3000/findName",
-  //   };
-
-  //   const res = await axios(config).then((res: ResponseType) => {
-  //     // записать данные/ куда?
-  //     console.log(res.data);
-  //     return res;
-  //   });
-  // }
 
   const handleAddClick = () => {
     if (textInput.current?.value) {
-      refState.current.value = textInput.current?.value;
+      if (refState) {
+        refState.current.value = textInput.current?.value;
+      }
+
       dispatch({
         type: "startedAnimeScraping",
         payload: textInput.current?.value,
@@ -93,6 +75,9 @@ export const SearchItem: FC<{
       case "waiting": {
         return <InitialSearchItem />;
       }
+      case "dataScraping": {
+        return <InitialSearchItem isAnimated={true} />;
+      }
       case "idle": {
         return <DefaultSearchItem />;
       }
@@ -102,14 +87,14 @@ export const SearchItem: FC<{
     }
   };
 
-  const InitialSearchItem = () => {
+  const InitialSearchItem: FC<{ isAnimated?: boolean }> = ({ isAnimated }) => {
     return (
       <StyledSearchItemInitial>
-        <LogoAnimated />
+        <Logo isAnimated={isAnimated} />
         <div>
           <StyledTextInput
             inputRef={textInput}
-            defaultValue={refState.current.value}
+            defaultValue={refState?.current.value}
           />
           <StyledButton
             variant="outlined"
@@ -127,11 +112,11 @@ export const SearchItem: FC<{
   const DefaultSearchItem = () => {
     return (
       <StyledSearchItem>
-        <Logo />
+        {/* <Logo /> */}
         <div>
           <StyledTextInput
             inputRef={textInput}
-            defaultValue={refState.current.value}
+            defaultValue={refState?.current.value}
           />
         </div>
         <StyledButton

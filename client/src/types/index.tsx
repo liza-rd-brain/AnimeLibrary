@@ -3,9 +3,11 @@ export type State = {
   data: AnimeListType;
   doEffect: EffectType;
   openedCard: DetailAnime | null;
+  currPage?: PageName;
 };
 
 export type AnimeListType = DetailAnimeList | null;
+export type PageName = "search" | "list";
 
 export type ErrorType = "err";
 

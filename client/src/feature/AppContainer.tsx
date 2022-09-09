@@ -2,7 +2,11 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 
 import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useScrapeData } from "../effect";
@@ -12,10 +16,11 @@ import { AnimeListType, DetailAnime, State } from "../types";
 import { Error } from "./Error";
 import { Card } from "../component/Card";
 import { CardPreview } from "../component/CardPreview";
-import { SearchItemInitial } from "./SearchItemInitial";
+import { Navigator } from "./Navigator";
+
 import { Preloader } from "../component/Preloader";
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ isInit: boolean; disableClick: boolean }>`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -24,7 +29,12 @@ const StyledContainer = styled.div`
   max-width: 1060px;
   width: 100%;
   /* min-height: 600px; */
-  padding-top: 250px;
+  padding-top: ${({ isInit }) => {
+    return isInit ? "250px" : "0px";
+  }};
+  pointer-events: ${({ disableClick }) => {
+    return disableClick ? "none" : "initial";
+  }};
 `;
 
 const AnimeListContainer = styled.div`
@@ -33,6 +43,17 @@ const AnimeListContainer = styled.div`
   //если ширина меньше 1000 - по центру?
   /* justify-content: center; */
   gap: 20px;
+`;
+
+const AppHeader = styled.div`
+  display: flex;
+  justify-content: start;
+  width: 100%;
+`;
+
+const StyledProgress = styled(LinearProgress)`
+  transform: scale(-1, 1);
+  width: 300px;
 `;
 
 const getAnimeList = (animeList: AnimeListType) => {
@@ -44,6 +65,54 @@ const getAnimeList = (animeList: AnimeListType) => {
       return <Error />;
     }
   }
+};
+
+const TabPanel = (props: any) => {
+  const { children, value, index, ...other } = props;
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+};
+
+const BasicTabs = () => {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
+          <Tab label="Item One" />
+          <Tab label="Item Two" />
+        </Tabs>
+      </Box>
+      <TabPanel value={value} index={0}>
+        Item One
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        Item Two
+      </TabPanel>
+    </Box>
+  );
 };
 
 //вынести в feature
@@ -78,18 +147,18 @@ export const AppContainer = () => {
 
   const getAppView = () => {
     switch (phase) {
-      case "waiting": /*   case "dataScraping":  */ {
-        // return <SearchItemInitial />;
+      case "waiting": {
         return (
           <>
             <SearchItem refState={refState} />
-            {/* <Backdrop
-              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={phase === "dataScraping"}
-              onClick={handleClose}
-            >
-              <CircularProgress color="inherit" />
-            </Backdrop> */}
+          </>
+        );
+      }
+      case "dataScraping": {
+        return (
+          <>
+            <SearchItem refState={refState} />
+            <StyledProgress />
           </>
         );
       }
@@ -98,24 +167,27 @@ export const AppContainer = () => {
       case "cardIsOpen": {
         return (
           <>
-            <SearchItem refState={refState} />
-            {getAnimeList(animeList)}{" "}
+            {getAnimeList(animeList)}
             <Backdrop
               sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
               open={phase === "cardIsOpen"}
               onClick={handleClose}
             >
               {openedCard && <Card data={openedCard} />}
-              {/* <CircularProgress color="inherit" /> */}
             </Backdrop>
           </>
         );
       }
-      case "dataScraping": {
-        return <Preloader />;
-      }
     }
   };
 
-  return <StyledContainer>{getAppView()}</StyledContainer>;
+  return (
+    <StyledContainer isInit={false} disableClick={phase === "dataScraping"}>
+      <Navigator
+        refState={refState}
+        hasInput={phase !== "waiting" && phase !== "dataScraping"}
+      />
+      {getAppView()}
+    </StyledContainer>
+  );
 };
