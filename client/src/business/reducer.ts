@@ -21,6 +21,9 @@ export type ActionType =
   | {
       type: "addToList";
       payload: DetailAnime;
+    }
+  | {
+      type: "switchPage";
     };
 
 export const reducer = (
@@ -52,6 +55,14 @@ export const reducer = (
             ...state,
             phase: "dataScraping",
             doEffect: { type: "!dataScrape", data: action.payload },
+          };
+          return newState;
+        }
+        case "switchPage": {
+          const newPage = state.currPage === "list" ? "search" : "list";
+          const newState: State = {
+            ...state,
+            currPage: newPage,
           };
           return newState;
         }

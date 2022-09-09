@@ -3,7 +3,7 @@ export type State = {
   data: AnimeListType;
   doEffect: EffectType;
   openedCard: DetailAnime | null;
-  currPage?: PageName;
+  currPage: PageName;
 };
 
 export type AnimeListType = DetailAnimeList | null;

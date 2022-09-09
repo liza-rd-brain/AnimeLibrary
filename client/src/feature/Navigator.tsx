@@ -1,5 +1,6 @@
 import React, { FC, useRef } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -9,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import logo from "../assets/pikachu_64.png";
 
 import { SearchItem } from "./SearchItem";
+import { State } from "../types";
 
 const Logo = styled.div`
   background: url(${logo});
@@ -23,18 +25,23 @@ const Logo = styled.div`
 const StyledHeader = styled(Box)`
   display: flex;
   width: 100%;
+  margin-bottom: 50px;
 `;
 
-const BasicTabs: FC<{
+export const Navigator: FC<{
   hasInput: boolean;
   refState?: React.MutableRefObject<{
     value: string | null;
   }>;
 }> = ({ hasInput, refState }) => {
+  const dispatch = useDispatch();
+  const [currPage] = useSelector((state: State) => [state.currPage]);
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    debugger;
     setValue(newValue);
+    dispatch({ type: "switchPage" });
   };
 
   return (
@@ -46,49 +53,12 @@ const BasicTabs: FC<{
           onChange={handleChange}
           aria-label="basic tabs example"
         >
+          {/*   Добавить disabled на пустой список-?! */}
           <Tab label="Item One" />
-          <Tab label="Item Two" />
+          <Tab label="Item Two" /* disabled={currPage === "search"}  */ />
         </Tabs>
         {hasInput && <SearchItem refState={refState} />}
       </StyledHeader>
-      <TabPanel value={value} index={0}>
-        Item One
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
     </Box>
-  );
-};
-
-const TabPanel = (props: any) => {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-};
-
-export const Navigator: FC<{
-  hasInput: boolean;
-  refState?: React.MutableRefObject<{
-    value: string | null;
-  }>;
-}> = ({ hasInput, refState }) => {
-  return (
-    <>
-      <BasicTabs hasInput={hasInput} refState={refState} />
-    </>
   );
 };

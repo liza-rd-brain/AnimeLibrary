@@ -86,35 +86,6 @@ const TabPanel = (props: any) => {
   );
 };
 
-const BasicTabs = () => {
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Item One" />
-          <Tab label="Item Two" />
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-        Item One
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-    </Box>
-  );
-};
-
 //вынести в feature
 const AnimeList = () => {
   const [animeList] = useSelector((state: State) => [state.data]);
@@ -131,6 +102,7 @@ export const AppContainer = () => {
     data: animeList,
     openedCard,
     phase,
+    currPage,
   } = useSelector((state: State) => ({
     ...state,
   }));
@@ -146,37 +118,48 @@ export const AppContainer = () => {
   useScrapeData();
 
   const getAppView = () => {
-    switch (phase) {
-      case "waiting": {
-        return (
-          <>
-            <SearchItem refState={refState} />
-          </>
-        );
-      }
-      case "dataScraping": {
-        return (
-          <>
-            <SearchItem refState={refState} />
-            <StyledProgress />
-          </>
-        );
-      }
+    switch (currPage) {
+      case "search": {
+        switch (phase) {
+          case "waiting": {
+            return (
+              <>
+                <SearchItem refState={refState} />
+              </>
+            );
+          }
+          case "dataScraping": {
+            return (
+              <>
+                <SearchItem refState={refState} />
+                <StyledProgress />
+              </>
+            );
+          }
 
-      case "idle":
-      case "cardIsOpen": {
-        return (
-          <>
-            {getAnimeList(animeList)}
-            <Backdrop
-              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={phase === "cardIsOpen"}
-              onClick={handleClose}
-            >
-              {openedCard && <Card data={openedCard} />}
-            </Backdrop>
-          </>
-        );
+          case "idle":
+          case "cardIsOpen": {
+            return (
+              <>
+                {getAnimeList(animeList)}
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={phase === "cardIsOpen"}
+                  onClick={handleClose}
+                >
+                  {openedCard && <Card data={openedCard} />}
+                </Backdrop>
+              </>
+            );
+          }
+        }
+      }
+      // eslint-disable-next-line no-fallthrough
+      default: {
+        return null;
       }
     }
   };
