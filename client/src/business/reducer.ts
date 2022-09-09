@@ -91,6 +91,14 @@ export const reducer = (
           };
           return newState;
         }
+        case "switchPage": {
+          const newPage = state.currPage === "list" ? "search" : "list";
+          const newState: State = {
+            ...state,
+            currPage: newPage,
+          };
+          return newState;
+        }
 
         default: {
           return state;

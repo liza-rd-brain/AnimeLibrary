@@ -28,6 +28,9 @@ const StyledHeader = styled(Box)`
   margin-bottom: 50px;
 `;
 
+const SEARCH_TEXT = "search";
+const LIST_TEXT = "my list";
+
 export const Navigator: FC<{
   hasInput: boolean;
   refState?: React.MutableRefObject<{
@@ -54,8 +57,8 @@ export const Navigator: FC<{
           aria-label="basic tabs example"
         >
           {/*   Добавить disabled на пустой список-?! */}
-          <Tab label="Item One" />
-          <Tab label="Item Two" /* disabled={currPage === "search"}  */ />
+          <Tab label={SEARCH_TEXT} />
+          <Tab label={LIST_TEXT} /* disabled={currPage === "search"}  */ />
         </Tabs>
         {hasInput && <SearchItem refState={refState} />}
       </StyledHeader>
