@@ -1,27 +1,26 @@
-import React, { useRef, FC } from "react";
+import { useRef, FC } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 
-import Backdrop from "@mui/material/Backdrop";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Backdrop from "@mui/material/Backdrop";
+import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 
-import { useSelector, useDispatch } from "react-redux";
+import { Error } from "./Error";
 import { useScrapeData } from "../effect";
+import { Navigator } from "./Navigator";
+import { Card } from "../component/Card";
 import { SearchItem } from "./SearchItem";
-import { AnimeListType, DetailAnime, State } from "../types";
+import { AnimeListType, State } from "../types";
+import { CardPreview } from "../component/CardPreview";
 
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
 
-import { Error } from "./Error";
-import { Card } from "../component/Card";
-import { CardPreview } from "../component/CardPreview";
-import { Navigator } from "./Navigator";
+type StyledContainerType = { isInit: boolean; disableClick: boolean };
 
-const StyledContainer = styled.div<{ isInit: boolean; disableClick: boolean }>`
+const StyledContainer = styled.div<StyledContainerType>`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -29,7 +28,7 @@ const StyledContainer = styled.div<{ isInit: boolean; disableClick: boolean }>`
   min-width: 320px;
   max-width: 1060px;
   width: 100%;
-  /* min-height: 600px; */
+
   padding-top: ${({ isInit }) => {
     return isInit ? "250px" : "0px";
   }};
@@ -44,12 +43,6 @@ const AnimeListContainer = styled.div`
   //если ширина меньше 1000 - по центру?
   /* justify-content: center; */
   gap: 20px;
-`;
-
-const AppHeader = styled.div`
-  display: flex;
-  justify-content: start;
-  width: 100%;
 `;
 
 const StyledProgress = styled(LinearProgress)`
@@ -71,7 +64,6 @@ const Logo = styled.div<{ isAnimated?: boolean }>`
 
 const PreloaderContainer = styled.div`
   display: grid;
-  /* gap: 20px; */
   height: 200px;
 `;
 
@@ -86,29 +78,9 @@ const getAnimeList = (animeList: AnimeListType) => {
   }
 };
 
-const TabPanel = (props: any) => {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-};
-
-//вынести в feature
 const AnimeList = () => {
   const [animeList] = useSelector((state: State) => [state.data]);
-  // const animeCardList=animeList?.map(animeItem:DetailAnime=><Card data={animeItem}/>)
+
   const animeCardList = animeList?.map((animeItem, index) => (
     <CardPreview key={index} data={animeItem} />
   ));
@@ -146,13 +118,13 @@ export const AppContainer = () => {
   useScrapeData();
 
   const clickDisable =
-    phase === "dataScraping" || phase === "dataScraping.initial";
+    phase === "dataScraping" || phase === "waitingUse.dataScraping";
 
   const getAppView = () => {
     switch (currPage) {
       case "search": {
         switch (phase) {
-          case "waiting": {
+          case "waitingUse.idle": {
             return (
               <>
                 <Preloader isAnimated={false} />
@@ -161,7 +133,7 @@ export const AppContainer = () => {
             );
           }
 
-          case "dataScraping.initial": {
+          case "waitingUse.dataScraping": {
             return (
               <>
                 <Preloader isAnimated={true} />
@@ -178,7 +150,7 @@ export const AppContainer = () => {
           }
 
           case "idle":
-          case "cardIsOpen": {
+          case "cardOpening": {
             return (
               <>
                 {getAnimeList(animeList)}
@@ -187,7 +159,7 @@ export const AppContainer = () => {
                     color: "#fff",
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                   }}
-                  open={phase === "cardIsOpen"}
+                  open={phase === "cardOpening"}
                   onClick={handleClose}
                 >
                   {openedCard && <Card data={openedCard} />}
@@ -208,7 +180,7 @@ export const AppContainer = () => {
     <StyledContainer isInit={false} disableClick={clickDisable}>
       <Navigator
         refState={refState}
-        hasInput={phase !== "waiting" && phase !== "dataScraping.initial"}
+        hasInput={phase !== "waitingUse" && phase !== "waitingUse.dataScraping"}
       />
       {getAppView()}
     </StyledContainer>

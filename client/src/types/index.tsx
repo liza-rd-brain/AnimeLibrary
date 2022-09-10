@@ -13,11 +13,11 @@ export type ErrorType = "err";
 
 //TODO: dataScraping - рисуем прелоадер и заму
 export type PhaseType =
+  | "waitingUse.idle"
+  | "waitingUse.dataScraping"
   | "idle"
-  | "waiting"
   | "dataScraping"
-  | "dataScraping.initial"
-  | "cardIsOpen";
+  | "cardOpening";
 
 //data - имя аниме не нужно только для скрейпинга, хранить в сущности эффекта?
 

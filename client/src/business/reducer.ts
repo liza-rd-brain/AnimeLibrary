@@ -1,6 +1,11 @@
 import { DetailAnime, DetailAnimeList, State } from "../types";
 import { initialState } from "./initialState";
 
+import { idle } from "./phases/idle";
+import { waitingUse } from "./phases/waitingUse";
+import { cardOpening } from "./phases/cardOpening";
+import { dataScraping } from "./phases/dataScraping";
+
 export type ActionType =
   | {
       type: "appLoading";
@@ -30,6 +35,29 @@ export const reducer = (
   state: State = initialState,
   action: ActionType
 ): State => {
+  const [phaseOuter, phaseInner] = state.phase.split(".");
+  switch (phaseOuter) {
+    case "waitingUse": {
+      return waitingUse(state, action);
+    }
+
+    case "idle": {
+      return idle(state, action);
+    }
+
+    case "dataScraping": {
+      return dataScraping(state, action);
+    }
+
+    case "cardOpening": {
+      return cardOpening(state, action);
+    }
+
+    default: {
+      return state;
+    }
+  }
+
   /*   switch (action.type) {
     case "loadedDB": {
       console.log("action", action);
@@ -46,106 +74,4 @@ export const reducer = (
       return state;
     }
   } */
-
-  switch (state.phase) {
-    case "waiting": {
-      switch (action.type) {
-        case "startedAnimeScraping": {
-          const newState: State = {
-            ...state,
-            phase: "dataScraping.initial",
-            doEffect: { type: "!dataScrape", data: action.payload },
-          };
-          return newState;
-        }
-        case "switchPage": {
-          const newPage = state.currPage === "list" ? "search" : "list";
-          const newState: State = {
-            ...state,
-            currPage: newPage,
-          };
-          return newState;
-        }
-
-        default: {
-          return state;
-        }
-      }
-    }
-
-    case "idle": {
-      switch (action.type) {
-        case "startedAnimeScraping": {
-          const newState: State = {
-            ...state,
-            phase: "dataScraping",
-            doEffect: { type: "!dataScrape", data: action.payload },
-          };
-          return newState;
-        }
-        case "cardOpened": {
-          const newState: State = {
-            ...state,
-            openedCard: action.payload,
-            phase: "cardIsOpen",
-          };
-          return newState;
-        }
-        case "switchPage": {
-          const newPage = state.currPage === "list" ? "search" : "list";
-          const newState: State = {
-            ...state,
-            currPage: newPage,
-          };
-          return newState;
-        }
-
-        default: {
-          return state;
-        }
-      }
-    }
-
-    case "dataScraping":
-    case "dataScraping.initial": {
-      switch (action.type) {
-        case "dataReceived": {
-          const newState: State = {
-            ...state,
-            doEffect: null,
-            data: action.payload,
-            phase: "idle",
-          };
-          return newState;
-        }
-        default: {
-          return state;
-        }
-      }
-    }
-
-    case "cardIsOpen": {
-      switch (action.type) {
-        case "closeCard": {
-          const newState: State = {
-            ...state,
-            openedCard: null,
-            phase: "idle",
-          };
-          console.log(newState);
-          return newState;
-        }
-        case "addToList": {
-          return state;
-        }
-        default: {
-          return state;
-        }
-      }
-    }
-
-    default: {
-      return state;
-    }
-  }
 };
