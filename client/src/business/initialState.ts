@@ -1,7 +1,7 @@
 import { State } from "../types";
 
 export const initialState: State = {
-  phase: "waiting",
+  phase: "waitingUse.idle",
   data: null,
   doEffect: null,
   openedCard: null,

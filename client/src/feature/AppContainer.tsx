@@ -117,14 +117,16 @@ export const AppContainer = () => {
 
   useScrapeData();
 
+  const [phaseOuter, phaseInner] = phase.split(".");
+
   const clickDisable =
-    phase === "dataScraping" || phase === "waitingUse.dataScraping";
+    phaseOuter === "dataScraping" || phaseInner === "dataScraping";
 
   const getAppView = () => {
     switch (currPage) {
       case "search": {
-        switch (phase) {
-          case "waitingUse.idle": {
+        switch (phaseOuter) {
+          case "waitingUse": {
             return (
               <>
                 <Preloader isAnimated={false} />
@@ -133,14 +135,6 @@ export const AppContainer = () => {
             );
           }
 
-          case "waitingUse.dataScraping": {
-            return (
-              <>
-                <Preloader isAnimated={true} />
-                <SearchItem refState={refState} />
-              </>
-            );
-          }
           case "dataScraping": {
             return (
               <>
@@ -168,6 +162,7 @@ export const AppContainer = () => {
             );
           }
         }
+        break;
       }
       // eslint-disable-next-line no-fallthrough
       default: {
@@ -178,10 +173,7 @@ export const AppContainer = () => {
 
   return (
     <StyledContainer isInit={false} disableClick={clickDisable}>
-      <Navigator
-        refState={refState}
-        hasInput={phase !== "waitingUse" && phase !== "waitingUse.dataScraping"}
-      />
+      <Navigator refState={refState} hasInput={phaseOuter !== "waitingUse"} />
       {getAppView()}
     </StyledContainer>
   );
