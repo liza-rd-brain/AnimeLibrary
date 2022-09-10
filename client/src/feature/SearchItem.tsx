@@ -11,19 +11,8 @@ import logoAnimated from "../assets/pikachu_preloader.gif";
 import { State } from "../types";
 
 const StyledSearchItem = styled.div`
-  /* width: 100%; */
-  /* height: 100px; */
   display: grid;
   gap: 10px;
-  grid-template-columns: /* 100px */ 300px 60px;
-`;
-
-const StyledSearchItemInitial = styled.div`
-  /* width: 100%; */
-  /* height: 80px; */
-  display: grid;
-  gap: 10px;
-  grid-template-rows: 150px 100px;
 `;
 
 const StyledTextInput = styled(TextField)`
@@ -53,7 +42,6 @@ export const SearchItem: FC<{
 }> = ({ refState }) => {
   // const state = useSelector((state: State) => state);
   const dispatch = useDispatch();
-  const [phase] = useSelector((state: State) => [state.phase]);
 
   const textInput = useRef<HTMLInputElement>(null);
 
@@ -70,27 +58,9 @@ export const SearchItem: FC<{
     }
   };
 
-  const getSearchItem = () => {
-    switch (phase) {
-      case "waiting": {
-        return <InitialSearchItem />;
-      }
-      case "dataScraping": {
-        return <InitialSearchItem isAnimated={true} />;
-      }
-      case "idle": {
-        return <DefaultSearchItem />;
-      }
-      default: {
-        return <></>;
-      }
-    }
-  };
-
-  const InitialSearchItem: FC<{ isAnimated?: boolean }> = ({ isAnimated }) => {
+  const SearchItem: FC<{ isAnimated?: boolean }> = ({ isAnimated }) => {
     return (
-      <StyledSearchItemInitial>
-        <Logo isAnimated={isAnimated} />
+      <StyledSearchItem>
         <div>
           <StyledTextInput
             inputRef={textInput}
@@ -105,31 +75,9 @@ export const SearchItem: FC<{
             add
           </StyledButton>
         </div>
-      </StyledSearchItemInitial>
-    );
-  };
-
-  const DefaultSearchItem = () => {
-    return (
-      <StyledSearchItem>
-        {/* <Logo /> */}
-        <div>
-          <StyledTextInput
-            inputRef={textInput}
-            defaultValue={refState?.current.value}
-          />
-        </div>
-        <StyledButton
-          variant="outlined"
-          onClick={() => {
-            handleAddClick();
-          }}
-        >
-          add
-        </StyledButton>
       </StyledSearchItem>
     );
   };
 
-  return getSearchItem();
+  return <SearchItem />;
 };

@@ -53,7 +53,7 @@ export const reducer = (
         case "startedAnimeScraping": {
           const newState: State = {
             ...state,
-            phase: "dataScraping",
+            phase: "dataScraping.initial",
             doEffect: { type: "!dataScrape", data: action.payload },
           };
           return newState;
@@ -106,7 +106,8 @@ export const reducer = (
       }
     }
 
-    case "dataScraping": {
+    case "dataScraping":
+    case "dataScraping.initial": {
       switch (action.type) {
         case "dataReceived": {
           const newState: State = {

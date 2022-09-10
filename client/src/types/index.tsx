@@ -12,7 +12,12 @@ export type PageName = "search" | "list";
 export type ErrorType = "err";
 
 //TODO: dataScraping - рисуем прелоадер и заму
-export type PhaseType = "idle" | "waiting" | "dataScraping" | "cardIsOpen";
+export type PhaseType =
+  | "idle"
+  | "waiting"
+  | "dataScraping"
+  | "dataScraping.initial"
+  | "cardIsOpen";
 
 //data - имя аниме не нужно только для скрейпинга, хранить в сущности эффекта?
 

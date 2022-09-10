@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, FC } from "react";
 import styled from "styled-components";
 
 import Backdrop from "@mui/material/Backdrop";
@@ -13,12 +13,13 @@ import { useScrapeData } from "../effect";
 import { SearchItem } from "./SearchItem";
 import { AnimeListType, DetailAnime, State } from "../types";
 
+import logo from "../assets/pikachu_default.png";
+import logoAnimated from "../assets/pikachu_preloader.gif";
+
 import { Error } from "./Error";
 import { Card } from "../component/Card";
 import { CardPreview } from "../component/CardPreview";
 import { Navigator } from "./Navigator";
-
-import { Preloader } from "../component/Preloader";
 
 const StyledContainer = styled.div<{ isInit: boolean; disableClick: boolean }>`
   display: flex;
@@ -54,6 +55,24 @@ const AppHeader = styled.div`
 const StyledProgress = styled(LinearProgress)`
   transform: scale(-1, 1);
   width: 300px;
+`;
+
+const Logo = styled.div<{ isAnimated?: boolean }>`
+  width: 300px;
+  height: 150px;
+  background: ${({ isAnimated }) => {
+    return isAnimated ? `url(${logoAnimated})` : `url(${logo})`;
+  }};
+  background-repeat: no-repeat;
+  background-size: 300px;
+  background-position: center;
+  transform: scale(-1, 1);
+`;
+
+const PreloaderContainer = styled.div`
+  display: grid;
+  /* gap: 20px; */
+  height: 200px;
 `;
 
 const getAnimeList = (animeList: AnimeListType) => {
@@ -97,6 +116,15 @@ const AnimeList = () => {
   return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
 };
 
+const Preloader: FC<{ isAnimated: boolean }> = ({ isAnimated }) => {
+  return (
+    <PreloaderContainer>
+      <Logo isAnimated={isAnimated} />
+      {isAnimated && <StyledProgress />}
+    </PreloaderContainer>
+  );
+};
+
 export const AppContainer = () => {
   const {
     data: animeList,
@@ -111,11 +139,14 @@ export const AppContainer = () => {
 
   const handleClose = () => {
     dispatch({ type: "closeCard" });
-    console.log("close card");
   };
+
   const refState = useRef<{ value: string | null }>({ value: null });
 
   useScrapeData();
+
+  const clickDisable =
+    phase === "dataScraping" || phase === "dataScraping.initial";
 
   const getAppView = () => {
     switch (currPage) {
@@ -124,6 +155,16 @@ export const AppContainer = () => {
           case "waiting": {
             return (
               <>
+                <Preloader isAnimated={false} />
+                <SearchItem refState={refState} />
+              </>
+            );
+          }
+
+          case "dataScraping.initial": {
+            return (
+              <>
+                <Preloader isAnimated={true} />
                 <SearchItem refState={refState} />
               </>
             );
@@ -131,8 +172,7 @@ export const AppContainer = () => {
           case "dataScraping": {
             return (
               <>
-                <SearchItem refState={refState} />
-                <StyledProgress />
+                <Preloader isAnimated={true} />
               </>
             );
           }
@@ -165,10 +205,10 @@ export const AppContainer = () => {
   };
 
   return (
-    <StyledContainer isInit={false} disableClick={phase === "dataScraping"}>
+    <StyledContainer isInit={false} disableClick={clickDisable}>
       <Navigator
         refState={refState}
-        hasInput={phase !== "waiting" && phase !== "dataScraping"}
+        hasInput={phase !== "waiting" && phase !== "dataScraping.initial"}
       />
       {getAppView()}
     </StyledContainer>
