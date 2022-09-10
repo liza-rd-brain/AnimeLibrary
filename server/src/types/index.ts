@@ -7,17 +7,25 @@ export type DetailAnime = {
   episode?: string;
   duration?: string;
   dateAired?: string;
+  animeName?: string;
   pictureUrl?: string;
   otherNames?: string;
   description?: string;
   dateRelease?: string;
 };
 
+export type DetailAnimeList = Array<DetailAnime>;
+
+export type AnimeHashTable = Record<string, Omit<DetailAnime, "animeName">>;
+
 export type UnStructuredDetailAnime = Partial<Omit<DetailAnime, "genre">> & {
   genre?: string;
 };
 
-export type RawDetailAnime = Pick<DetailAnime, "pictureUrl" | "description"> & {
+export type RawDetailAnime = Pick<
+  DetailAnime,
+  "pictureUrl" | "description" | "animeName"
+> & {
   detailTextList?: Array<string>;
 };
 

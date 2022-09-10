@@ -2,5 +2,8 @@ import { State } from "../types";
 
 export const initialState: State = {
   phase: "waiting",
-  dataBase: null,
+  data: null,
+  doEffect: null,
+  openedCard: null,
+  currPage: "search",
 };
