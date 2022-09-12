@@ -28,6 +28,14 @@ export const idle = (state: State, action: ActionType): State => {
       return newState;
     }
 
+    case "addAnime": {
+      const newState: State = {
+        ...state,
+        doEffect: { type: "!addAnime", data: action.payload },
+      };
+      return newState;
+    }
+
     default: {
       return state;
     }

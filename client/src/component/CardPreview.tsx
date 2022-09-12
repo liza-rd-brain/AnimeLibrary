@@ -100,21 +100,12 @@ export const CardPreview: FC<{ data: DetailAnime }> = ({ data }) => {
           <span>{value}</span>
         </StyledRow>
       );
-      //   const [key, value] = item;
-      //   return (
-      //     <>
-      //     <div>key<div/>
-      //     <div>value<div/>
-      //     </>)
-      //   )
-      // });
     });
   };
 
   return (
     <CardContainer
       onClick={() => {
-        console.log("click card");
         dispatch({ type: "cardOpened", payload: data });
       }}
     >
@@ -134,7 +125,7 @@ export const CardPreview: FC<{ data: DetailAnime }> = ({ data }) => {
         variant="outlined"
         onClick={(e) => {
           e.stopPropagation();
-          console.log("add");
+          dispatch({ type: "addAnime", payload: data });
         }}
       >
         add

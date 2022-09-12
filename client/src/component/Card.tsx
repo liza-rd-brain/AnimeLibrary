@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 
 import Button from "@mui/material/Button";
 
@@ -85,6 +86,7 @@ const Description = styled.span`
 
 export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
   const { pictureUrl, animeName, description, ...detailTable } = data;
+  const dispatch = useDispatch();
 
   const detailList = Object.entries(detailTable);
 
@@ -97,14 +99,6 @@ export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
           <span>{value}</span>
         </StyledRow>
       );
-      //   const [key, value] = item;
-      //   return (
-      //     <>
-      //     <div>key<div/>
-      //     <div>value<div/>
-      //     </>)
-      //   )
-      // });
     });
   };
 
@@ -115,11 +109,11 @@ export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
       }}
     >
       <StyledHeader>
-        {animeName}{" "}
+        {animeName}
         <StyledButton
           variant="outlined"
           onClick={() => {
-            console.log("add");
+            dispatch({ type: "addAnime", payload: data });
           }}
         >
           add

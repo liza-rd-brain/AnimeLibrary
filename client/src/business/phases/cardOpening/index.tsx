@@ -12,8 +12,12 @@ export const cardOpening = (state: State, action: ActionType): State => {
       console.log(newState);
       return newState;
     }
-    case "addToList": {
-      return state;
+    case "addAnime": {
+      const newState: State = {
+        ...state,
+        doEffect: { type: "!addAnime", data: action.payload },
+      };
+      return newState;
     }
     default: {
       return state;

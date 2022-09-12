@@ -1,22 +1,24 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { findAnime } from "../business/findAnime";
-import { State } from "../types";
+import { ActionType } from "../business/reducer";
+import { DetailAnimeList, State } from "../types";
 
 export function useScrapeData() {
   const [doEffect] = useSelector((state: State) => [state.doEffect]);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<ActionType>>();
 
   useEffect(() => {
     switch (doEffect?.type) {
       case "!dataScrape": {
         const data = findAnime(doEffect.data);
         data.then(
-          (res) => {
-            console.log("res", res);
+          (detailAnimeList) => {
+            console.log("res", detailAnimeList);
             dispatch({
               type: "dataReceived",
-              payload: res,
+              payload: detailAnimeList as DetailAnimeList,
             });
           },
           (rej) => {

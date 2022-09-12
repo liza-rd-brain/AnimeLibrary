@@ -11,6 +11,8 @@ export type ActionType =
       type: "appLoading";
     }
   | { type: "loadedDB"; payload: IDBDatabase }
+  //
+  | { type: "addAnime"; payload: DetailAnime }
   | { type: "startedAnimeScraping"; payload: string }
   | {
       type: "dataReceived";
@@ -24,34 +26,16 @@ export type ActionType =
       type: "closeCard";
     }
   | {
-      type: "addToList";
-      payload: DetailAnime;
-    }
-  | {
       type: "switchPage";
     };
+
+type ActionName = ActionType["type"];
 
 export const reducer = (
   state: State = initialState,
   action: ActionType
 ): State => {
   const [phaseOuter, phaseInner] = state.phase.split(".");
-  /*   switch (action.type) {
-    case "loadedDB": {
-      console.log("action", action);
-
-      const newState: State = {
-        ...state,
-        data: action.payload,
-      };
-
-      return newState;
-    }
-
-    default: {
-      return state;
-    }
-  } */
 
   switch (phaseOuter) {
     case "waitingDB": {

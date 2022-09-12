@@ -2,17 +2,15 @@ import { useRef, FC } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
-import Box from "@mui/material/Box";
 import Backdrop from "@mui/material/Backdrop";
-import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import { Error } from "./Error";
-import { useOpenDB, useScrapeData } from "../effect";
 import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
 import { SearchItem } from "./SearchItem";
 import { AnimeListType, State } from "../types";
+import { useAddAnime, useOpenDB, useScrapeData } from "../effect";
 import { CardPreview } from "../component/CardPreview";
 
 import logo from "../assets/pikachu_default.png";
@@ -116,12 +114,17 @@ export const AppContainer = () => {
   const refState = useRef<{ value: string | null }>({ value: null });
 
   useScrapeData();
+  useAddAnime();
   useOpenDB();
 
   const [phaseOuter, phaseInner] = phase.split(".");
 
   const clickDisable =
     phaseOuter === "dataScraping" || phaseInner === "dataScraping";
+
+  const inputVisibility = !(
+    phaseOuter === "waitingUse" || phaseOuter === "waitingDB"
+  );
 
   const getAppView = () => {
     switch (currPage) {
@@ -134,10 +137,13 @@ export const AppContainer = () => {
               </>
             );
           }
+
           case "waitingUse": {
             return (
               <>
-                <Preloader isAnimated={false} />
+                <Preloader
+                  isAnimated={phaseInner === "dataScraping" ? true : false}
+                />
                 <SearchItem refState={refState} />
               </>
             );
@@ -181,7 +187,7 @@ export const AppContainer = () => {
 
   return (
     <StyledContainer isInit={false} disableClick={clickDisable}>
-      <Navigator refState={refState} hasInput={phaseOuter !== "waitingUse"} />
+      <Navigator refState={refState} hasInput={inputVisibility} />
       {getAppView()}
     </StyledContainer>
   );

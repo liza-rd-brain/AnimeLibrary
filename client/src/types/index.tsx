@@ -27,6 +27,7 @@ export type PhaseType =
 
 export type EffectType =
   | { type: "!openDB" }
+  | { type: "!addAnime"; data: DetailAnime }
   | { type: "!dataScrape"; data: string }
   | null;
 
@@ -41,7 +42,7 @@ export type DetailAnime = {
   episode?: string;
   duration?: string;
   dateAired?: string;
-  animeName?: string;
+  animeName: string;
   pictureUrl?: string;
   otherNames?: string;
   description?: string;
