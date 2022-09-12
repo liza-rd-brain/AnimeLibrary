@@ -4,7 +4,10 @@ export type State = {
   doEffect: EffectType;
   openedCard: DetailAnime | null;
   currPage: PageName;
+  dataBase: IDBDatabase | null;
 };
+
+// type DataBase = { database: any };
 
 export type AnimeListType = DetailAnimeList | null;
 export type PageName = "search" | "list";
@@ -13,6 +16,7 @@ export type ErrorType = "err";
 
 //TODO: dataScraping - рисуем прелоадер и заму
 export type PhaseType =
+  | "waitingDB"
   | "waitingUse.idle"
   | "waitingUse.dataScraping"
   | "idle"
@@ -21,7 +25,10 @@ export type PhaseType =
 
 //data - имя аниме не нужно только для скрейпинга, хранить в сущности эффекта?
 
-export type EffectType = { type: "!dataScrape"; data: string } | null;
+export type EffectType =
+  | { type: "!openDB" }
+  | { type: "!dataScrape"; data: string }
+  | null;
 
 //TODO: вынести, общий с сервером
 

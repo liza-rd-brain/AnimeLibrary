@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import { Error } from "./Error";
-import { useScrapeData } from "../effect";
+import { useOpenDB, useScrapeData } from "../effect";
 import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
 import { SearchItem } from "./SearchItem";
@@ -116,6 +116,7 @@ export const AppContainer = () => {
   const refState = useRef<{ value: string | null }>({ value: null });
 
   useScrapeData();
+  useOpenDB();
 
   const [phaseOuter, phaseInner] = phase.split(".");
 
@@ -126,6 +127,13 @@ export const AppContainer = () => {
     switch (currPage) {
       case "search": {
         switch (phaseOuter) {
+          case "waitingDB": {
+            return (
+              <>
+                <Preloader isAnimated={true} />
+              </>
+            );
+          }
           case "waitingUse": {
             return (
               <>

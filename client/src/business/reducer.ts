@@ -52,7 +52,24 @@ export const reducer = (
       return state;
     }
   } */
+
   switch (phaseOuter) {
+    case "waitingDB": {
+      switch (action.type) {
+        case "loadedDB": {
+          const newState: State = {
+            ...state,
+            phase: "waitingUse.idle",
+            dataBase: action.payload,
+            doEffect: null,
+          };
+          return newState;
+        }
+        default: {
+          return state;
+        }
+      }
+    }
     case "waitingUse": {
       return waitingUse(state, action);
     }
