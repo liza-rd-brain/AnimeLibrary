@@ -6,25 +6,24 @@ const DATABASE_ERR = "Failed to load DataBase";
 
 const DATABASE_NAME = "animeBase";
 
-const openDateBase = (promiseCallBack: any) => {
-  const requestDB = window.indexedDB.open(DATABASE_NAME, 1);
-  requestDB.onerror = () => promiseCallBack(requestDB.error);
-
-  requestDB.onsuccess = () => {
-    const db = requestDB.result;
-    promiseCallBack(null, db);
-  };
-};
-
-const openDateBasePromise = () => {
+const openDataBasePromise = (): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
-    openDateBase((err: DOMException | null, result: IDBDatabase) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
+    const requestDB = window.indexedDB.open(DATABASE_NAME, 1);
+
+    requestDB.onupgradeneeded = function () {
+      // срабатывает, если на клиенте нет базы данных
+      // ...выполнить инициализацию...
+      let db = requestDB.result;
+      if (!db.objectStoreNames.contains("animeList")) {
+        // если хранилище "books" не существует
+        db.createObjectStore("animeList", { keyPath: "id" }); // создаём хранилище
       }
-    });
+      // makeTransAction(db);
+    };
+
+    requestDB.onsuccess = () => resolve(requestDB.result);
+
+    requestDB.onerror = () => reject(requestDB.error);
   });
 };
 
@@ -32,27 +31,24 @@ export function useOpenDB() {
   const [doEffect] = useSelector((state: State) => [state.doEffect]);
   const dispatch = useDispatch();
 
-  switch (doEffect?.type) {
-    case "!openDB":
-      {
-        const dataBase = openDateBasePromise();
-        dataBase.then(
-          (res) => {
+  useEffect(() => {
+    switch (doEffect?.type) {
+      case "!openDB":
+        openDataBasePromise().then(
+          (db) => {
             setTimeout(() => {
-              dispatch({ type: "loadedDB", payload: res });
+              dispatch({ type: "loadedDB", payload: db });
             }, 2000);
           },
-          (rej) => {
-            console.log("rej", rej);
+          (error) => {
+            console.log("error", error);
           }
         );
+        break;
+
+      default: {
+        break;
       }
-      break;
-
-    default: {
-      break;
     }
-  }
-
-  useEffect(() => {}, [doEffect]);
+  }, [dispatch, doEffect]);
 }
