@@ -8,7 +8,6 @@ const DATABASE_NAME = "animeBase";
 
 const openDateBase = (promiseCallBack: any) => {
   const requestDB = window.indexedDB.open(DATABASE_NAME, 1);
-
   requestDB.onerror = () => promiseCallBack(requestDB.error);
 
   requestDB.onsuccess = () => {
@@ -39,7 +38,9 @@ export function useOpenDB() {
         const dataBase = openDateBasePromise();
         dataBase.then(
           (res) => {
-            dispatch({ type: "loadedDB", payload: res });
+            setTimeout(() => {
+              dispatch({ type: "loadedDB", payload: res });
+            }, 2000);
           },
           (rej) => {
             console.log("rej", rej);
