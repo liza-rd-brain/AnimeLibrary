@@ -2,6 +2,7 @@ import { resolve } from "path";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { State } from "../types";
+import { getAnimeList } from "./common/getAnimeList";
 
 // const DATABASE_ERR = "Failed to load DataBase";
 
@@ -24,16 +25,6 @@ const openDataBasePromise = (): Promise<IDBDatabase> => {
     requestDB.onsuccess = () => resolve(requestDB.result);
 
     requestDB.onerror = () => reject(requestDB.error);
-  });
-};
-
-const getAnimeList = (db: IDBDatabase) => {
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, "readwrite");
-    const animeList = transaction.objectStore(STORE_NAME);
-    const requestStoredAnime = animeList.getAll();
-    requestStoredAnime.onsuccess = () => resolve(requestStoredAnime.result);
-    requestStoredAnime.onerror = () => reject(requestStoredAnime.error);
   });
 };
 

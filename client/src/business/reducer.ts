@@ -49,7 +49,9 @@ export const reducer = (
             phase: "waitingUse.idle",
             dataBase: action.payload.dataBase,
             doEffect: null,
+            savedData: action.payload.animeList,
           };
+
           console.log("newState", newState);
           return newState;
         }

@@ -153,6 +153,7 @@ export const AppContainer = () => {
           }
 
           case "idle":
+          case "animeAdding":
           case "cardOpening": {
             return (
               <>

@@ -11,6 +11,7 @@ export const idle = (state: State, action: ActionType): State => {
       };
       return newState;
     }
+
     case "cardOpened": {
       const newState: State = {
         ...state,
@@ -32,6 +33,7 @@ export const idle = (state: State, action: ActionType): State => {
     case "addAnime": {
       const newState: State = {
         ...state,
+        phase: "animeAdding",
         doEffect: { type: "!addAnime", data: action.payload },
       };
       return newState;

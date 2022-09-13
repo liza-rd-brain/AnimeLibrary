@@ -23,7 +23,8 @@ export type PhaseType =
   | "idle"
   | "dataScraping"
   | "cardOpening"
-  | "scrapingErr";
+  | "scrapingErr"
+  | "animeAdding";
 
 //data - имя аниме не нужно только для скрейпинга, хранить в сущности эффекта?
 

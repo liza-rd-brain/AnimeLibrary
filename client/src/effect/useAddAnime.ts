@@ -1,54 +1,45 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { DetailAnime, State } from "../types";
+import { STORE_NAME } from "./common/constantList";
+import { getAnimeList } from "./common/getAnimeList";
 
 const DATABASE_ERR = "Failed to load DataBase";
-
-const DATABASE_STORE = "animeList";
 
 type TableAnime = DetailAnime & { id: string };
 
 //TODO: прибрать промис
-const addAnime = (
-  dataBase: IDBDatabase,
-  anime: DetailAnime,
-  promiseCallBack: (err: DOMException | null, result?: IDBValidKey) => void
-) => {
-  const transaction = dataBase.transaction(DATABASE_STORE, "readwrite");
-  const animeList = transaction.objectStore(DATABASE_STORE);
-
-  // const newTableAnime: DetailAnime = {
-  //   id: anime.animeName,
-  //   ...anime,
-  // };
-
-  const request = animeList.add(anime);
-
-  request.onerror = () => {
-    console.log("request", request);
-  };
-
-  request.onsuccess = () => {
-    console.log("request", request);
-    promiseCallBack(null, request.result);
-  };
-};
-
-const createAddAnimePromise = (dataBase: IDBDatabase, anime: DetailAnime) => {
+const addAnime = (dataBase: IDBDatabase, anime: DetailAnime) => {
   return new Promise((resolve, reject) => {
-    addAnime(
-      dataBase,
-      anime,
-      (err: DOMException | null, result?: IDBValidKey) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      }
-    );
+    const transaction = dataBase.transaction(STORE_NAME, "readwrite");
+    const animeList = transaction.objectStore(STORE_NAME);
+    const request = animeList.add(anime);
+
+    request.onerror = () => {
+      reject(request.error);
+    };
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
   });
 };
+
+// const createAddAnimePromise = (dataBase: IDBDatabase, anime: DetailAnime) => {
+//   return new Promise((resolve, reject) => {
+//     addAnime(
+//       dataBase,
+//       anime,
+//       (err: DOMException | null, result?: IDBValidKey) => {
+//         if (err) {
+//           reject(err);
+//         } else {
+//           resolve(result);
+//         }
+//       }
+//     );
+//   });
+// };
 
 export function useAddAnime() {
   const { doEffect, dataBase } = useSelector((state: State) => ({ ...state }));
@@ -62,7 +53,19 @@ export function useAddAnime() {
           console.log("addAnime");
           if (dataBase) {
             const currAnime = doEffect.data;
-            const addAnimePromise = createAddAnimePromise(dataBase, currAnime);
+            const addAnimePromise = addAnime(dataBase, currAnime);
+            //возвращает  key
+            addAnimePromise.then(
+              (res) => {
+                console.log("add res", res);
+                getAnimeList(dataBase).then((animeList) => {
+                  console.log("newAnimeList", animeList);
+                });
+              },
+              (error) => {
+                console.log("error", error);
+              }
+            );
           }
         }
         break;
