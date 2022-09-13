@@ -1,6 +1,7 @@
 export type State = {
   phase: PhaseType;
   data: AnimeListType;
+  savedData: AnimeListType | null;
   doEffect: EffectType;
   openedCard: DetailAnime | null;
   currPage: PageName;

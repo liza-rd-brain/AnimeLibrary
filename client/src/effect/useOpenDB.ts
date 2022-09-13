@@ -7,6 +7,7 @@ import { State } from "../types";
 
 const DATABASE_NAME = "animeBase";
 const STORE_NAME = "animeList";
+const KEY_NAME = "animeName";
 
 const openDataBasePromise = (): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
@@ -16,7 +17,7 @@ const openDataBasePromise = (): Promise<IDBDatabase> => {
       // срабатывает, если на клиенте нет базы данных до открытия соединения
       let db = requestDB.result;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: "id" });
+        db.createObjectStore(STORE_NAME, { keyPath: KEY_NAME });
       }
     };
 
@@ -49,7 +50,7 @@ export function useOpenDB() {
               setTimeout(() => {
                 dispatch({
                   type: "loadedDB",
-                  payload: { dataVase: db, animeList },
+                  payload: { dataBase: db, animeList },
                 });
               }, 2000);
             });

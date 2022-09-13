@@ -50,8 +50,10 @@ export const reducer = (
             dataBase: action.payload.dataBase,
             doEffect: null,
           };
+          console.log("newState", newState);
           return newState;
         }
+
         case "switchPage": {
           const newPage = state.currPage === "list" ? "search" : "list";
           const newState: State = {

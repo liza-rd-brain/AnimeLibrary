@@ -17,12 +17,12 @@ const addAnime = (
   const transaction = dataBase.transaction(DATABASE_STORE, "readwrite");
   const animeList = transaction.objectStore(DATABASE_STORE);
 
-  const newTableAnime: TableAnime = {
-    id: anime.animeName,
-    ...anime,
-  };
+  // const newTableAnime: DetailAnime = {
+  //   id: anime.animeName,
+  //   ...anime,
+  // };
 
-  const request = animeList.add(newTableAnime);
+  const request = animeList.add(anime);
 
   request.onerror = () => {
     console.log("request", request);
