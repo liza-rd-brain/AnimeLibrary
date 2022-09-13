@@ -21,7 +21,8 @@ export type PhaseType =
   | "waitingUse.dataScraping"
   | "idle"
   | "dataScraping"
-  | "cardOpening";
+  | "cardOpening"
+  | "scrapingErr";
 
 //data - имя аниме не нужно только для скрейпинга, хранить в сущности эффекта?
 

@@ -16,6 +16,8 @@ import { CardPreview } from "../component/CardPreview";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
 
+const SCRAPING_ERR_TEXT = "Something went wrong!";
+
 type StyledContainerType = { isInit: boolean; disableClick: boolean };
 
 const StyledContainer = styled.div<StyledContainerType>`
@@ -130,7 +132,8 @@ export const AppContainer = () => {
     switch (currPage) {
       case "search": {
         switch (phaseOuter) {
-          case "waitingDB": {
+          case "waitingDB":
+          case "dataScraping": {
             return (
               <>
                 <Preloader isAnimated={true} />
@@ -145,14 +148,6 @@ export const AppContainer = () => {
                   isAnimated={phaseInner === "dataScraping" ? true : false}
                 />
                 <SearchItem refState={refState} />
-              </>
-            );
-          }
-
-          case "dataScraping": {
-            return (
-              <>
-                <Preloader isAnimated={true} />
               </>
             );
           }
@@ -174,6 +169,10 @@ export const AppContainer = () => {
                 </Backdrop>
               </>
             );
+          }
+
+          case "scrapingErr": {
+            return <div>{SCRAPING_ERR_TEXT}</div>;
           }
         }
         break;

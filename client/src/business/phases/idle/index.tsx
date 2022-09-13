@@ -19,6 +19,7 @@ export const idle = (state: State, action: ActionType): State => {
       };
       return newState;
     }
+
     case "switchPage": {
       const newPage = state.currPage === "list" ? "search" : "list";
       const newState: State = {

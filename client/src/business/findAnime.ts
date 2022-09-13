@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { DetailAnimeList, ResponseType, State } from "../types";
 
-export async function findAnime(animeName: string) {
-  console.log(animeName);
-
+export async function findAnime(
+  animeName: string
+) /* : Promise<DetailAnimeList> */ {
   const config = {
     method: "post",
     url: "http://localhost:3000/findName",
@@ -12,18 +12,13 @@ export async function findAnime(animeName: string) {
     },
   };
 
-  const res = await axios(config).then(
-    (res: ResponseType) => {
-      // записать данные/ куда?
-      // console.log(res.data);
-      return res;
+  //TODO: как отработать ошибку из промиса
+  return await axios(config).then(
+    (resAnime: ResponseType) => {
+      return resAnime.data;
     },
-    (err: AxiosError) => {
-      console.log(err.code);
+    (err) => {
+      console.log(err);
     }
   );
-
-  if (res) {
-    return res.data;
-  }
 }

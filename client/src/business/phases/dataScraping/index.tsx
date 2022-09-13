@@ -12,6 +12,14 @@ export const dataScraping = (state: State, action: ActionType): State => {
       };
       return newState;
     }
+    case "dataNotReceived": {
+      const newState: State = {
+        ...state,
+        doEffect: null,
+        phase: "scrapingErr",
+      };
+      return newState;
+    }
     default: {
       return state;
     }

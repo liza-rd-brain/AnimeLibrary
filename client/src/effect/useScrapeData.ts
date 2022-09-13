@@ -16,10 +16,16 @@ export function useScrapeData() {
         data.then(
           (detailAnimeList) => {
             console.log("res", detailAnimeList);
-            dispatch({
-              type: "dataReceived",
-              payload: detailAnimeList as DetailAnimeList,
-            });
+            if (detailAnimeList) {
+              dispatch({
+                type: "dataReceived",
+                payload: detailAnimeList,
+              });
+            } else {
+              dispatch({
+                type: "dataNotReceived",
+              });
+            }
           },
           (rej) => {
             console.log("rej", rej);

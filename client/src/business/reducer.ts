@@ -18,6 +18,7 @@ export type ActionType =
       type: "dataReceived";
       payload: DetailAnimeList;
     }
+  | { type: "dataNotReceived" }
   | {
       type: "cardOpened";
       payload: DetailAnime;
@@ -49,11 +50,20 @@ export const reducer = (
           };
           return newState;
         }
+        case "switchPage": {
+          const newPage = state.currPage === "list" ? "search" : "list";
+          const newState: State = {
+            ...state,
+            currPage: newPage,
+          };
+          return newState;
+        }
         default: {
           return state;
         }
       }
     }
+
     case "waitingUse": {
       return waitingUse(state, action);
     }
@@ -68,6 +78,30 @@ export const reducer = (
 
     case "cardOpening": {
       return cardOpening(state, action);
+    }
+
+    case "scrapingErr": {
+      switch (action.type) {
+        case "startedAnimeScraping": {
+          const newState: State = {
+            ...state,
+            phase: "dataScraping",
+            doEffect: { type: "!dataScrape", data: action.payload },
+          };
+          return newState;
+        }
+        case "switchPage": {
+          const newPage = state.currPage === "list" ? "search" : "list";
+          const newState: State = {
+            ...state,
+            currPage: newPage,
+          };
+          return newState;
+        }
+        default: {
+          return state;
+        }
+      }
     }
 
     default: {
