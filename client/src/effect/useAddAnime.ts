@@ -5,8 +5,10 @@ import { DetailAnime, State } from "../types";
 const DATABASE_ERR = "Failed to load DataBase";
 
 const DATABASE_STORE = "animeList";
+
 type TableAnime = DetailAnime & { id: string };
 
+//TODO: прибрать промис
 const addAnime = (
   dataBase: IDBDatabase,
   anime: DetailAnime,

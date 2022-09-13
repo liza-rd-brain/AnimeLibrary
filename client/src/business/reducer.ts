@@ -10,7 +10,7 @@ export type ActionType =
   | {
       type: "appLoading";
     }
-  | { type: "loadedDB"; payload: IDBDatabase }
+  | { type: "loadedDB"; payload: { dataBase: IDBDatabase; animeList: any } }
   //
   | { type: "addAnime"; payload: DetailAnime }
   | { type: "startedAnimeScraping"; payload: string }
@@ -42,10 +42,12 @@ export const reducer = (
     case "waitingDB": {
       switch (action.type) {
         case "loadedDB": {
+          console.log(action.payload);
+
           const newState: State = {
             ...state,
             phase: "waitingUse.idle",
-            dataBase: action.payload,
+            dataBase: action.payload.dataBase,
             doEffect: null,
           };
           return newState;
