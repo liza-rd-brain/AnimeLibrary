@@ -12,7 +12,8 @@ export type ActionType =
     }
   | { type: "loadedDB"; payload: { dataBase: IDBDatabase; animeList: any } }
   //
-  | { type: "addAnime"; payload: DetailAnime }
+  | { type: "startedAddAnime"; payload: DetailAnime }
+  | { type: "endedAddAnime"; payload?: DetailAnimeList }
   | { type: "startedAnimeScraping"; payload: string }
   | {
       type: "dataReceived";
@@ -103,6 +104,32 @@ export const reducer = (
             currPage: newPage,
           };
           return newState;
+        }
+        default: {
+          return state;
+        }
+      }
+    }
+
+    case "animeAdding": {
+      switch (action.type) {
+        case "endedAddAnime": {
+          if (action.payload) {
+            const newState: State = {
+              ...state,
+              phase: "idle",
+              doEffect: null,
+              savedData: action.payload,
+            };
+            return newState;
+          } else {
+            const newState: State = {
+              ...state,
+              phase: "idle",
+              doEffect: null,
+            };
+            return newState;
+          }
         }
         default: {
           return state;

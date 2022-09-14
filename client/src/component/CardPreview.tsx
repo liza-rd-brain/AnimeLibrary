@@ -125,7 +125,7 @@ export const CardPreview: FC<{ data: DetailAnime }> = ({ data }) => {
         variant="outlined"
         onClick={(e) => {
           e.stopPropagation();
-          dispatch({ type: "addAnime", payload: data });
+          dispatch({ type: "startedAddAnime", payload: data });
         }}
       >
         add

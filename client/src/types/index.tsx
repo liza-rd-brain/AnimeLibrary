@@ -30,7 +30,7 @@ export type PhaseType =
 
 export type EffectType =
   | { type: "!openDB" }
-  | { type: "!addAnime"; data: DetailAnime }
+  | { type: "!startedAddAnime"; data: DetailAnime }
   | { type: "!dataScrape"; data: string }
   | null;
 

@@ -9,7 +9,7 @@ const DATABASE_ERR = "Failed to load DataBase";
 type TableAnime = DetailAnime & { id: string };
 
 //TODO: прибрать промис
-const addAnime = (dataBase: IDBDatabase, anime: DetailAnime) => {
+const startedAddAnime = (dataBase: IDBDatabase, anime: DetailAnime) => {
   return new Promise((resolve, reject) => {
     const transaction = dataBase.transaction(STORE_NAME, "readwrite");
     const animeList = transaction.objectStore(STORE_NAME);
@@ -25,45 +25,35 @@ const addAnime = (dataBase: IDBDatabase, anime: DetailAnime) => {
   });
 };
 
-// const createAddAnimePromise = (dataBase: IDBDatabase, anime: DetailAnime) => {
-//   return new Promise((resolve, reject) => {
-//     addAnime(
-//       dataBase,
-//       anime,
-//       (err: DOMException | null, result?: IDBValidKey) => {
-//         if (err) {
-//           reject(err);
-//         } else {
-//           resolve(result);
-//         }
-//       }
-//     );
-//   });
-// };
-
 export function useAddAnime() {
   const { doEffect, dataBase } = useSelector((state: State) => ({ ...state }));
   const dispatch = useDispatch();
 
   useEffect(() => {
     switch (doEffect?.type) {
-      case "!addAnime":
+      case "!startedAddAnime":
         // eslint-disable-next-line no-lone-blocks
         {
-          console.log("addAnime");
           if (dataBase) {
             const currAnime = doEffect.data;
-            const addAnimePromise = addAnime(dataBase, currAnime);
+            const addAnimePromise = startedAddAnime(dataBase, currAnime);
             //возвращает  key
             addAnimePromise.then(
               (res) => {
                 console.log("add res", res);
                 getAnimeList(dataBase).then((animeList) => {
                   console.log("newAnimeList", animeList);
+                  dispatch({
+                    type: "endedAddAnime",
+                    payload: animeList,
+                  });
                 });
               },
               (error) => {
                 console.log("error", error);
+                dispatch({
+                  type: "endedAddAnime",
+                });
               }
             );
           }
@@ -74,5 +64,6 @@ export function useAddAnime() {
         break;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doEffect]);
 }

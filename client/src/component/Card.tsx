@@ -113,7 +113,7 @@ export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
         <StyledButton
           variant="outlined"
           onClick={() => {
-            dispatch({ type: "addAnime", payload: data });
+            dispatch({ type: "startedAddAnime", payload: data });
           }}
         >
           add

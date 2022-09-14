@@ -30,11 +30,11 @@ export const idle = (state: State, action: ActionType): State => {
       return newState;
     }
 
-    case "addAnime": {
+    case "startedAddAnime": {
       const newState: State = {
         ...state,
         phase: "animeAdding",
-        doEffect: { type: "!addAnime", data: action.payload },
+        doEffect: { type: "!startedAddAnime", data: action.payload },
       };
       return newState;
     }

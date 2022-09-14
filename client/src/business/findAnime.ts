@@ -1,5 +1,5 @@
-import axios, { AxiosError } from "axios";
-import { DetailAnimeList, ResponseType, State } from "../types";
+import axios from "axios";
+import { ResponseType } from "../types";
 
 export async function findAnime(
   animeName: string
