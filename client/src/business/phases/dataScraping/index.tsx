@@ -8,7 +8,7 @@ export const dataScraping = (state: State, action: ActionType): State => {
         ...state,
         doEffect: null,
         data: action.payload,
-        phase: "idle",
+        phase: { type: "idle" },
       };
       return newState;
     }
@@ -16,7 +16,7 @@ export const dataScraping = (state: State, action: ActionType): State => {
       const newState: State = {
         ...state,
         doEffect: null,
-        phase: "scrapingErr",
+        phase: { type: "scrapingErr" },
       };
       return newState;
     }

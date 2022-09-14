@@ -16,15 +16,37 @@ export type PageName = "search" | "list";
 export type ErrorType = "err";
 
 //TODO: dataScraping - рисуем прелоадер и заму
+
+export type PhaseState = {
+  curr: PhaseType;
+  prev: PhaseType | null;
+};
+
 export type PhaseType =
-  | "waitingDB"
-  | "waitingUse.idle"
-  | "waitingUse.dataScraping"
-  | "idle"
-  | "dataScraping"
-  | "cardOpening"
-  | "scrapingErr"
-  | "animeAdding";
+  | { type: "waitingDB" }
+  | { type: "waitingScraping.idle" }
+  | { type: "waitingScraping.dataScraping" }
+  | { type: "idle" }
+  | { type: "dataScraping" }
+  | { type: "scrapingErr" }
+  | { type: "animeAdding" }
+  | CardOpeningPhase;
+
+export type SimplePhaseType =
+  | { type: "waitingDB" }
+  | { type: "waitingScraping.idle" }
+  | { type: "waitingScraping.dataScraping" }
+  | { type: "idle" }
+  | { type: "dataScraping" }
+  | { type: "scrapingErr" }
+  | { type: "animeAdding" };
+
+type SimplePhaseName = SimplePhaseType["type"];
+
+export type CardOpeningPhase = {
+  type: "cardOpening";
+  prevType: SimplePhaseName;
+};
 
 //data - имя аниме не нужно только для скрейпинга, хранить в сущности эффекта?
 

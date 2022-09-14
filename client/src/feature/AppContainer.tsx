@@ -71,17 +71,15 @@ const getAnimeList = (animeList: AnimeListType) => {
   if (animeList) {
     const animeListNotEmpty = animeList.length;
     if (animeListNotEmpty) {
-      return <AnimeList />;
+      return <AnimeList list={animeList} />;
     } else {
       return <Error />;
     }
   }
 };
 
-const AnimeList = () => {
-  const [animeList] = useSelector((state: State) => [state.data]);
-
-  const animeCardList = animeList?.map((animeItem, index) => (
+const AnimeList: FC<{ list: AnimeListType }> = ({ list }) => {
+  const animeCardList = list?.map((animeItem, index) => (
     <CardPreview key={index} data={animeItem} />
   ));
 
@@ -103,6 +101,7 @@ export const AppContainer = () => {
     openedCard,
     phase,
     currPage,
+    savedData,
   } = useSelector((state: State) => ({
     ...state,
   }));
@@ -119,13 +118,13 @@ export const AppContainer = () => {
   useAddAnime();
   useOpenDB();
 
-  const [phaseOuter, phaseInner] = phase.split(".");
+  const [phaseOuter, phaseInner] = phase.type.split(".");
 
   const clickDisable =
     phaseOuter === "dataScraping" || phaseInner === "dataScraping";
 
   const inputVisibility = !(
-    phaseOuter === "waitingUse" || phaseOuter === "waitingDB"
+    phaseOuter === "waitingScraping" || phaseOuter === "waitingDB"
   );
 
   const getAppView = () => {
@@ -141,7 +140,7 @@ export const AppContainer = () => {
             );
           }
 
-          case "waitingUse": {
+          case "waitingScraping": {
             return (
               <>
                 <Preloader
@@ -163,7 +162,7 @@ export const AppContainer = () => {
                     color: "#fff",
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                   }}
-                  open={phase === "cardOpening"}
+                  open={phase.type === "cardOpening"}
                   onClick={handleClose}
                 >
                   {openedCard && <Card data={openedCard} />}
@@ -177,6 +176,23 @@ export const AppContainer = () => {
           }
         }
         break;
+      }
+      case "list": {
+        return (
+          <>
+            {getAnimeList(savedData)}
+            <Backdrop
+              sx={{
+                color: "#fff",
+                zIndex: (theme) => theme.zIndex.drawer + 1,
+              }}
+              open={phase.type === "cardOpening"}
+              onClick={handleClose}
+            >
+              {openedCard && <Card data={openedCard} />}
+            </Backdrop>
+          </>
+        );
       }
       // eslint-disable-next-line no-fallthrough
       default: {

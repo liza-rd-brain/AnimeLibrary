@@ -2,7 +2,7 @@ import { DetailAnime, DetailAnimeList, State } from "../types";
 import { initialState } from "./initialState";
 
 import { idle } from "./phases/idle";
-import { waitingUse } from "./phases/waitingUse";
+import { waitingScraping } from "./phases/waitingScraping";
 import { cardOpening } from "./phases/cardOpening";
 import { dataScraping } from "./phases/dataScraping";
 
@@ -37,7 +37,7 @@ export const reducer = (
   state: State = initialState,
   action: ActionType
 ): State => {
-  const [phaseOuter, phaseInner] = state.phase.split(".");
+  const [phaseOuter, phaseInner] = state.phase.type.split(".");
 
   switch (phaseOuter) {
     case "waitingDB": {
@@ -47,7 +47,7 @@ export const reducer = (
 
           const newState: State = {
             ...state,
-            phase: "waitingUse.idle",
+            phase: { type: "waitingScraping.idle" },
             dataBase: action.payload.dataBase,
             doEffect: null,
             savedData: action.payload.animeList,
@@ -71,8 +71,8 @@ export const reducer = (
       }
     }
 
-    case "waitingUse": {
-      return waitingUse(state, action);
+    case "waitingScraping": {
+      return waitingScraping(state, action);
     }
 
     case "idle": {
@@ -92,7 +92,7 @@ export const reducer = (
         case "startedAnimeScraping": {
           const newState: State = {
             ...state,
-            phase: "dataScraping",
+            phase: { type: "dataScraping" },
             doEffect: { type: "!dataScrape", data: action.payload },
           };
           return newState;
@@ -117,7 +117,7 @@ export const reducer = (
           if (action.payload) {
             const newState: State = {
               ...state,
-              phase: "idle",
+              phase: { type: "idle" },
               doEffect: null,
               savedData: action.payload,
             };
@@ -125,7 +125,7 @@ export const reducer = (
           } else {
             const newState: State = {
               ...state,
-              phase: "idle",
+              phase: { type: "idle" },
               doEffect: null,
             };
             return newState;
