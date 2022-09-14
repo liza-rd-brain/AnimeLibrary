@@ -8,6 +8,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { Error } from "./Error";
 import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
+import { CardButtonType } from "../types";
 import { SearchItem } from "./SearchItem";
 import { AnimeListType, State } from "../types";
 import { useAddAnime, useOpenDB, useScrapeData } from "../effect";
@@ -67,23 +68,25 @@ const PreloaderContainer = styled.div`
   height: 200px;
 `;
 
-const getAnimeList = (animeList: AnimeListType) => {
+const getAnimeList = ({
+  animeList,
+  buttonType,
+}: {
+  animeList: AnimeListType;
+  buttonType: CardButtonType;
+}) => {
   if (animeList) {
     const animeListNotEmpty = animeList.length;
     if (animeListNotEmpty) {
-      return <AnimeList list={animeList} />;
+      const animeCardList = animeList?.map((animeItem, index) => (
+        <CardPreview key={index} data={animeItem} buttonType={buttonType} />
+      ));
+
+      return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
     } else {
       return <Error />;
     }
   }
-};
-
-const AnimeList: FC<{ list: AnimeListType }> = ({ list }) => {
-  const animeCardList = list?.map((animeItem, index) => (
-    <CardPreview key={index} data={animeItem} />
-  ));
-
-  return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
 };
 
 const Preloader: FC<{ isAnimated: boolean }> = ({ isAnimated }) => {
@@ -156,7 +159,7 @@ export const AppContainer = () => {
           case "cardOpening": {
             return (
               <>
-                {getAnimeList(animeList)}
+                {getAnimeList({ animeList, buttonType: "add" })}
                 <Backdrop
                   sx={{
                     color: "#fff",
@@ -180,7 +183,7 @@ export const AppContainer = () => {
       case "list": {
         return (
           <>
-            {getAnimeList(savedData)}
+            {getAnimeList({ animeList: savedData, buttonType: "delete" })}
             <Backdrop
               sx={{
                 color: "#fff",
