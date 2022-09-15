@@ -43,6 +43,24 @@ export const idle = (state: State, action: ActionType): State => {
 
       return newState;
     }
+    case "endedAddAnime": {
+      if (action.payload) {
+        const newState: State = {
+          ...state,
+          phase: { type: "idle" },
+          doEffect: null,
+          savedData: action.payload,
+        };
+        return newState;
+      } else {
+        const newState: State = {
+          ...state,
+          phase: { type: "idle" },
+          doEffect: null,
+        };
+        return newState;
+      }
+    }
 
     default: {
       return state;

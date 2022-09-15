@@ -7,6 +7,8 @@ export const cardOpening = (state: State, action: ActionType): State => {
 
   switch (action.type) {
     case "closeCard": {
+      // if (state.phase?.prevType) {
+      // }
       const newState: State = {
         ...state,
         openedCard: null,
@@ -14,25 +16,6 @@ export const cardOpening = (state: State, action: ActionType): State => {
       };
       console.log(newState);
       return newState;
-    }
-
-    case "endedAddAnime": {
-      if (action.payload) {
-        const newState: State = {
-          ...state,
-          phase: { type: prevPhase.prevType },
-          doEffect: null,
-          savedData: action.payload,
-        };
-        return newState;
-      } else {
-        const newState: State = {
-          ...state,
-          phase: { type: prevPhase.prevType },
-          doEffect: null,
-        };
-        return newState;
-      }
     }
 
     case "startedDeleteAnime": {
