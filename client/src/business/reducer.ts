@@ -114,49 +114,6 @@ export const reducer = (
       }
     }
 
-    case "animeAdding": {
-      switch (action.type) {
-        case "endedAddAnime": {
-          if (action.payload) {
-            const newState: State = {
-              ...state,
-              phase: { type: "idle" },
-              doEffect: null,
-              savedData: action.payload,
-            };
-            return newState;
-          } else {
-            const newState: State = {
-              ...state,
-              phase: { type: "idle" },
-              doEffect: null,
-            };
-            return newState;
-          }
-        }
-        default: {
-          return state;
-        }
-      }
-    }
-
-    case "animeDeleting": {
-      switch (action.type) {
-        case "endedDeleteAnime": {
-          const newState: State = {
-            ...state,
-            phase: { type: "idle" },
-            doEffect: null,
-            savedData: action.payload,
-          };
-          return newState;
-        }
-        default: {
-          return state;
-        }
-      }
-    }
-
     default: {
       return state;
     }

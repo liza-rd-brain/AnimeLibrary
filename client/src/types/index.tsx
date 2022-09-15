@@ -30,9 +30,7 @@ export type SimplePhaseType =
   | { type: "waitingScraping.dataScraping" }
   | { type: "idle" }
   | { type: "dataScraping" }
-  | { type: "scrapingErr" }
-  | { type: "animeAdding" }
-  | { type: "animeDeleting" };
+  | { type: "scrapingErr" };
 
 type SimplePhaseName = SimplePhaseType["type"];
 
