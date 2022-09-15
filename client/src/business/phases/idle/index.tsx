@@ -41,6 +41,7 @@ export const idle = (state: State, action: ActionType): State => {
         phase: { type: "animeAdding" },
         doEffect: { type: "!startedAddAnime", data: action.payload },
       };
+
       return newState;
     }
 

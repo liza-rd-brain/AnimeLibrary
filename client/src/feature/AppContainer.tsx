@@ -11,7 +11,12 @@ import { Card } from "../component/Card";
 import { CardButtonType } from "../types";
 import { SearchItem } from "./SearchItem";
 import { AnimeListType, State } from "../types";
-import { useAddAnime, useOpenDB, useScrapeData } from "../effect";
+import {
+  useAddAnime,
+  useDeleteAnime,
+  useOpenDB,
+  useScrapeData,
+} from "../effect";
 import { CardPreview } from "../component/CardPreview";
 
 import logo from "../assets/pikachu_default.png";
@@ -117,18 +122,20 @@ export const AppContainer = () => {
 
   const refState = useRef<{ value: string | null }>({ value: null });
 
+  useOpenDB();
   useScrapeData();
   useAddAnime();
-  useOpenDB();
+  useDeleteAnime();
 
   const [phaseOuter, phaseInner] = phase.type.split(".");
 
   const clickDisable =
     phaseOuter === "dataScraping" || phaseInner === "dataScraping";
 
-  const inputVisibility = !(
+  const inputVisibilitySearch = !(
     phaseOuter === "waitingScraping" || phaseOuter === "waitingDB"
   );
+  const inputVisibility = currPage === "search" ? inputVisibilitySearch : true;
 
   const getAppView = () => {
     switch (currPage) {
@@ -168,7 +175,7 @@ export const AppContainer = () => {
                   open={phase.type === "cardOpening"}
                   onClick={handleClose}
                 >
-                  {openedCard && <Card data={openedCard} />}
+                  {openedCard && <Card data={openedCard} buttonType={"add"} />}
                 </Backdrop>
               </>
             );
@@ -177,25 +184,40 @@ export const AppContainer = () => {
           case "scrapingErr": {
             return <div>{SCRAPING_ERR_TEXT}</div>;
           }
+          default: {
+            return null;
+          }
         }
-        break;
       }
       case "list": {
-        return (
-          <>
-            {getAnimeList({ animeList: savedData, buttonType: "delete" })}
-            <Backdrop
-              sx={{
-                color: "#fff",
-                zIndex: (theme) => theme.zIndex.drawer + 1,
-              }}
-              open={phase.type === "cardOpening"}
-              onClick={handleClose}
-            >
-              {openedCard && <Card data={openedCard} />}
-            </Backdrop>
-          </>
-        );
+        switch (phaseOuter) {
+          case "waitingDB": {
+            return (
+              <>
+                <Preloader isAnimated={true} />
+              </>
+            );
+          }
+          default: {
+            return (
+              <>
+                {getAnimeList({ animeList: savedData, buttonType: "delete" })}
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={phase.type === "cardOpening"}
+                  onClick={handleClose}
+                >
+                  {openedCard && (
+                    <Card data={openedCard} buttonType={"delete"} />
+                  )}
+                </Backdrop>
+              </>
+            );
+          }
+        }
       }
       // eslint-disable-next-line no-fallthrough
       default: {

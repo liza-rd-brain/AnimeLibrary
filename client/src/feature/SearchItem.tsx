@@ -72,7 +72,7 @@ export const SearchItem: FC<{
               scrapeAnimeData();
             }}
           >
-            add
+            find
           </StyledButton>
         </div>
       </StyledSearchItem>

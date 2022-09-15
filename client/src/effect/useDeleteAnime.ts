@@ -9,11 +9,11 @@ const DATABASE_ERR = "Failed to load DataBase";
 type TableAnime = DetailAnime & { id: string };
 
 //TODO: прибрать промис
-const addAnime = (dataBase: IDBDatabase, anime: DetailAnime) => {
+const deleteAnime = (dataBase: IDBDatabase, animeName: string) => {
   return new Promise((resolve, reject) => {
     const transaction = dataBase.transaction(STORE_NAME, "readwrite");
     const animeList = transaction.objectStore(STORE_NAME);
-    const request = animeList.add(anime);
+    const request = animeList.delete(animeName);
 
     request.onerror = () => {
       reject(request.error);
@@ -25,26 +25,26 @@ const addAnime = (dataBase: IDBDatabase, anime: DetailAnime) => {
   });
 };
 
-export function useAddAnime() {
+export function useDeleteAnime() {
   const { doEffect, dataBase } = useSelector((state: State) => ({ ...state }));
   const dispatch = useDispatch();
 
   useEffect(() => {
     switch (doEffect?.type) {
-      case "!startedAddAnime":
+      case "!startedDeleteAnime":
         // eslint-disable-next-line no-lone-blocks
         {
           if (dataBase) {
-            const currAnime = doEffect.data;
-            const addAnimePromise = addAnime(dataBase, currAnime);
+            const animeName = doEffect.data;
+            const addAnimePromise = deleteAnime(dataBase, animeName);
             //возвращает  key
             addAnimePromise.then(
               (res) => {
-                console.log("add res", res);
+                console.log("delete res", res);
                 getAnimeList(dataBase).then((animeList) => {
                   console.log("newAnimeList", animeList);
                   dispatch({
-                    type: "endedAddAnime",
+                    type: "endedDeleteAnime",
                     payload: animeList,
                   });
                 });
@@ -52,7 +52,7 @@ export function useAddAnime() {
               (error) => {
                 console.log("error", error);
                 dispatch({
-                  type: "endedAddAnime",
+                  type: "endedDeleteAnime",
                 });
               }
             );

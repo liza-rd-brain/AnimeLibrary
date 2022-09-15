@@ -17,13 +17,17 @@ export const cardOpening = (state: State, action: ActionType): State => {
       console.log(newState);
       return newState;
     }
-    case "startedAddAnime": {
+
+    case "startedDeleteAnime": {
       const newState: State = {
         ...state,
-        doEffect: { type: "!startedAddAnime", data: action.payload },
+        phase: { type: "animeDeleting" },
+        doEffect: { type: "!startedDeleteAnime", data: action.payload },
       };
+
       return newState;
     }
+
     default: {
       return state;
     }

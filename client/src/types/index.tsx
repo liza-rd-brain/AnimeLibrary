@@ -22,15 +22,7 @@ export type PhaseState = {
   prev: PhaseType | null;
 };
 
-export type PhaseType =
-  | { type: "waitingDB" }
-  | { type: "waitingScraping.idle" }
-  | { type: "waitingScraping.dataScraping" }
-  | { type: "idle" }
-  | { type: "dataScraping" }
-  | { type: "scrapingErr" }
-  | { type: "animeAdding" }
-  | CardOpeningPhase;
+export type PhaseType = SimplePhaseType | CardOpeningPhase;
 
 export type SimplePhaseType =
   | { type: "waitingDB" }
@@ -39,7 +31,8 @@ export type SimplePhaseType =
   | { type: "idle" }
   | { type: "dataScraping" }
   | { type: "scrapingErr" }
-  | { type: "animeAdding" };
+  | { type: "animeAdding" }
+  | { type: "animeDeleting" };
 
 type SimplePhaseName = SimplePhaseType["type"];
 
@@ -48,11 +41,14 @@ export type CardOpeningPhase = {
   prevType: SimplePhaseName;
 };
 
+export type CardDeletingPhase = {};
+
 //data - имя аниме не нужно только для скрейпинга, хранить в сущности эффекта?
 
 export type EffectType =
   | { type: "!openDB" }
   | { type: "!startedAddAnime"; data: DetailAnime }
+  | { type: "!startedDeleteAnime"; data: string }
   | { type: "!dataScrape"; data: string }
   | null;
 

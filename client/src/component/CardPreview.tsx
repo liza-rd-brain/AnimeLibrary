@@ -131,7 +131,9 @@ export const CardPreview: FC<{
             e.stopPropagation();
             dispatch({ type: "startedAddAnime", payload: data });
           }}
-        ></StyledButton>
+        >
+          add
+        </StyledButton>
       ) : null}
       {/* <Description>{description}</Description> */}
     </CardContainer>

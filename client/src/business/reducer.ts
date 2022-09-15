@@ -11,9 +11,10 @@ export type ActionType =
       type: "appLoading";
     }
   | { type: "loadedDB"; payload: { dataBase: IDBDatabase; animeList: any } }
-  //
   | { type: "startedAddAnime"; payload: DetailAnime }
   | { type: "endedAddAnime"; payload?: DetailAnimeList }
+  | { type: "startedDeleteAnime"; payload: string }
+  | { type: "endedDeleteAnime"; payload: DetailAnimeList }
   | { type: "startedAnimeScraping"; payload: string }
   | {
       type: "dataReceived";
@@ -97,6 +98,7 @@ export const reducer = (
           };
           return newState;
         }
+
         case "switchPage": {
           const newPage = state.currPage === "list" ? "search" : "list";
           const newState: State = {
@@ -105,6 +107,7 @@ export const reducer = (
           };
           return newState;
         }
+
         default: {
           return state;
         }
@@ -137,25 +140,25 @@ export const reducer = (
       }
     }
 
+    case "animeDeleting": {
+      switch (action.type) {
+        case "endedDeleteAnime": {
+          const newState: State = {
+            ...state,
+            phase: { type: "idle" },
+            doEffect: null,
+            savedData: action.payload,
+          };
+          return newState;
+        }
+        default: {
+          return state;
+        }
+      }
+    }
+
     default: {
       return state;
     }
   }
-
-  /*   switch (action.type) {
-    case "loadedDB": {
-      console.log("action", action);
-
-      const newState: State = {
-        ...state,
-        data: action.payload,
-      };
-
-      return newState;
-    }
-
-    default: {
-      return state;
-    }
-  } */
 };
