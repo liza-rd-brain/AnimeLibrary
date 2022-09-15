@@ -12,13 +12,12 @@ export async function findAnime(
     },
   };
 
-  //TODO: как отработать ошибку из промиса
   return await axios(config).then(
     (resAnime: ResponseType) => {
       return resAnime.data;
     },
     (err) => {
-      console.log(err);
+      return err;
     }
   );
 }

@@ -4,11 +4,6 @@ import { DetailAnime, State } from "../types";
 import { STORE_NAME } from "./common/constantList";
 import { getAnimeList } from "./common/getAnimeList";
 
-const DATABASE_ERR = "Failed to load DataBase";
-
-type TableAnime = DetailAnime & { id: string };
-
-//TODO: прибрать промис
 const addAnime = (dataBase: IDBDatabase, anime: DetailAnime) => {
   return new Promise((resolve, reject) => {
     const transaction = dataBase.transaction(STORE_NAME, "readwrite");
@@ -32,32 +27,27 @@ export function useAddAnime() {
   useEffect(() => {
     switch (doEffect?.type) {
       case "!startedAddAnime":
-        // eslint-disable-next-line no-lone-blocks
-        {
-          if (dataBase) {
-            const currAnime = doEffect.data;
-            const addAnimePromise = addAnime(dataBase, currAnime);
-            //возвращает  key
-            addAnimePromise.then(
-              (res) => {
-                console.log("add res", res);
-                getAnimeList(dataBase).then((animeList) => {
-                  console.log("newAnimeList", animeList);
-                  dispatch({
-                    type: "endedAddAnime",
-                    payload: animeList,
-                  });
-                });
-              },
-              (error) => {
-                console.log("error", error);
+        if (dataBase) {
+          const currAnime = doEffect.data;
+          const addAnimePromise = addAnime(dataBase, currAnime);
+          //возвращает  key
+          addAnimePromise.then(
+            (res) => {
+              getAnimeList(dataBase).then((animeList) => {
                 dispatch({
                   type: "endedAddAnime",
+                  payload: animeList,
                 });
-              }
-            );
-          }
+              });
+            },
+            (error) => {
+              dispatch({
+                type: "endedAddAnime",
+              });
+            }
+          );
         }
+
         break;
 
       default: {

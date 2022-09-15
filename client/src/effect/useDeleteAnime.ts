@@ -8,7 +8,6 @@ const DATABASE_ERR = "Failed to load DataBase";
 
 type TableAnime = DetailAnime & { id: string };
 
-//TODO: прибрать промис
 const deleteAnime = (dataBase: IDBDatabase, animeName: string) => {
   return new Promise((resolve, reject) => {
     const transaction = dataBase.transaction(STORE_NAME, "readwrite");
@@ -32,32 +31,27 @@ export function useDeleteAnime() {
   useEffect(() => {
     switch (doEffect?.type) {
       case "!startedDeleteAnime":
-        // eslint-disable-next-line no-lone-blocks
-        {
-          if (dataBase) {
-            const animeName = doEffect.data;
-            const addAnimePromise = deleteAnime(dataBase, animeName);
-            //возвращает  key
-            addAnimePromise.then(
-              (res) => {
-                console.log("delete res", res);
-                getAnimeList(dataBase).then((animeList) => {
-                  console.log("newAnimeList", animeList);
-                  dispatch({
-                    type: "endedDeleteAnime",
-                    payload: animeList,
-                  });
-                });
-              },
-              (error) => {
-                console.log("error", error);
+        if (dataBase) {
+          const animeName = doEffect.data;
+          const addAnimePromise = deleteAnime(dataBase, animeName);
+          //возвращает  key
+          addAnimePromise.then(
+            (res) => {
+              getAnimeList(dataBase).then((animeList) => {
                 dispatch({
                   type: "endedDeleteAnime",
+                  payload: animeList,
                 });
-              }
-            );
-          }
+              });
+            },
+            (error) => {
+              dispatch({
+                type: "endedDeleteAnime",
+              });
+            }
+          );
         }
+
         break;
 
       default: {

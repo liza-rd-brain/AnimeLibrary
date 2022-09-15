@@ -15,7 +15,6 @@ export function useScrapeData() {
         const data = findAnime(doEffect.data);
         data.then(
           (detailAnimeList) => {
-            console.log("res", detailAnimeList);
             if (detailAnimeList) {
               dispatch({
                 type: "dataReceived",

@@ -7,14 +7,12 @@ export const cardOpening = (state: State, action: ActionType): State => {
 
   switch (action.type) {
     case "closeCard": {
-      // if (state.phase?.prevType) {
-      // }
       const newState: State = {
         ...state,
         openedCard: null,
         phase: { type: prevPhase.prevType },
       };
-      console.log(newState);
+
       return newState;
     }
 

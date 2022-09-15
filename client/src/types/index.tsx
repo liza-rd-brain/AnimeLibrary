@@ -8,14 +8,10 @@ export type State = {
   dataBase: IDBDatabase | null;
 };
 
-// type DataBase = { database: any };
-
 export type AnimeListType = DetailAnimeList | null;
 export type PageName = "search" | "list";
 
 export type ErrorType = "err";
-
-//TODO: dataScraping - рисуем прелоадер и заму
 
 export type PhaseState = {
   curr: PhaseType;
