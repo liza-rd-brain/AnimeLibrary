@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
 
-import { State } from "../types";
+import { PageName, State } from "../types";
 
 const StyledSearchItem = styled.div`
   display: grid;
@@ -39,7 +39,8 @@ export const SearchItem: FC<{
   refState?: React.MutableRefObject<{
     value: string | null;
   }>;
-}> = ({ refState }) => {
+  page: PageName;
+}> = ({ refState, page }) => {
   // const state = useSelector((state: State) => state);
   const dispatch = useDispatch();
 
@@ -48,13 +49,27 @@ export const SearchItem: FC<{
   const scrapeAnimeData = () => {
     if (textInput.current?.value) {
       if (refState) {
-        refState.current.value = textInput.current?.value;
+        if (refState.current.value !== textInput.current?.value) {
+          refState.current.value = textInput.current?.value;
+          dispatch({
+            type: "startedAnimeScraping",
+            payload: textInput.current?.value,
+          });
+        }
+      } else {
+        dispatch({
+          type: "startedAnimeScraping",
+          payload: textInput.current?.value,
+        });
       }
+    }
+  };
 
-      dispatch({
-        type: "startedAnimeScraping",
-        payload: textInput.current?.value,
-      });
+  const makeSearch = () => {
+    if (page === "search") {
+      scrapeAnimeData();
+    } else if (page === "list") {
+      console.log("поиск в списке");
     }
   };
 
@@ -66,12 +81,7 @@ export const SearchItem: FC<{
             inputRef={textInput}
             defaultValue={refState?.current.value}
           />
-          <StyledButton
-            variant="outlined"
-            onClick={() => {
-              scrapeAnimeData();
-            }}
-          >
+          <StyledButton variant="outlined" onClick={makeSearch}>
             find
           </StyledButton>
         </div>

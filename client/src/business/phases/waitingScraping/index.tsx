@@ -6,7 +6,7 @@ export const waitingScraping = (state: State, action: ActionType): State => {
   const [phaseOuter, phaseInner] = state.phase.type.split(".");
 
   switch (phaseInner) {
-    case "idle": {
+    case "waitingScrapeHandle": {
       switch (action.type) {
         case "startedAnimeScraping": {
           const newState: State = {

@@ -1,12 +1,12 @@
 import { DetailAnime, DetailAnimeList, State } from "../types";
 import { initialState } from "./initialState";
 
-import { idle } from "./phases/idle";
-import { waitingScraping } from "./phases/waitingScraping";
-import { cardOpening } from "./phases/cardOpening";
-import { dataScraping } from "./phases/dataScraping";
 import { waitingDB } from "./phases/waitingDB";
 import { scrapingErr } from "./phases/scrapingErr";
+import { cardOpening } from "./phases/cardOpening";
+import { dataScraping } from "./phases/dataScraping";
+import { waitingScraping } from "./phases/waitingScraping";
+import { waitingScrapeHandle } from "./phases/waitingScrapeHandle";
 
 export type ActionType =
   | {
@@ -49,8 +49,8 @@ export const reducer = (
       return waitingScraping(state, action);
     }
 
-    case "idle": {
-      return idle(state, action);
+    case "waitingScrapeHandle": {
+      return waitingScrapeHandle(state, action);
     }
 
     case "dataScraping": {

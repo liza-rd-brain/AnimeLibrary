@@ -5,18 +5,18 @@ import { useSelector, useDispatch } from "react-redux";
 import Backdrop from "@mui/material/Backdrop";
 import LinearProgress from "@mui/material/LinearProgress";
 
-import { Error } from "./Error";
-import { Navigator } from "./Navigator";
-import { Card } from "../component/Card";
-import { CardButtonType } from "../types";
-import { SearchItem } from "./SearchItem";
-import { AnimeListType, State } from "../types";
 import {
   useAddAnime,
   useDeleteAnime,
   useOpenDB,
   useScrapeData,
 } from "../effect";
+import { Error } from "./Error";
+import { Navigator } from "./Navigator";
+import { Card } from "../component/Card";
+import { CardButtonType } from "../types";
+import { SearchItem } from "./SearchItem";
+import { AnimeListType, State } from "../types";
 import { CardPreview } from "../component/CardPreview";
 
 import logo from "../assets/pikachu_default.png";
@@ -132,11 +132,6 @@ export const AppContainer = () => {
   const clickDisable =
     phaseOuter === "dataScraping" || phaseInner === "dataScraping";
 
-  const inputVisibilitySearch = !(
-    phaseOuter === "waitingScraping" || phaseOuter === "waitingDB"
-  );
-  const inputVisibility = currPage === "search" ? inputVisibilitySearch : true;
-
   const getAppView = () => {
     switch (currPage) {
       case "search": {
@@ -156,12 +151,12 @@ export const AppContainer = () => {
                 <Preloader
                   isAnimated={phaseInner === "dataScraping" ? true : false}
                 />
-                <SearchItem refState={refState} />
+                <SearchItem refState={refState} page={"search"} />
               </>
             );
           }
 
-          case "idle":
+          case "waitingScrapeHandle":
           case "cardOpening": {
             return (
               <>
@@ -227,7 +222,7 @@ export const AppContainer = () => {
 
   return (
     <StyledContainer isInit={false} disableClick={clickDisable}>
-      <Navigator refState={refState} hasInput={inputVisibility} />
+      <Navigator refState={refState} />
       {getAppView()}
     </StyledContainer>
   );

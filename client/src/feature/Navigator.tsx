@@ -32,14 +32,20 @@ const SEARCH_TEXT = "search";
 const LIST_TEXT = "my list";
 
 export const Navigator: FC<{
-  hasInput: boolean;
   refState?: React.MutableRefObject<{
     value: string | null;
   }>;
-}> = ({ hasInput, refState }) => {
+}> = ({ refState }) => {
   const dispatch = useDispatch();
-  const [currPage] = useSelector((state: State) => [state.currPage]);
+  const { currPage, phase } = useSelector((state: State) => ({ ...state }));
   const [value, setValue] = React.useState(0);
+
+  const [phaseOuter, phaseInner] = phase.type.split(".");
+  const inputVisibilitySearch = !(
+    phaseOuter === "waitingScraping" || phaseOuter === "waitingDB"
+  );
+
+  const hasInput = currPage === "search" ? inputVisibilitySearch : true;
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     debugger;
@@ -60,7 +66,7 @@ export const Navigator: FC<{
           <Tab label={SEARCH_TEXT} />
           <Tab label={LIST_TEXT} /* disabled={currPage === "search"}  */ />
         </Tabs>
-        {hasInput && <SearchItem refState={refState} />}
+        {hasInput && <SearchItem refState={refState} page={currPage} />}
       </StyledHeader>
     </Box>
   );
