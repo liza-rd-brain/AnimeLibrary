@@ -5,6 +5,8 @@ import { idle } from "./phases/idle";
 import { waitingScraping } from "./phases/waitingScraping";
 import { cardOpening } from "./phases/cardOpening";
 import { dataScraping } from "./phases/dataScraping";
+import { waitingDB } from "./phases/waitingDB";
+import { scrapingErr } from "./phases/scrapingErr";
 
 export type ActionType =
   | {
@@ -32,8 +34,6 @@ export type ActionType =
       type: "switchPage";
     };
 
-type ActionName = ActionType["type"];
-
 export const reducer = (
   state: State = initialState,
   action: ActionType
@@ -42,34 +42,7 @@ export const reducer = (
 
   switch (phaseOuter) {
     case "waitingDB": {
-      switch (action.type) {
-        case "loadedDB": {
-          console.log(action.payload);
-
-          const newState: State = {
-            ...state,
-            phase: { type: "waitingScraping.idle" },
-            dataBase: action.payload.dataBase,
-            doEffect: null,
-            savedData: action.payload.animeList,
-          };
-
-          console.log("newState", newState);
-          return newState;
-        }
-
-        case "switchPage": {
-          const newPage = state.currPage === "list" ? "search" : "list";
-          const newState: State = {
-            ...state,
-            currPage: newPage,
-          };
-          return newState;
-        }
-        default: {
-          return state;
-        }
-      }
+      return waitingDB(state, action);
     }
 
     case "waitingScraping": {
@@ -89,29 +62,7 @@ export const reducer = (
     }
 
     case "scrapingErr": {
-      switch (action.type) {
-        case "startedAnimeScraping": {
-          const newState: State = {
-            ...state,
-            phase: { type: "dataScraping" },
-            doEffect: { type: "!dataScrape", data: action.payload },
-          };
-          return newState;
-        }
-
-        case "switchPage": {
-          const newPage = state.currPage === "list" ? "search" : "list";
-          const newState: State = {
-            ...state,
-            currPage: newPage,
-          };
-          return newState;
-        }
-
-        default: {
-          return state;
-        }
-      }
+      return scrapingErr(state, action);
     }
 
     default: {
