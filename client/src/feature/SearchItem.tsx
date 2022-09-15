@@ -45,7 +45,7 @@ export const SearchItem: FC<{
 
   const textInput = useRef<HTMLInputElement>(null);
 
-  const handleAddClick = () => {
+  const scrapeAnimeData = () => {
     if (textInput.current?.value) {
       if (refState) {
         refState.current.value = textInput.current?.value;
@@ -69,10 +69,10 @@ export const SearchItem: FC<{
           <StyledButton
             variant="outlined"
             onClick={() => {
-              handleAddClick();
+              scrapeAnimeData();
             }}
           >
-            add
+            find
           </StyledButton>
         </div>
       </StyledSearchItem>

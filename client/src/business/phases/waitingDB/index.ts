@@ -1,22 +1,25 @@
 import { State } from "../../../types";
 import { ActionType } from "../../reducer";
 
-export const dataScraping = (state: State, action: ActionType): State => {
+export const waitingDB = (state: State, action: ActionType): State => {
   switch (action.type) {
-    case "dataReceived": {
+    case "loadedDB": {
       const newState: State = {
         ...state,
+        phase: { type: "waitingScraping.idle" },
+        dataBase: action.payload.dataBase,
         doEffect: null,
-        data: action.payload,
-        phase: { type: "idle" },
+        savedData: action.payload.animeList,
       };
+
       return newState;
     }
-    case "dataNotReceived": {
+
+    case "switchPage": {
+      const newPage = state.currPage === "list" ? "search" : "list";
       const newState: State = {
         ...state,
-        doEffect: null,
-        phase: { type: "scrapingErr" },
+        currPage: newPage,
       };
       return newState;
     }

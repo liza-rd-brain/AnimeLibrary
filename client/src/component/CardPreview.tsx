@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import Button from "@mui/material/Button";
 
-import { DetailAnime } from "../types";
+import { CardButtonType, DetailAnime } from "../types";
 
 const CardContainer = styled.div`
   display: grid;
@@ -84,7 +84,10 @@ const Description = styled.span`
 
 // const RowItem: FC;
 
-export const CardPreview: FC<{ data: DetailAnime }> = ({ data }) => {
+export const CardPreview: FC<{
+  data: DetailAnime;
+  buttonType: CardButtonType;
+}> = ({ data, buttonType }) => {
   const { pictureUrl, animeName, description, ...detailTable } = data;
 
   const dispatch = useDispatch();
@@ -100,21 +103,12 @@ export const CardPreview: FC<{ data: DetailAnime }> = ({ data }) => {
           <span>{value}</span>
         </StyledRow>
       );
-      //   const [key, value] = item;
-      //   return (
-      //     <>
-      //     <div>key<div/>
-      //     <div>value<div/>
-      //     </>)
-      //   )
-      // });
     });
   };
 
   return (
     <CardContainer
       onClick={() => {
-        console.log("click card");
         dispatch({ type: "cardOpened", payload: data });
       }}
     >
@@ -130,15 +124,17 @@ export const CardPreview: FC<{ data: DetailAnime }> = ({ data }) => {
       <Header>
         <Title>{animeName}</Title>
       </Header>
-      <StyledButton
-        variant="outlined"
-        onClick={(e) => {
-          e.stopPropagation();
-          console.log("add");
-        }}
-      >
-        add
-      </StyledButton>
+      {buttonType === "add" ? (
+        <StyledButton
+          variant="outlined"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch({ type: "startedAddAnime", payload: data });
+          }}
+        >
+          add
+        </StyledButton>
+      ) : null}
       {/* <Description>{description}</Description> */}
     </CardContainer>
   );

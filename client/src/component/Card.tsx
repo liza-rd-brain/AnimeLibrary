@@ -1,9 +1,10 @@
 import React, { FC } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 
 import Button from "@mui/material/Button";
 
-import { DetailAnime } from "../types";
+import { CardButtonType, DetailAnime } from "../types";
 
 const CardContainer = styled.div`
   display: grid;
@@ -33,7 +34,7 @@ const ImageContainer = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  width: 56px;
+  width: 100%;
   height: 56px;
 `;
 
@@ -83,8 +84,12 @@ const Description = styled.span`
 
 // const RowItem: FC;
 
-export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
+export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
+  data,
+  buttonType,
+}) => {
   const { pictureUrl, animeName, description, ...detailTable } = data;
+  const dispatch = useDispatch();
 
   const detailList = Object.entries(detailTable);
 
@@ -97,15 +102,20 @@ export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
           <span>{value}</span>
         </StyledRow>
       );
-      //   const [key, value] = item;
-      //   return (
-      //     <>
-      //     <div>key<div/>
-      //     <div>value<div/>
-      //     </>)
-      //   )
-      // });
     });
+  };
+
+  const buttonText = buttonType === "add" ? "add" : "delete";
+
+  // const actionType = buttonType === "add" ? "startedAddAnime" : "startedDeleteAnime";
+
+  const handleButtonClick = () => {
+    if (buttonType === "add") {
+      dispatch({ type: "startedAddAnime", payload: data });
+    } else if (buttonType === "delete") {
+      const animeName = data.animeName;
+      dispatch({ type: "startedDeleteAnime", payload: animeName });
+    }
   };
 
   return (
@@ -114,20 +124,13 @@ export const Card: FC<{ data: DetailAnime }> = ({ data }) => {
         e.stopPropagation();
       }}
     >
-      <StyledHeader>
-        {animeName}{" "}
-        <StyledButton
-          variant="outlined"
-          onClick={() => {
-            console.log("add");
-          }}
-        >
-          add
-        </StyledButton>
-      </StyledHeader>
+      <StyledHeader>{animeName}</StyledHeader>
       <CardItem>
         <ImageContainer>
           <StyledImage src={pictureUrl} alt="" />
+          <StyledButton variant="outlined" onClick={handleButtonClick}>
+            {buttonText}
+          </StyledButton>
         </ImageContainer>
 
         <Table>{getDetailTable()}</Table>

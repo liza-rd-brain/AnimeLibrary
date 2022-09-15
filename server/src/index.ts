@@ -58,21 +58,9 @@ const makeScraping = async (animeName: string) => {
   }
 };
 
-// app.get("/findName", (req, res) => {
-//   console.log("req", req);
-//   const scrapedDate = new Promise((resolve, reject) => {
-//     makeScraping()
-//       .then((data) => resolve(data))
-//       .catch((err) => reject(" scrape failed"));
-//   });
-
-//   scrapedDate.then((resolve) => res.send(resolve));
-// });
-
 app.post("/findName", (req: Request, res) => {
   const animeName = req.body.name;
 
-  // console.log("req", req.params.name);
   const scrapedDate = new Promise((resolve, reject) => {
     makeScraping(animeName)
       .then((data) => resolve(data))

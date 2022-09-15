@@ -1,9 +1,12 @@
 import { State } from "../types";
 
 export const initialState: State = {
-  phase: "waiting",
+  // phase: "waitingScraping.idle",
+  phase: { type: "waitingDB" },
   data: null,
-  doEffect: null,
+  savedData: null,
+  doEffect: { type: "!openDB" },
   openedCard: null,
   currPage: "search",
+  dataBase: null,
 };

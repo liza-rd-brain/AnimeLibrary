@@ -1,9 +1,11 @@
 export type State = {
   phase: PhaseType;
   data: AnimeListType;
+  savedData: AnimeListType | null;
   doEffect: EffectType;
   openedCard: DetailAnime | null;
   currPage: PageName;
+  dataBase: IDBDatabase | null;
 };
 
 export type AnimeListType = DetailAnimeList | null;
@@ -11,17 +13,38 @@ export type PageName = "search" | "list";
 
 export type ErrorType = "err";
 
-//TODO: dataScraping - рисуем прелоадер и заму
-export type PhaseType =
-  | "waitingUse.idle"
-  | "waitingUse.dataScraping"
-  | "idle"
-  | "dataScraping"
-  | "cardOpening";
+export type PhaseState = {
+  curr: PhaseType;
+  prev: PhaseType | null;
+};
+
+export type PhaseType = SimplePhaseType | CardOpeningPhase;
+
+export type SimplePhaseType =
+  | { type: "waitingDB" }
+  | { type: "waitingScraping.idle" }
+  | { type: "waitingScraping.dataScraping" }
+  | { type: "idle" }
+  | { type: "dataScraping" }
+  | { type: "scrapingErr" };
+
+type SimplePhaseName = SimplePhaseType["type"];
+
+export type CardOpeningPhase = {
+  type: "cardOpening";
+  prevType: SimplePhaseName;
+};
+
+export type CardDeletingPhase = {};
 
 //data - имя аниме не нужно только для скрейпинга, хранить в сущности эффекта?
 
-export type EffectType = { type: "!dataScrape"; data: string } | null;
+export type EffectType =
+  | { type: "!openDB" }
+  | { type: "!startedAddAnime"; data: DetailAnime }
+  | { type: "!startedDeleteAnime"; data: string }
+  | { type: "!dataScrape"; data: string }
+  | null;
 
 //TODO: вынести, общий с сервером
 
@@ -34,7 +57,7 @@ export type DetailAnime = {
   episode?: string;
   duration?: string;
   dateAired?: string;
-  animeName?: string;
+  animeName: string;
   pictureUrl?: string;
   otherNames?: string;
   description?: string;
@@ -48,3 +71,5 @@ export type AnimeHashTable = Record<string, Omit<DetailAnime, "animeName">>;
 export type ResponseType = {
   data: DetailAnimeList;
 };
+
+export type CardButtonType = "add" | "delete";

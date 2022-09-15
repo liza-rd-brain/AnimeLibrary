@@ -2,21 +2,27 @@ import { useRef, FC } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
-import Box from "@mui/material/Box";
 import Backdrop from "@mui/material/Backdrop";
-import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import { Error } from "./Error";
-import { useScrapeData } from "../effect";
 import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
+import { CardButtonType } from "../types";
 import { SearchItem } from "./SearchItem";
 import { AnimeListType, State } from "../types";
+import {
+  useAddAnime,
+  useDeleteAnime,
+  useOpenDB,
+  useScrapeData,
+} from "../effect";
 import { CardPreview } from "../component/CardPreview";
 
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
+
+const SCRAPING_ERR_TEXT = "Something went wrong!";
 
 type StyledContainerType = { isInit: boolean; disableClick: boolean };
 
@@ -67,25 +73,25 @@ const PreloaderContainer = styled.div`
   height: 200px;
 `;
 
-const getAnimeList = (animeList: AnimeListType) => {
+const getAnimeList = ({
+  animeList,
+  buttonType,
+}: {
+  animeList: AnimeListType;
+  buttonType: CardButtonType;
+}) => {
   if (animeList) {
     const animeListNotEmpty = animeList.length;
     if (animeListNotEmpty) {
-      return <AnimeList />;
+      const animeCardList = animeList?.map((animeItem, index) => (
+        <CardPreview key={index} data={animeItem} buttonType={buttonType} />
+      ));
+
+      return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
     } else {
       return <Error />;
     }
   }
-};
-
-const AnimeList = () => {
-  const [animeList] = useSelector((state: State) => [state.data]);
-
-  const animeCardList = animeList?.map((animeItem, index) => (
-    <CardPreview key={index} data={animeItem} />
-  ));
-
-  return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
 };
 
 const Preloader: FC<{ isAnimated: boolean }> = ({ isAnimated }) => {
@@ -103,6 +109,7 @@ export const AppContainer = () => {
     openedCard,
     phase,
     currPage,
+    savedData,
   } = useSelector((state: State) => ({
     ...state,
   }));
@@ -115,32 +122,26 @@ export const AppContainer = () => {
 
   const refState = useRef<{ value: string | null }>({ value: null });
 
+  useOpenDB();
   useScrapeData();
+  useAddAnime();
+  useDeleteAnime();
+
+  const [phaseOuter, phaseInner] = phase.type.split(".");
 
   const clickDisable =
-    phase === "dataScraping" || phase === "waitingUse.dataScraping";
+    phaseOuter === "dataScraping" || phaseInner === "dataScraping";
+
+  const inputVisibilitySearch = !(
+    phaseOuter === "waitingScraping" || phaseOuter === "waitingDB"
+  );
+  const inputVisibility = currPage === "search" ? inputVisibilitySearch : true;
 
   const getAppView = () => {
     switch (currPage) {
       case "search": {
-        switch (phase) {
-          case "waitingUse.idle": {
-            return (
-              <>
-                <Preloader isAnimated={false} />
-                <SearchItem refState={refState} />
-              </>
-            );
-          }
-
-          case "waitingUse.dataScraping": {
-            return (
-              <>
-                <Preloader isAnimated={true} />
-                <SearchItem refState={refState} />
-              </>
-            );
-          }
+        switch (phaseOuter) {
+          case "waitingDB":
           case "dataScraping": {
             return (
               <>
@@ -149,20 +150,68 @@ export const AppContainer = () => {
             );
           }
 
+          case "waitingScraping": {
+            return (
+              <>
+                <Preloader
+                  isAnimated={phaseInner === "dataScraping" ? true : false}
+                />
+                <SearchItem refState={refState} />
+              </>
+            );
+          }
+
           case "idle":
           case "cardOpening": {
             return (
               <>
-                {getAnimeList(animeList)}
+                {getAnimeList({ animeList, buttonType: "add" })}
                 <Backdrop
                   sx={{
                     color: "#fff",
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                   }}
-                  open={phase === "cardOpening"}
+                  open={phase.type === "cardOpening"}
                   onClick={handleClose}
                 >
-                  {openedCard && <Card data={openedCard} />}
+                  {openedCard && <Card data={openedCard} buttonType={"add"} />}
+                </Backdrop>
+              </>
+            );
+          }
+
+          case "scrapingErr": {
+            return <div>{SCRAPING_ERR_TEXT}</div>;
+          }
+          default: {
+            return null;
+          }
+        }
+      }
+      case "list": {
+        switch (phaseOuter) {
+          case "waitingDB": {
+            return (
+              <>
+                <Preloader isAnimated={true} />
+              </>
+            );
+          }
+          default: {
+            return (
+              <>
+                {getAnimeList({ animeList: savedData, buttonType: "delete" })}
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={phase.type === "cardOpening"}
+                  onClick={handleClose}
+                >
+                  {openedCard && (
+                    <Card data={openedCard} buttonType={"delete"} />
+                  )}
                 </Backdrop>
               </>
             );
@@ -178,10 +227,7 @@ export const AppContainer = () => {
 
   return (
     <StyledContainer isInit={false} disableClick={clickDisable}>
-      <Navigator
-        refState={refState}
-        hasInput={phase !== "waitingUse" && phase !== "waitingUse.dataScraping"}
-      />
+      <Navigator refState={refState} hasInput={inputVisibility} />
       {getAppView()}
     </StyledContainer>
   );
