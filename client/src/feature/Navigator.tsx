@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import logo from "../assets/pikachu_64.png";
 
 import { SearchItem } from "./SearchItem";
-import { State } from "../types";
+import { PageName, State } from "../types";
 
 const Logo = styled.div`
   background: url(${logo});
@@ -38,7 +38,9 @@ export const Navigator: FC<{
 }> = ({ refState }) => {
   const dispatch = useDispatch();
   const { currPage, phase } = useSelector((state: State) => ({ ...state }));
-  const [value, setValue] = React.useState(0);
+  const pageName: PageName[] = ["search", "list"];
+  const currPageIndex = pageName.findIndex((page) => page === currPage);
+  // const [value, setValue] = React.useState(0);
 
   const [phaseOuter, phaseInner] = phase.type.split(".");
   const inputVisibilitySearch = !(
@@ -49,7 +51,7 @@ export const Navigator: FC<{
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     debugger;
-    setValue(newValue);
+    // setValue(newValue);
     dispatch({ type: "switchPage" });
   };
 
@@ -58,7 +60,7 @@ export const Navigator: FC<{
       <StyledHeader /* sx={{ borderBottom: 1, borderColor: "divider" }} */>
         <Logo />
         <Tabs
-          value={value}
+          value={currPageIndex}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
