@@ -54,6 +54,7 @@ export function useDeleteAnime() {
         break;
       }
     }
+    //не нужно добавлять dispatch, dataBase в список зависимостей
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doEffect]);
 }

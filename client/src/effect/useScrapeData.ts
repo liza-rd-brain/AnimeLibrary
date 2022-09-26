@@ -38,6 +38,7 @@ export function useScrapeData() {
         break;
       }
     }
+    //не нужно добавлять dispatch в список зависимостей
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doEffect]);
 }
