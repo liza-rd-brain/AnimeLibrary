@@ -1,4 +1,3 @@
-import { resolve } from "path";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { State } from "../types";

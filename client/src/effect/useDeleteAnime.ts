@@ -1,12 +1,8 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { DetailAnime, State } from "../types";
+import { State } from "../types";
 import { STORE_NAME } from "./common/constantList";
 import { getAnimeList } from "./common/getAnimeList";
-
-const DATABASE_ERR = "Failed to load DataBase";
-
-type TableAnime = DetailAnime & { id: string };
 
 const deleteAnime = (dataBase: IDBDatabase, animeName: string) => {
   return new Promise((resolve, reject) => {

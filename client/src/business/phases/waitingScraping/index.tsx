@@ -3,7 +3,7 @@ import { ActionType } from "../../reducer";
 import { dataScraping } from "../dataScraping";
 
 export const waitingScraping = (state: State, action: ActionType): State => {
-  const [phaseOuter, phaseInner] = state.phase.type.split(".");
+  const [, phaseInner] = state.phase.type.split(".");
 
   switch (phaseInner) {
     case "waitingScrapeHandle": {

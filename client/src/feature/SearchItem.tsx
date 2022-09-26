@@ -1,14 +1,11 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import React, { FC, useRef } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-import logo from "../assets/pikachu_default.png";
-import logoAnimated from "../assets/pikachu_preloader.gif";
-
-import { PageName, State } from "../types";
+import { PageName } from "../types";
 
 const StyledSearchItem = styled.div`
   display: grid;
@@ -24,24 +21,12 @@ const StyledButton = styled(Button)`
   height: 56px;
 `;
 
-const Logo = styled.div<{ isAnimated?: boolean }>`
-  /* background: url(${logoAnimated}); */
-  background: ${({ isAnimated }) => {
-    return isAnimated ? `url(${logoAnimated})` : `url(${logo})`;
-  }};
-  background-repeat: no-repeat;
-  background-size: 300px;
-  background-position: center;
-  transform: scale(-1, 1);
-`;
-
 export const SearchItem: FC<{
   refState?: React.MutableRefObject<{
     value: string | null;
   }>;
   page: PageName;
 }> = ({ refState, page }) => {
-  // const state = useSelector((state: State) => state);
   const dispatch = useDispatch();
 
   const textInput = useRef<HTMLInputElement>(null);

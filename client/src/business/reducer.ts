@@ -38,7 +38,7 @@ export const reducer = (
   state: State = initialState,
   action: ActionType
 ): State => {
-  const [phaseOuter, phaseInner] = state.phase.type.split(".");
+  const [phaseOuter] = state.phase.type.split(".");
 
   switch (phaseOuter) {
     case "waitingDB": {

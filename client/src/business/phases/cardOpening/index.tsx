@@ -1,8 +1,7 @@
-import { CardOpeningPhase, State } from "../../../types";
 import { ActionType } from "../../reducer";
+import { CardOpeningPhase, State } from "../../../types";
 
 export const cardOpening = (state: State, action: ActionType): State => {
-  const [phaseOuter, phaseInner] = state.phase.type.split(".");
   const prevPhase = state.phase as CardOpeningPhase;
 
   switch (action.type) {

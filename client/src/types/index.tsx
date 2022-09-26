@@ -37,8 +37,6 @@ export type CardOpeningPhase = {
 
 export type CardDeletingPhase = {};
 
-//data - имя аниме не нужно только для скрейпинга, хранить в сущности эффекта?
-
 export type EffectType =
   | { type: "!openDB" }
   | { type: "!startedAddAnime"; data: DetailAnime }

@@ -213,7 +213,6 @@ export const AppContainer = () => {
           }
         }
       }
-      // eslint-disable-next-line no-fallthrough
       default: {
         return null;
       }
