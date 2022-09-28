@@ -6,7 +6,10 @@ import { DetailAnime, State } from "../types";
 import { STORE_NAME } from "./common/constantList";
 import { getAnimeList } from "./common/getAnimeList";
 
-const addAnime = (dataBase: IDBDatabase, anime: DetailAnime) => {
+const addAnime = (
+  dataBase: IDBDatabase,
+  anime: DetailAnime
+): Promise<IDBValidKey> => {
   return new Promise((resolve, reject) => {
     const transaction = dataBase.transaction(STORE_NAME, "readwrite");
     const animeList = transaction.objectStore(STORE_NAME);
@@ -32,6 +35,8 @@ export function useAddAnime() {
         if (dataBase) {
           const currAnime = doEffect.data;
           const addAnimePromise = addAnime(dataBase, currAnime);
+
+          console.log("addAnimePromise", addAnimePromise);
           //возвращает  key
           addAnimePromise.then(
             (res) => {

@@ -4,12 +4,7 @@ const puppeteer = require("puppeteer");
 const bodyParser = require("body-parser");
 
 import { store } from "./data";
-import {
-  AnimeHashTable,
-  DetailAnime,
-  DetailAnimeList,
-  RawDetailAnime,
-} from "./types";
+import { DetailAnimeList, RawDetailAnime } from "./types";
 import { takeLinkList } from "./business/takeLinkList";
 import { Request, Response } from "express";
 import { getAnimeDetail } from "./business/getAnimeDetail";
@@ -28,7 +23,7 @@ const chromeOptions = {
 app.use(cors());
 app.use(bodyParser.json());
 
-const makeScraping = async (animeName: string) => {
+const makeScraping = async (animeName: string): Promise<DetailAnimeList> => {
   const browser = await puppeteer.launch(chromeOptions);
   const page = await browser.newPage();
 
@@ -61,11 +56,16 @@ const makeScraping = async (animeName: string) => {
 app.post("/findName", (req: Request, res) => {
   const animeName = req.body.name;
 
-  const scrapedDate = new Promise((resolve, reject) => {
-    makeScraping(animeName)
-      .then((data) => resolve(data))
-      .catch((err) => reject(" scrape failed"));
-  });
+  const scrapedDate: Promise<DetailAnimeList> = new Promise(
+    (resolve, reject) => {
+      makeScraping(animeName)
+        .then((data) => {
+          console.log("makeScraping", data);
+          resolve(data);
+        })
+        .catch((err) => reject(" scrape failed"));
+    }
+  );
 
   scrapedDate.then((resolve) => res.send(resolve));
 });

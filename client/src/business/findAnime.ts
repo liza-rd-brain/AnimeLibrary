@@ -1,9 +1,7 @@
 import axios from "axios";
-import { ResponseType } from "../types";
+import { DetailAnimeList, ResponseType } from "../types";
 
-export async function findAnime(
-  animeName: string
-) /* : Promise<DetailAnimeList> */ {
+export async function findAnime(animeName: string): Promise<DetailAnimeList> {
   const config = {
     method: "post",
     url: "http://localhost:3000/findName",

@@ -6,7 +6,10 @@ import { State } from "../types";
 import { STORE_NAME } from "./common/constantList";
 import { getAnimeList } from "./common/getAnimeList";
 
-const deleteAnime = (dataBase: IDBDatabase, animeName: string) => {
+const deleteAnime = (
+  dataBase: IDBDatabase,
+  animeName: string
+): Promise<undefined> => {
   return new Promise((resolve, reject) => {
     const transaction = dataBase.transaction(STORE_NAME, "readwrite");
     const animeList = transaction.objectStore(STORE_NAME);

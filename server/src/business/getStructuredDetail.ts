@@ -91,9 +91,9 @@ export const getStructuredDetail = (
       if (item) {
         const { detailTextList, ...restDetail } = item;
 
-        if (item.detailTextList) {
+        if (detailTextList) {
           const unStructuredAnimeItem: UnStructuredDetailAnime =
-            item.detailTextList.reduce(
+            detailTextList.reduce(
               (
                 prevDetail: {} | UnStructuredDetailAnime,
                 detailItem: string

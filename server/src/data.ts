@@ -1,1 +1,1 @@
-export const store = { data: {} };
+export const store = { data: [] };

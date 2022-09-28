@@ -22,10 +22,9 @@ const openDataBasePromise = (): Promise<IDBDatabase> => {
         db.createObjectStore(STORE_NAME, { keyPath: KEY_NAME });
       }
     };
+    requestDB.onerror = () => reject(requestDB.error);
 
     requestDB.onsuccess = () => resolve(requestDB.result);
-
-    requestDB.onerror = () => reject(requestDB.error);
   });
 };
 
