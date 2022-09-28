@@ -9,35 +9,38 @@ export function useScrapeData() {
   const [doEffect] = useSelector((state: State) => [state.doEffect]);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    switch (doEffect?.type) {
-      case "!dataScrape": {
-        const data = findAnime(doEffect.data);
-        data.then(
-          (detailAnimeList) => {
-            if (detailAnimeList) {
-              dispatch({
-                type: "dataReceived",
-                payload: detailAnimeList,
-              });
-            } else {
-              dispatch({
-                type: "dataNotReceived",
-              });
+  useEffect(
+    function requestDataScrape() {
+      switch (doEffect?.type) {
+        case "!dataScrape": {
+          const data = findAnime(doEffect.data);
+          data.then(
+            (detailAnimeList) => {
+              if (detailAnimeList) {
+                dispatch({
+                  type: "dataReceived",
+                  payload: detailAnimeList,
+                });
+              } else {
+                dispatch({
+                  type: "dataNotReceived",
+                });
+              }
+            },
+            (rej) => {
+              console.log("rej", rej);
             }
-          },
-          (rej) => {
-            console.log("rej", rej);
-          }
-        );
+          );
 
-        break;
+          break;
+        }
+        default: {
+          break;
+        }
       }
-      default: {
-        break;
-      }
-    }
-    //не нужно добавлять dispatch в список зависимостей
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [doEffect]);
+      //не нужно добавлять dispatch в список зависимостей
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [doEffect]
+  );
 }

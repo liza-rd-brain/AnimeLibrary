@@ -29,37 +29,40 @@ export function useDeleteAnime() {
   const { doEffect, dataBase } = useSelector((state: State) => ({ ...state }));
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    switch (doEffect?.type) {
-      case "!startedDeleteAnime":
-        if (dataBase) {
-          const animeName = doEffect.data;
-          const addAnimePromise = deleteAnime(dataBase, animeName);
-          //возвращает  key
-          addAnimePromise.then(
-            (res) => {
-              getAnimeList(dataBase).then((animeList) => {
+  useEffect(
+    function requestDeleteAnime() {
+      switch (doEffect?.type) {
+        case "!startedDeleteAnime":
+          if (dataBase) {
+            const animeName = doEffect.data;
+            const addAnimePromise = deleteAnime(dataBase, animeName);
+            //возвращает  key
+            addAnimePromise.then(
+              (res) => {
+                getAnimeList(dataBase).then((animeList) => {
+                  dispatch({
+                    type: "endedDeleteAnime",
+                    payload: animeList,
+                  });
+                });
+              },
+              (error) => {
                 dispatch({
                   type: "endedDeleteAnime",
-                  payload: animeList,
                 });
-              });
-            },
-            (error) => {
-              dispatch({
-                type: "endedDeleteAnime",
-              });
-            }
-          );
+              }
+            );
+          }
+
+          break;
+
+        default: {
+          break;
         }
-
-        break;
-
-      default: {
-        break;
       }
-    }
-    //не нужно добавлять dispatch, dataBase в список зависимостей
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [doEffect]);
+      //не нужно добавлять dispatch, dataBase в список зависимостей
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [doEffect]
+  );
 }

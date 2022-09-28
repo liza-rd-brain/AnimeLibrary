@@ -32,29 +32,32 @@ export function useOpenDB() {
   const [doEffect] = useSelector((state: State) => [state.doEffect]);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    switch (doEffect?.type) {
-      case "!openDB":
-        openDataBasePromise().then(
-          (db) => {
-            getAnimeList(db).then((animeList) => {
-              setTimeout(() => {
-                dispatch({
-                  type: "loadedDB",
-                  payload: { dataBase: db, animeList },
-                });
-              }, 2000);
-            });
-          },
-          (error) => {
-            console.log("error", error);
-          }
-        );
-        break;
+  useEffect(
+    function requestOpenDB() {
+      switch (doEffect?.type) {
+        case "!openDB":
+          openDataBasePromise().then(
+            (db) => {
+              getAnimeList(db).then((animeList) => {
+                setTimeout(() => {
+                  dispatch({
+                    type: "loadedDB",
+                    payload: { dataBase: db, animeList },
+                  });
+                }, 2000);
+              });
+            },
+            (error) => {
+              console.log("error", error);
+            }
+          );
+          break;
 
-      default: {
-        break;
+        default: {
+          break;
+        }
       }
-    }
-  }, [dispatch, doEffect]);
+    },
+    [dispatch, doEffect]
+  );
 }

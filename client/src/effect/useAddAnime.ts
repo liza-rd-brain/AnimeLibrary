@@ -29,39 +29,40 @@ export function useAddAnime() {
   const { doEffect, dataBase } = useSelector((state: State) => ({ ...state }));
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    switch (doEffect?.type) {
-      case "!startedAddAnime":
-        if (dataBase) {
-          const currAnime = doEffect.data;
-          const addAnimePromise = addAnime(dataBase, currAnime);
-
-          console.log("addAnimePromise", addAnimePromise);
-          //возвращает  key
-          addAnimePromise.then(
-            (res) => {
-              getAnimeList(dataBase).then((animeList) => {
+  useEffect(
+    function requestAddAnime() {
+      switch (doEffect?.type) {
+        case "!startedAddAnime":
+          if (dataBase) {
+            const currAnime = doEffect.data;
+            const addAnimePromise = addAnime(dataBase, currAnime);
+            //возвращает  key
+            addAnimePromise.then(
+              (res) => {
+                getAnimeList(dataBase).then((animeList) => {
+                  dispatch({
+                    type: "endedAddAnime",
+                    payload: animeList,
+                  });
+                });
+              },
+              (error) => {
                 dispatch({
                   type: "endedAddAnime",
-                  payload: animeList,
                 });
-              });
-            },
-            (error) => {
-              dispatch({
-                type: "endedAddAnime",
-              });
-            }
-          );
+              }
+            );
+          }
+
+          break;
+
+        default: {
+          break;
         }
-
-        break;
-
-      default: {
-        break;
       }
-    }
-    //не нужно добавлять dispatch, dataBase в список зависимостей
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [doEffect]);
+      //не нужно добавлять dispatch, dataBase в список зависимостей
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [doEffect]
+  );
 }
