@@ -36,7 +36,7 @@ export const Navigator: FC<{
   }>;
 }> = ({ refState }) => {
   const dispatch = useAppDispatch();
-  const { currPage, phase } = useSelector((state: State) => ({ ...state }));
+  const { currPage, phase } = useSelector((state: State) => state);
   const pageName: PageName[] = ["search", "list"];
   const currPageIndex = pageName.findIndex((page) => page === currPage);
 

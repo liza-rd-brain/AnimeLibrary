@@ -110,9 +110,7 @@ export const AppContainer = () => {
     phase,
     currPage,
     savedData,
-  } = useSelector((state: State) => ({
-    ...state,
-  }));
+  } = useSelector((state: State) => state);
 
   const dispatch = useAppDispatch();
 

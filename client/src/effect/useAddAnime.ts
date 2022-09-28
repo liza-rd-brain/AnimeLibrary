@@ -26,7 +26,7 @@ const addAnime = (
 };
 
 export function useAddAnime() {
-  const { doEffect, dataBase } = useSelector((state: State) => ({ ...state }));
+  const { doEffect, dataBase } = useSelector((state: State) => state);
   const dispatch = useAppDispatch();
 
   useEffect(

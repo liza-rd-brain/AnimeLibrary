@@ -26,7 +26,7 @@ const deleteAnime = (
 };
 
 export function useDeleteAnime() {
-  const { doEffect, dataBase } = useSelector((state: State) => ({ ...state }));
+  const { doEffect, dataBase } = useSelector((state: State) => state);
   const dispatch = useAppDispatch();
 
   useEffect(
