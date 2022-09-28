@@ -25,13 +25,22 @@ export const cardOpening = (state: State, action: ActionType): State => {
     }
 
     case "endedDeleteAnime": {
-      const newState: State = {
-        ...state,
-        phase: { type: prevPhase.prevType },
-        doEffect: null,
-        savedData: action.payload,
-      };
-      return newState;
+      if (action.payload) {
+        const newState: State = {
+          ...state,
+          phase: { type: prevPhase.prevType },
+          doEffect: null,
+          savedData: action.payload,
+        };
+        return newState;
+      } else {
+        const newState: State = {
+          ...state,
+          phase: { type: prevPhase.prevType },
+          doEffect: null,
+        };
+        return newState;
+      }
     }
 
     default: {
