@@ -1,14 +1,13 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
 
-import { findAnime } from "../business/findAnime";
-import { ActionType } from "../business/reducer";
 import { State } from "../types";
+import { findAnime } from "../business/findAnime";
 
 export function useScrapeData() {
   const [doEffect] = useSelector((state: State) => [state.doEffect]);
-  const dispatch = useDispatch<Dispatch<ActionType>>();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     switch (doEffect?.type) {

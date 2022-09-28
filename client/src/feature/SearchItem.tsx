@@ -1,6 +1,6 @@
 import React, { FC, useRef } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -27,7 +27,7 @@ export const SearchItem: FC<{
   }>;
   page: PageName;
 }> = ({ refState, page }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const textInput = useRef<HTMLInputElement>(null);
 

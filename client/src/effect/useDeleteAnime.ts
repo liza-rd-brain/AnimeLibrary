@@ -1,5 +1,7 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
+
 import { State } from "../types";
 import { STORE_NAME } from "./common/constantList";
 import { getAnimeList } from "./common/getAnimeList";
@@ -22,7 +24,7 @@ const deleteAnime = (dataBase: IDBDatabase, animeName: string) => {
 
 export function useDeleteAnime() {
   const { doEffect, dataBase } = useSelector((state: State) => ({ ...state }));
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     switch (doEffect?.type) {

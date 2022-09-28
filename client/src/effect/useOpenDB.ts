@@ -1,5 +1,7 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
+
 import { State } from "../types";
 import { getAnimeList } from "./common/getAnimeList";
 
@@ -29,7 +31,7 @@ const openDataBasePromise = (): Promise<IDBDatabase> => {
 
 export function useOpenDB() {
   const [doEffect] = useSelector((state: State) => [state.doEffect]);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     switch (doEffect?.type) {

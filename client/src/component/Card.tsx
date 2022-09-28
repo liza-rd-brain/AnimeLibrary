@@ -1,9 +1,8 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
 
 import Button from "@mui/material/Button";
-
 import { CardButtonType, DetailAnime } from "../types";
 
 const CardContainer = styled.div`
@@ -64,7 +63,7 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
   buttonType,
 }) => {
   const { pictureUrl, animeName, description, ...detailTable } = data;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const detailList = Object.entries(detailTable);
 

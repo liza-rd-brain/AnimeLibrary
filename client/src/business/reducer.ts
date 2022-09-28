@@ -1,5 +1,7 @@
-import { DetailAnime, DetailAnimeList, State } from "../types";
+import { Dispatch } from "redux";
+import { useDispatch } from "react-redux";
 import { initialState } from "./initialState";
+import { DetailAnime, DetailAnimeList, State } from "../types";
 
 import { waitingDB } from "./phases/waitingDB";
 import { scrapingErr } from "./phases/scrapingErr";
@@ -16,7 +18,7 @@ export type ActionType =
   | { type: "startedAddAnime"; payload: DetailAnime }
   | { type: "endedAddAnime"; payload?: DetailAnimeList }
   | { type: "startedDeleteAnime"; payload: string }
-  | { type: "endedDeleteAnime"; payload: DetailAnimeList }
+  | { type: "endedDeleteAnime"; payload?: DetailAnimeList }
   | { type: "startedAnimeScraping"; payload: string }
   | {
       type: "dataReceived";
@@ -33,6 +35,11 @@ export type ActionType =
   | {
       type: "switchPage";
     };
+
+export const useAppDispatch = () => {
+  const appDispatch = useDispatch<Dispatch<ActionType>>();
+  return appDispatch;
+};
 
 export const reducer = (
   state: State = initialState,

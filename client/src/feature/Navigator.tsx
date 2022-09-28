@@ -1,15 +1,15 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
 
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 
-import logo from "../assets/pikachu_64.png";
-
 import { SearchItem } from "./SearchItem";
 import { PageName, State } from "../types";
+import logo from "../assets/pikachu_64.png";
 
 const Logo = styled.div`
   background: url(${logo});
@@ -35,7 +35,7 @@ export const Navigator: FC<{
     value: string | null;
   }>;
 }> = ({ refState }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { currPage, phase } = useSelector((state: State) => ({ ...state }));
   const pageName: PageName[] = ["search", "list"];
   const currPageIndex = pageName.findIndex((page) => page === currPage);

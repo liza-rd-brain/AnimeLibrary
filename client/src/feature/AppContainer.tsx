@@ -1,6 +1,7 @@
 import { useRef, FC } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
 
 import Backdrop from "@mui/material/Backdrop";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -11,14 +12,13 @@ import {
   useOpenDB,
   useScrapeData,
 } from "../effect";
+
 import { Error } from "./Error";
 import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
-import { CardButtonType } from "../types";
+import { CardButtonType, AnimeListType, State } from "../types";
 import { SearchItem } from "./SearchItem";
-import { AnimeListType, State } from "../types";
 import { CardPreview } from "../component/CardPreview";
-
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
 
@@ -114,7 +114,7 @@ export const AppContainer = () => {
     ...state,
   }));
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleClose = () => {
     dispatch({ type: "closeCard" });
