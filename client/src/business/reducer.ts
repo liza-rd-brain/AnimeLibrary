@@ -13,7 +13,6 @@ import { waitingScrapeHandle } from "./phases/waitingScrapeHandle";
 export const ActionName = {
   loadedDB: "loadedDB",
   closeCard: "closeCard",
-  appLoading: "appLoading",
   cardOpened: "cardOpened",
   switchPage: "switchPage",
   dataReceived: "dataReceived",
@@ -26,7 +25,6 @@ export const ActionName = {
 } as const;
 
 export type ActionType =
-  | { type: typeof ActionName.appLoading }
   | { type: typeof ActionName.closeCard }
   | { type: typeof ActionName.switchPage }
   | { type: typeof ActionName.dataNotReceived }
