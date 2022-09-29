@@ -11,7 +11,9 @@ const DATABASE_NAME = "animeBase";
 const STORE_NAME = "animeList";
 const KEY_NAME = "animeName";
 
-const openDataBasePromise = (): Promise<IDBDatabase> => {
+const openDataBasePromise = (
+  controller: AbortController
+): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
     const requestDB = window.indexedDB.open(DATABASE_NAME, 1);
 
@@ -22,9 +24,11 @@ const openDataBasePromise = (): Promise<IDBDatabase> => {
         db.createObjectStore(STORE_NAME, { keyPath: KEY_NAME });
       }
     };
-    requestDB.onerror = () => reject(requestDB.error);
 
+    requestDB.onerror = () => reject(requestDB.error);
     requestDB.onsuccess = () => resolve(requestDB.result);
+
+    controller.signal.addEventListener("abort", reject);
   });
 };
 
@@ -34,11 +38,13 @@ export function useOpenDB() {
 
   useEffect(
     function requestOpenDB() {
+      const controller = new AbortController();
+
       switch (doEffect?.type) {
         case "!openDB":
-          openDataBasePromise().then(
+          openDataBasePromise(controller).then(
             (db) => {
-              getAnimeList(db).then((animeList) => {
+              getAnimeList(db, controller).then((animeList) => {
                 setTimeout(() => {
                   dispatch({
                     type: "loadedDB",
@@ -51,13 +57,18 @@ export function useOpenDB() {
               console.log("error", error);
             }
           );
-          break;
+
+          return () => {
+            controller.abort();
+          };
 
         default: {
           break;
         }
       }
     },
-    [dispatch, doEffect]
+    //не нужно добавлять dispatch, dataBase в список зависимостей
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [doEffect]
   );
 }

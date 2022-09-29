@@ -8,7 +8,8 @@ import { getAnimeList } from "./common/getAnimeList";
 
 const addAnime = (
   dataBase: IDBDatabase,
-  anime: DetailAnime
+  anime: DetailAnime,
+  controller: AbortController
 ): Promise<IDBValidKey> => {
   return new Promise((resolve, reject) => {
     const transaction = dataBase.transaction(STORE_NAME, "readwrite");
@@ -22,6 +23,8 @@ const addAnime = (
     request.onsuccess = () => {
       resolve(request.result);
     };
+
+    controller.signal.addEventListener("abort", reject);
   });
 };
 
@@ -31,15 +34,17 @@ export function useAddAnime() {
 
   useEffect(
     function requestAddAnime() {
+      const controller = new AbortController();
+
       switch (doEffect?.type) {
         case "!startedAddAnime":
           if (dataBase) {
             const currAnime = doEffect.data;
-            const addAnimePromise = addAnime(dataBase, currAnime);
+            const addAnimePromise = addAnime(dataBase, currAnime, controller);
             //возвращает  key
             addAnimePromise.then(
               (res) => {
-                getAnimeList(dataBase).then((animeList) => {
+                getAnimeList(dataBase, controller).then((animeList) => {
                   dispatch({
                     type: "endedAddAnime",
                     payload: animeList,
@@ -53,16 +58,17 @@ export function useAddAnime() {
               }
             );
           }
-
-          break;
+          return () => {
+            controller.abort();
+          };
 
         default: {
           break;
         }
       }
-      //не нужно добавлять dispatch, dataBase в список зависимостей
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+    //не нужно добавлять dispatch, dataBase в список зависимостей
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [doEffect]
   );
 }

@@ -8,7 +8,8 @@ import { getAnimeList } from "./common/getAnimeList";
 
 const deleteAnime = (
   dataBase: IDBDatabase,
-  animeName: string
+  animeName: string,
+  controller: AbortController
 ): Promise<undefined> => {
   return new Promise((resolve, reject) => {
     const transaction = dataBase.transaction(STORE_NAME, "readwrite");
@@ -22,6 +23,8 @@ const deleteAnime = (
     request.onsuccess = () => {
       resolve(request.result);
     };
+
+    controller.signal.addEventListener("abort", reject);
   });
 };
 
@@ -31,15 +34,20 @@ export function useDeleteAnime() {
 
   useEffect(
     function requestDeleteAnime() {
+      const controller = new AbortController();
       switch (doEffect?.type) {
         case "!startedDeleteAnime":
           if (dataBase) {
             const animeName = doEffect.data;
-            const addAnimePromise = deleteAnime(dataBase, animeName);
+            const addAnimePromise = deleteAnime(
+              dataBase,
+              animeName,
+              controller
+            );
             //возвращает  key
             addAnimePromise.then(
               (res) => {
-                getAnimeList(dataBase).then((animeList) => {
+                getAnimeList(dataBase, controller).then((animeList) => {
                   dispatch({
                     type: "endedDeleteAnime",
                     payload: animeList,
@@ -52,6 +60,10 @@ export function useDeleteAnime() {
                 });
               }
             );
+
+            return () => {
+              controller.abort();
+            };
           }
 
           break;
@@ -60,9 +72,9 @@ export function useDeleteAnime() {
           break;
         }
       }
-      //не нужно добавлять dispatch, dataBase в список зависимостей
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+    //не нужно добавлять dispatch, dataBase в список зависимостей
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [doEffect]
   );
 }

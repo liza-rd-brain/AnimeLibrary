@@ -73,7 +73,7 @@ const PreloaderContainer = styled.div`
   height: 200px;
 `;
 
-const getAnimeList = ({
+const getAnimeCardList = ({
   animeList,
   buttonType,
 }: {
@@ -158,7 +158,7 @@ export const AppContainer = () => {
           case "cardOpening": {
             return (
               <>
-                {getAnimeList({ animeList, buttonType: "add" })}
+                {getAnimeCardList({ animeList, buttonType: "add" })}
                 <Backdrop
                   sx={{
                     color: "#fff",
@@ -193,7 +193,10 @@ export const AppContainer = () => {
           default: {
             return (
               <>
-                {getAnimeList({ animeList: savedData, buttonType: "delete" })}
+                {getAnimeCardList({
+                  animeList: savedData,
+                  buttonType: "delete",
+                })}
                 <Backdrop
                   sx={{
                     color: "#fff",
