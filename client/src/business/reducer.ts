@@ -10,30 +10,42 @@ import { dataScraping } from "./phases/dataScraping";
 import { waitingScraping } from "./phases/waitingScraping";
 import { waitingScrapeHandle } from "./phases/waitingScrapeHandle";
 
+export const ActionName = {
+  loadedDB: "loadedDB",
+  closeCard: "closeCard",
+  appLoading: "appLoading",
+  cardOpened: "cardOpened",
+  switchPage: "switchPage",
+  dataReceived: "dataReceived",
+  endedAddAnime: "endedAddAnime",
+  startedAddAnime: "startedAddAnime",
+  dataNotReceived: "dataNotReceived",
+  endedDeleteAnime: "endedDeleteAnime",
+  startedDeleteAnime: "startedDeleteAnime",
+  startedAnimeScraping: "startedAnimeScraping",
+} as const;
+
 export type ActionType =
+  | { type: typeof ActionName.appLoading }
+  | { type: typeof ActionName.closeCard }
+  | { type: typeof ActionName.switchPage }
+  | { type: typeof ActionName.dataNotReceived }
+  | { type: typeof ActionName.startedDeleteAnime; payload: string }
+  | { type: typeof ActionName.startedAnimeScraping; payload: string }
+  | { type: typeof ActionName.startedAddAnime; payload: DetailAnime }
+  | { type: typeof ActionName.endedAddAnime; payload?: DetailAnimeList }
+  | { type: typeof ActionName.endedDeleteAnime; payload?: DetailAnimeList }
   | {
-      type: "appLoading";
-    }
-  | { type: "loadedDB"; payload: { dataBase: IDBDatabase; animeList: any } }
-  | { type: "startedAddAnime"; payload: DetailAnime }
-  | { type: "endedAddAnime"; payload?: DetailAnimeList }
-  | { type: "startedDeleteAnime"; payload: string }
-  | { type: "endedDeleteAnime"; payload?: DetailAnimeList }
-  | { type: "startedAnimeScraping"; payload: string }
-  | {
-      type: "dataReceived";
+      type: typeof ActionName.dataReceived;
       payload: DetailAnimeList;
     }
-  | { type: "dataNotReceived" }
   | {
-      type: "cardOpened";
+      type: typeof ActionName.cardOpened;
       payload: DetailAnime;
     }
   | {
-      type: "closeCard";
-    }
-  | {
-      type: "switchPage";
+      type: typeof ActionName.loadedDB;
+      payload: { dataBase: IDBDatabase; animeList: any };
     };
 
 export const useAppDispatch = () => {

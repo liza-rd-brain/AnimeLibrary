@@ -1,9 +1,9 @@
 import { State } from "../../../types";
-import { ActionType } from "../../reducer";
+import { ActionType, ActionName } from "../../reducer";
 
 export const dataScraping = (state: State, action: ActionType): State => {
   switch (action.type) {
-    case "dataReceived": {
+    case ActionName.dataReceived: {
       const newState: State = {
         ...state,
         doEffect: null,
@@ -12,7 +12,7 @@ export const dataScraping = (state: State, action: ActionType): State => {
       };
       return newState;
     }
-    case "dataNotReceived": {
+    case ActionName.dataNotReceived: {
       const newState: State = {
         ...state,
         doEffect: null,

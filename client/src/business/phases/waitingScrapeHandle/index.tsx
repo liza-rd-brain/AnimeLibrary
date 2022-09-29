@@ -1,12 +1,12 @@
+import { ActionType, ActionName } from "../../reducer";
 import { CardOpeningPhase, State } from "../../../types";
-import { ActionType } from "../../reducer";
 
 export const waitingScrapeHandle = (
   state: State,
   action: ActionType
 ): State => {
   switch (action.type) {
-    case "startedAnimeScraping": {
+    case ActionName.startedAnimeScraping: {
       const newState: State = {
         ...state,
         phase: { type: "dataScraping" },
@@ -15,7 +15,7 @@ export const waitingScrapeHandle = (
       return newState;
     }
 
-    case "cardOpened": {
+    case ActionName.cardOpened: {
       const cardOpeningPhase = {
         type: "cardOpening",
         prevType: state.phase.type,
@@ -29,7 +29,7 @@ export const waitingScrapeHandle = (
       return newState;
     }
 
-    case "switchPage": {
+    case ActionName.switchPage: {
       const newPage = state.currPage === "list" ? "search" : "list";
       const newState: State = {
         ...state,
@@ -38,7 +38,7 @@ export const waitingScrapeHandle = (
       return newState;
     }
 
-    case "startedAddAnime": {
+    case ActionName.startedAddAnime: {
       const newState: State = {
         ...state,
         doEffect: { type: "!startedAddAnime", data: action.payload },
@@ -46,7 +46,8 @@ export const waitingScrapeHandle = (
 
       return newState;
     }
-    case "endedAddAnime": {
+
+    case ActionName.endedAddAnime: {
       if (action.payload) {
         const newState: State = {
           ...state,
