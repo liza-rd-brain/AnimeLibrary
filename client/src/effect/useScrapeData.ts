@@ -11,9 +11,12 @@ export function useScrapeData() {
 
   useEffect(
     function requestDataScrape() {
+      const controller = new AbortController();
+
       switch (doEffect?.type) {
         case "!dataScrape": {
-          const data = findAnime(doEffect.data);
+          const data = findAnime(doEffect.data, controller);
+
           data.then(
             (detailAnimeList) => {
               if (detailAnimeList) {
@@ -32,15 +35,20 @@ export function useScrapeData() {
             }
           );
 
-          break;
+          return () => {
+            //reject промиса
+            //отправить контр запрос?????
+            //abort самого промиса в axios
+            controller.abort();
+          };
         }
         default: {
           break;
         }
       }
-      //не нужно добавлять dispatch в список зависимостей
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+    //не нужно добавлять dispatch в список зависимостей
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [doEffect]
   );
 }
