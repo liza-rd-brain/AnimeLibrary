@@ -67,7 +67,7 @@ export type DetailAnimeList = Array<DetailAnime>;
 export type AnimeHashTable = Record<string, Omit<DetailAnime, "animeName">>;
 
 export type ResponseType = {
-  data: DetailAnimeList;
+  data: string;
 };
 
 export type CardButtonType = "add" | "delete";

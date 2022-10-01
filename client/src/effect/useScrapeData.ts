@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../business/reducer";
 
 import { State } from "../types";
-import { findAnime } from "../business/findAnime";
+import { findAnimeWebSocket } from "../business/findAnimeWebSocket";
 
 export function useScrapeData() {
   const [doEffect] = useSelector((state: State) => [state.doEffect]);
@@ -15,10 +15,13 @@ export function useScrapeData() {
 
       switch (doEffect?.type) {
         case "!dataScrape": {
-          const data = findAnime(doEffect.data, controller);
+          const data = findAnimeWebSocket(doEffect.data);
+          console.log("data", data);
 
           data.then(
-            (detailAnimeList) => {
+            (detailAnimeListJSON) => {
+              console.log("detailAnimeList", detailAnimeListJSON);
+              const detailAnimeList = JSON.parse(detailAnimeListJSON);
               if (detailAnimeList) {
                 dispatch({
                   type: "dataReceived",

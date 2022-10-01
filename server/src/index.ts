@@ -3,6 +3,9 @@ const express = require("express");
 const puppeteer = require("puppeteer");
 const bodyParser = require("body-parser");
 
+import * as http from "http";
+import * as WebSocket from "ws";
+
 import { store } from "./data";
 import { DetailAnimeList, RawDetailAnime } from "./types";
 import { takeLinkList } from "./business/takeLinkList";
@@ -11,8 +14,58 @@ import { getAnimeDetail } from "./business/getAnimeDetail";
 import { getStructuredDetail } from "./business/getStructuredDetail";
 import { getDetailLinkList } from "./business/getDetailLinkList";
 
+const webSocketConnection = { connect: false };
+
 const app = express();
-const port = 3000;
+/* __________________________websocket______________ */
+
+//initialize a simple http server
+const server = http.createServer(app);
+
+//initialize the WebSocket server instance
+const wss = new WebSocket.Server({ server });
+
+wss.on("connection", (ws: WebSocket) => {
+  //connection is up, let's add a simple simple event
+
+  ws.on("pong", () => console.log("alive"));
+
+  ws.on("message", (message: string) => {
+    //log the received message and send it back to the client
+    console.log("received: %s", message);
+    const animeName = JSON.parse(message).text;
+    console.log("animeName: %s", animeName);
+    const scrapedDate: Promise<DetailAnimeList> = new Promise(
+      (resolve, reject) => {
+        makeScraping(animeName)
+          .then((data) => {
+            console.log("makeScraping", data);
+            resolve(data);
+          })
+          .catch((err) => reject(" scrape failed"));
+      }
+    );
+
+    scrapedDate.then((detailAnimeBlob) => {
+      const detailAnimeJSON = JSON.stringify(detailAnimeBlob);
+      ws.send(detailAnimeJSON);
+      ws.close();
+    });
+  });
+
+  //send immediatly a feedback to the incoming connection
+  // ws.send("Hi there, I am a WebSocket server");
+});
+
+//start our server
+server.listen(process.env.PORT || 3000, () => {
+  const address = server.address() as WebSocket.AddressInfo;
+  console.log(`Server started on port ${address.port} :)`);
+});
+
+// const port = 3000;
+
+/* __________________________websocket______________ */
 
 const chromeOptions = {
   headless: false,
@@ -53,23 +106,23 @@ const makeScraping = async (animeName: string): Promise<DetailAnimeList> => {
   }
 };
 
-app.post("/findName", (req: Request, res) => {
-  const animeName = req.body.name;
+// app.post("/findName", (req: Request, res) => {
+//   const animeName = req.body.name;
 
-  const scrapedDate: Promise<DetailAnimeList> = new Promise(
-    (resolve, reject) => {
-      makeScraping(animeName)
-        .then((data) => {
-          console.log("makeScraping", data);
-          resolve(data);
-        })
-        .catch((err) => reject(" scrape failed"));
-    }
-  );
+//   const scrapedDate: Promise<DetailAnimeList> = new Promise(
+//     (resolve, reject) => {
+//       makeScraping(animeName)
+//         .then((data) => {
+//           console.log("makeScraping", data);
+//           resolve(data);
+//         })
+//         .catch((err) => reject(" scrape failed"));
+//     }
+//   );
 
-  scrapedDate.then((resolve) => res.send(resolve));
-});
+//   scrapedDate.then((resolve) => res.send(resolve));
+// });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`);
+// });
