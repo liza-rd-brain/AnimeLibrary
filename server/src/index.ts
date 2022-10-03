@@ -25,10 +25,32 @@ const server = http.createServer(app);
 //initialize the WebSocket server instance
 const wss = new WebSocket.Server({ server });
 
-wss.on("connection", (ws: WebSocket) => {
-  //connection is up, let's add a simple simple event
+const state = { isAlive: true };
 
-  ws.on("pong", () => console.log("alive"));
+wss.on("pong", () => {
+  console.log(state);
+  state.isAlive = true;
+});
+
+const interval = setInterval(function ping() {
+  wss.clients.forEach(function each(ws) {
+    // @ts-ignore
+    if (state.isAlive === false) {
+      return ws.terminate();
+    }
+    // @ts-ignore
+    state.isAlive = false;
+    ws.ping();
+  });
+}, 3000);
+
+wss.on("connection", (ws: WebSocket) => {
+  ws.on;
+
+  ws.on("close", function close() {
+    console.log("close inside connection");
+    clearInterval(interval);
+  });
 
   ws.on("message", (message: string) => {
     //log the received message and send it back to the client
