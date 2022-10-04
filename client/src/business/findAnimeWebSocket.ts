@@ -8,11 +8,11 @@ const createConnection = (currUrl: string): Promise<WebSocket> => {
     };
 
     webSocket.onerror = () => {
-      reject(new Error());
+      reject("err");
     };
     webSocket.onclose = () => {
       console.log("close from createConnection ");
-      reject(new Error());
+      reject("err");
     };
   });
 };
@@ -37,7 +37,7 @@ const sendName = (
     };
 
     webSocket.onerror = () => {
-      reject(new Error());
+      reject("err");
     };
   });
 };
@@ -67,16 +67,16 @@ export async function findAnimeWebSocket(
 
     webSocket.onclose = () => {
       console.log("close from findAnimeWebSocket");
-      reject(new Error());
+      reject("err");
     };
 
     webSocket.onerror = () => {
-      reject(new Error());
+      reject("err");
     };
 
     controller.signal.addEventListener("abort", () => {
       console.log("abort find socket");
-      reject(new Error("abort socket"));
+      reject("abort socket");
     });
   });
 

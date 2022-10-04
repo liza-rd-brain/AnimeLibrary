@@ -31,6 +31,6 @@ export async function takeLinkList(page, animeName: string) {
     return animeList;
   } catch (err) {
     console.log("TakeLinkList", "scraping err");
-    throw "scraping err";
+    return "scraping err";
   }
 }
