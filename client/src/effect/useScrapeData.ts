@@ -15,10 +15,10 @@ export function useScrapeData() {
 
       switch (doEffect?.type) {
         case "!dataScrape": {
-          const data = findAnimeWebSocket(doEffect.data);
-          console.log("data", data);
+          const dataPromise = findAnimeWebSocket(doEffect.data, controller);
+          console.log("data", dataPromise);
 
-          data.then(
+          dataPromise.then(
             (detailAnimeListJSON) => {
               console.log("detailAnimeList", detailAnimeListJSON);
               const detailAnimeList = JSON.parse(detailAnimeListJSON);
@@ -35,6 +35,9 @@ export function useScrapeData() {
             },
             (rej) => {
               console.log("rej", rej);
+              dispatch({
+                type: "dataNotReceived",
+              });
             }
           );
 

@@ -54,25 +54,36 @@ wss.on("connection", (ws: WebSocket) => {
 
   ws.on("message", (message: string) => {
     //log the received message and send it back to the client
-    console.log("received: %s", message);
+
     const animeName = JSON.parse(message).text;
-    console.log("animeName: %s", animeName);
+
     const scrapedDate: Promise<DetailAnimeList> = new Promise(
       (resolve, reject) => {
-        makeScraping(animeName)
-          .then((data) => {
+        makeScraping(animeName).then(
+          (data) => {
             console.log("makeScraping", data);
             resolve(data);
-          })
-          .catch((err) => reject(" scrape failed"));
+          },
+          (err) => {
+            console.log(" scrape failed", err);
+            reject("scrape failed");
+          }
+        );
       }
     );
 
-    scrapedDate.then((detailAnimeBlob) => {
-      const detailAnimeJSON = JSON.stringify(detailAnimeBlob);
-      ws.send(detailAnimeJSON);
-      ws.close();
-    });
+    scrapedDate
+      .then(
+        (detailAnimeList) => {
+          const detailAnimeJSON = JSON.stringify(detailAnimeList);
+          ws.send(detailAnimeJSON);
+        },
+        (err) => {
+          console.log("catching 1");
+          // throw err;
+        }
+      )
+      .finally(() => ws.close());
   });
 
   //send immediatly a feedback to the incoming connection
@@ -100,12 +111,16 @@ app.use(bodyParser.json());
 
 const makeScraping = async (animeName: string): Promise<DetailAnimeList> => {
   const browser = await puppeteer.launch(chromeOptions);
-  const page = await browser.newPage();
-
-  let detailList: Array<RawDetailAnime> = [];
+  console.log("browser", browser);
 
   try {
+    const page = await browser.newPage();
+
+    let detailList: Array<RawDetailAnime> = [];
     const initialList = await takeLinkList(page, animeName);
+
+    console.log("initialList makeScraping ", initialList);
+
     const listWithDetails = getDetailLinkList(initialList);
 
     for (let i = 0; i < listWithDetails.length; i++) {
@@ -119,12 +134,15 @@ const makeScraping = async (animeName: string): Promise<DetailAnimeList> => {
     const structuredDetailList: DetailAnimeList =
       getStructuredDetail(detailList);
 
-    store.data = structuredDetailList;
+    return structuredDetailList;
+
+    // store.data = structuredDetailList;
   } catch (err) {
-    console.log(err);
+    console.log("makeScraping err", err);
+    throw err;
   } finally {
     await browser.close();
-    return store.data;
+    // return store.data;
   }
 };
 

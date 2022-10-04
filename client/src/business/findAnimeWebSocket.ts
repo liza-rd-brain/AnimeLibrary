@@ -10,6 +10,10 @@ const createConnection = (currUrl: string): Promise<WebSocket> => {
     webSocket.onerror = () => {
       reject(new Error());
     };
+    webSocket.onclose = () => {
+      console.log("close from createConnection ");
+      reject(new Error());
+    };
   });
 };
 
@@ -24,31 +28,67 @@ const sendName = (
     };
 
     webSocket.send(JSON.stringify(msg));
+
     webSocket.onmessage = (event) => {
       const resAnime: ResponseType = event.data;
       console.log("resAnime", resAnime);
 
       resolve(resAnime);
     };
+
     webSocket.onerror = () => {
       reject(new Error());
     };
   });
 };
 
-export async function findAnimeWebSocket(animeName: string): Promise<string> {
+export async function findAnimeWebSocket(
+  animeName: string,
+  controller: AbortController
+): Promise<string> {
   const currUrl = "ws://localhost:3000/findName";
 
   const webSocket = await createConnection(currUrl);
 
-  return sendName(webSocket, animeName).then(
+  return new Promise((resolve, reject) => {
+    var msg = {
+      type: "message",
+      text: animeName,
+    };
+
+    webSocket.send(JSON.stringify(msg));
+
+    webSocket.onmessage = (event) => {
+      const resAnime: string = event.data;
+      console.log("resAnime", resAnime);
+
+      resolve(resAnime);
+    };
+
+    webSocket.onclose = () => {
+      console.log("close from findAnimeWebSocket");
+      reject(new Error());
+    };
+
+    webSocket.onerror = () => {
+      reject(new Error());
+    };
+
+    controller.signal.addEventListener("abort", () => {
+      console.log("abort find socket");
+      reject(new Error("abort socket"));
+    });
+  });
+
+  /*   return sendName(webSocket, animeName).then(
     (resAnime: ResponseType) => {
       return resAnime;
     },
     (err) => {
       return err;
     }
-  );
+  ); */
+
   // const getListPromise = await connectionPromise.then(
   //   (webSocket) => {
   //     return sendName(webSocket, animeName);
