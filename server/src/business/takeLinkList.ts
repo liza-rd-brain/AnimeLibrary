@@ -11,7 +11,7 @@ export async function takeLinkList(page, animeName: string) {
     await page.type(searchInputSelector, animeName);
     await page.keyboard.press("Enter");
     await page.waitForNavigation();
-    await page.screenshot({ path: `./screenshot/${Math.random()}.png` });
+    // await page.screenshot({ path: `./screenshot/${Math.random()}.png` });
 
     const animeList = await page.$$eval(animeContainerSelector, (listAnime) => {
       const animeTitleList = listAnime.map((item) => {
@@ -30,7 +30,6 @@ export async function takeLinkList(page, animeName: string) {
 
     return animeList;
   } catch (err) {
-    console.log("TakeLinkList", "scraping err");
     return "scraping err";
   }
 }
