@@ -1,9 +1,12 @@
+import { ActionType, ActionName } from "../../reducer";
 import { CardOpeningPhase, State } from "../../../types";
-import { ActionType } from "../../reducer";
 
-export const idle = (state: State, action: ActionType): State => {
+export const waitingScrapeHandle = (
+  state: State,
+  action: ActionType
+): State => {
   switch (action.type) {
-    case "startedAnimeScraping": {
+    case ActionName.startedAnimeScraping: {
       const newState: State = {
         ...state,
         phase: { type: "dataScraping" },
@@ -12,7 +15,7 @@ export const idle = (state: State, action: ActionType): State => {
       return newState;
     }
 
-    case "cardOpened": {
+    case ActionName.cardOpened: {
       const cardOpeningPhase = {
         type: "cardOpening",
         prevType: state.phase.type,
@@ -26,7 +29,7 @@ export const idle = (state: State, action: ActionType): State => {
       return newState;
     }
 
-    case "switchPage": {
+    case ActionName.switchPage: {
       const newPage = state.currPage === "list" ? "search" : "list";
       const newState: State = {
         ...state,
@@ -35,7 +38,7 @@ export const idle = (state: State, action: ActionType): State => {
       return newState;
     }
 
-    case "startedAddAnime": {
+    case ActionName.startedAddAnime: {
       const newState: State = {
         ...state,
         doEffect: { type: "!startedAddAnime", data: action.payload },
@@ -43,11 +46,12 @@ export const idle = (state: State, action: ActionType): State => {
 
       return newState;
     }
-    case "endedAddAnime": {
+
+    case ActionName.endedAddAnime: {
       if (action.payload) {
         const newState: State = {
           ...state,
-          phase: { type: "idle" },
+          phase: { type: "waitingScrapeHandle" },
           doEffect: null,
           savedData: action.payload,
         };
@@ -55,7 +59,7 @@ export const idle = (state: State, action: ActionType): State => {
       } else {
         const newState: State = {
           ...state,
-          phase: { type: "idle" },
+          phase: { type: "waitingScrapeHandle" },
           doEffect: null,
         };
         return newState;

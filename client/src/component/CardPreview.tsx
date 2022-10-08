@@ -14,21 +14,9 @@ const CardContainer = styled.div`
   box-shadow: 0px 1px 20px lightgrey;
   width: 300px;
   cursor: pointer;
-
-  /* &:hover {
-    box-shadow: 0px 1px 20px gray;
-  } */
-
-  /* grid-template-columns: 300px 400px; */
 `;
 
 const CardItem = styled.div`
-  display: grid;
-  gap: 15px;
-  /* grid-template-columns: 280px 400px; */
-`;
-
-const Table = styled.div`
   display: grid;
   gap: 15px;
 `;
@@ -66,45 +54,15 @@ const Title = styled.div`
   overflow: hidden;
 `;
 
-const StyledRow = styled.div`
-  width: 100%;
-`;
-
-const StyledTitle = styled.span`
-  font-weight: bold;
-`;
-
-const Description = styled.span`
-  width: 300px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-`;
-
 // const RowItem: FC;
 
 export const CardPreview: FC<{
   data: DetailAnime;
   buttonType: CardButtonType;
 }> = ({ data, buttonType }) => {
-  const { pictureUrl, animeName, description, ...detailTable } = data;
+  const { pictureUrl, animeName } = data;
 
   const dispatch = useDispatch();
-
-  const detailList = Object.entries(detailTable);
-
-  const getDetailTable = () => {
-    return detailList.map((item, index) => {
-      const [key, value] = item;
-      return (
-        <StyledRow key={index}>
-          <StyledTitle>{`${key}: `}</StyledTitle>
-          <span>{value}</span>
-        </StyledRow>
-      );
-    });
-  };
 
   return (
     <CardContainer
@@ -114,11 +72,8 @@ export const CardPreview: FC<{
     >
       <CardItem>
         <ImageContainer>
-          {/* <StyledImage pictureUrl={pictureUrl} /> */}
           <StyledImage src={pictureUrl} alt="" />
         </ImageContainer>
-
-        {/* <Table>{getDetailTable()}</Table> */}
       </CardItem>
 
       <Header>

@@ -1,12 +1,11 @@
+import { ActionType, ActionName } from "../../reducer";
 import { CardOpeningPhase, State } from "../../../types";
-import { ActionType } from "../../reducer";
 
 export const cardOpening = (state: State, action: ActionType): State => {
-  const [phaseOuter, phaseInner] = state.phase.type.split(".");
   const prevPhase = state.phase as CardOpeningPhase;
 
   switch (action.type) {
-    case "closeCard": {
+    case ActionName.closeCard: {
       const newState: State = {
         ...state,
         openedCard: null,
@@ -16,7 +15,7 @@ export const cardOpening = (state: State, action: ActionType): State => {
       return newState;
     }
 
-    case "startedDeleteAnime": {
+    case ActionName.startedDeleteAnime: {
       const newState: State = {
         ...state,
         doEffect: { type: "!startedDeleteAnime", data: action.payload },
@@ -25,14 +24,23 @@ export const cardOpening = (state: State, action: ActionType): State => {
       return newState;
     }
 
-    case "endedDeleteAnime": {
-      const newState: State = {
-        ...state,
-        phase: { type: prevPhase.prevType },
-        doEffect: null,
-        savedData: action.payload,
-      };
-      return newState;
+    case ActionName.endedDeleteAnime: {
+      if (action.payload) {
+        const newState: State = {
+          ...state,
+          phase: { type: prevPhase.prevType },
+          doEffect: null,
+          savedData: action.payload,
+        };
+        return newState;
+      } else {
+        const newState: State = {
+          ...state,
+          phase: { type: prevPhase.prevType },
+          doEffect: null,
+        };
+        return newState;
+      }
     }
 
     default: {

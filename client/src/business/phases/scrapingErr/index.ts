@@ -1,9 +1,9 @@
 import { State } from "../../../types";
-import { ActionType } from "../../reducer";
+import { ActionType, ActionName } from "../../reducer";
 
 export const scrapingErr = (state: State, action: ActionType): State => {
   switch (action.type) {
-    case "startedAnimeScraping": {
+    case ActionName.startedAnimeScraping: {
       const newState: State = {
         ...state,
         phase: { type: "dataScraping" },
@@ -12,7 +12,7 @@ export const scrapingErr = (state: State, action: ActionType): State => {
       return newState;
     }
 
-    case "switchPage": {
+    case ActionName.switchPage: {
       const newPage = state.currPage === "list" ? "search" : "list";
       const newState: State = {
         ...state,

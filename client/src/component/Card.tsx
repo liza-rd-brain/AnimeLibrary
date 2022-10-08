@@ -1,9 +1,8 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
 
 import Button from "@mui/material/Button";
-
 import { CardButtonType, DetailAnime } from "../types";
 
 const CardContainer = styled.div`
@@ -11,11 +10,9 @@ const CardContainer = styled.div`
   gap: 15px;
   padding: 20px;
   border-radius: 10px;
-  /* box-shadow: 0px 1px 20px lightgrey; */
   background: white;
   color: black;
   max-width: 800px;
-  /* grid-template-columns: 300px 400px; */
 `;
 
 const CardItem = styled.div`
@@ -29,24 +26,11 @@ const Table = styled.div`
   gap: 15px;
 `;
 
-const ImageContainer = styled.div`
-  /* display: block; */
-`;
-
+const ImageContainer = styled.div``;
 const StyledButton = styled(Button)`
   width: 100%;
   height: 56px;
 `;
-
-// const StyledImage = styled.div<{ pictureUrl?: string }>`
-//   height: 100%;
-//   background-position: center;
-//   background-size: 250px;
-//   border-radius: 5px;
-//   background-image: ${(props) => {
-//     return `url(${props.pictureUrl})`;
-//   }};
-// `;
 
 const StyledImage = styled.img`
   border-radius: 5px;
@@ -62,9 +46,6 @@ const StyledHeader = styled.div`
 
 const StyledRow = styled.div`
   width: 100%;
-  /* display: grid;
-  gap: 15px; */
-  /* grid-template-columns: 150px 150px; */
 `;
 
 const StyledTitle = styled.span`
@@ -72,24 +53,17 @@ const StyledTitle = styled.span`
 `;
 
 const Description = styled.span`
-  /* height: 60px;
-  width: 500px;
-  text-overflow: ellipsis; */
-  /* width: 300px; */
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  /* -webkit-line-clamp: 3; */
   overflow: hidden;
 `;
-
-// const RowItem: FC;
 
 export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
   data,
   buttonType,
 }) => {
   const { pictureUrl, animeName, description, ...detailTable } = data;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const detailList = Object.entries(detailTable);
 
@@ -106,8 +80,6 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
   };
 
   const buttonText = buttonType === "add" ? "add" : "delete";
-
-  // const actionType = buttonType === "add" ? "startedAddAnime" : "startedDeleteAnime";
 
   const handleButtonClick = () => {
     if (buttonType === "add") {

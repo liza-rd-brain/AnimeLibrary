@@ -1,14 +1,16 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { DetailAnime, State } from "../types";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
+
+import { State } from "../types";
 import { STORE_NAME } from "./common/constantList";
 import { getAnimeList } from "./common/getAnimeList";
 
-const DATABASE_ERR = "Failed to load DataBase";
-
-type TableAnime = DetailAnime & { id: string };
-
-const deleteAnime = (dataBase: IDBDatabase, animeName: string) => {
+const deleteAnime = (
+  dataBase: IDBDatabase,
+  animeName: string,
+  controller: AbortController
+): Promise<undefined> => {
   return new Promise((resolve, reject) => {
     const transaction = dataBase.transaction(STORE_NAME, "readwrite");
     const animeList = transaction.objectStore(STORE_NAME);
@@ -21,43 +23,58 @@ const deleteAnime = (dataBase: IDBDatabase, animeName: string) => {
     request.onsuccess = () => {
       resolve(request.result);
     };
+
+    controller.signal.addEventListener("abort", reject);
   });
 };
 
 export function useDeleteAnime() {
-  const { doEffect, dataBase } = useSelector((state: State) => ({ ...state }));
-  const dispatch = useDispatch();
+  const { doEffect, dataBase } = useSelector((state: State) => state);
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    switch (doEffect?.type) {
-      case "!startedDeleteAnime":
-        if (dataBase) {
-          const animeName = doEffect.data;
-          const addAnimePromise = deleteAnime(dataBase, animeName);
-          //возвращает  key
-          addAnimePromise.then(
-            (res) => {
-              getAnimeList(dataBase).then((animeList) => {
+  useEffect(
+    function requestDeleteAnime() {
+      const controller = new AbortController();
+      switch (doEffect?.type) {
+        case "!startedDeleteAnime":
+          if (dataBase) {
+            const animeName = doEffect.data;
+            const addAnimePromise = deleteAnime(
+              dataBase,
+              animeName,
+              controller
+            );
+            //возвращает  key
+            addAnimePromise.then(
+              (res) => {
+                getAnimeList(dataBase, controller).then((animeList) => {
+                  dispatch({
+                    type: "endedDeleteAnime",
+                    payload: animeList,
+                  });
+                });
+              },
+              (error) => {
                 dispatch({
                   type: "endedDeleteAnime",
-                  payload: animeList,
                 });
-              });
-            },
-            (error) => {
-              dispatch({
-                type: "endedDeleteAnime",
-              });
-            }
-          );
+              }
+            );
+
+            return () => {
+              controller.abort();
+            };
+          }
+
+          break;
+
+        default: {
+          break;
         }
-
-        break;
-
-      default: {
-        break;
       }
-    }
+    },
+    //не нужно добавлять dispatch, dataBase в список зависимостей
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [doEffect]);
+    [doEffect]
+  );
 }

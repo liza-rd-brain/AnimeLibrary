@@ -1,24 +1,24 @@
 import { useRef, FC } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
 
 import Backdrop from "@mui/material/Backdrop";
 import LinearProgress from "@mui/material/LinearProgress";
 
-import { Error } from "./Error";
-import { Navigator } from "./Navigator";
-import { Card } from "../component/Card";
-import { CardButtonType } from "../types";
-import { SearchItem } from "./SearchItem";
-import { AnimeListType, State } from "../types";
 import {
   useAddAnime,
   useDeleteAnime,
   useOpenDB,
   useScrapeData,
 } from "../effect";
-import { CardPreview } from "../component/CardPreview";
 
+import { Error } from "./Error";
+import { Navigator } from "./Navigator";
+import { Card } from "../component/Card";
+import { CardButtonType, AnimeListType, State } from "../types";
+import { SearchItem } from "./SearchItem";
+import { CardPreview } from "../component/CardPreview";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
 
@@ -73,7 +73,7 @@ const PreloaderContainer = styled.div`
   height: 200px;
 `;
 
-const getAnimeList = ({
+const getAnimeCardList = ({
   animeList,
   buttonType,
 }: {
@@ -110,11 +110,9 @@ export const AppContainer = () => {
     phase,
     currPage,
     savedData,
-  } = useSelector((state: State) => ({
-    ...state,
-  }));
+  } = useSelector((state: State) => state);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleClose = () => {
     dispatch({ type: "closeCard" });
@@ -131,11 +129,6 @@ export const AppContainer = () => {
 
   const clickDisable =
     phaseOuter === "dataScraping" || phaseInner === "dataScraping";
-
-  const inputVisibilitySearch = !(
-    phaseOuter === "waitingScraping" || phaseOuter === "waitingDB"
-  );
-  const inputVisibility = currPage === "search" ? inputVisibilitySearch : true;
 
   const getAppView = () => {
     switch (currPage) {
@@ -156,16 +149,16 @@ export const AppContainer = () => {
                 <Preloader
                   isAnimated={phaseInner === "dataScraping" ? true : false}
                 />
-                <SearchItem refState={refState} />
+                <SearchItem refState={refState} page={"search"} />
               </>
             );
           }
 
-          case "idle":
+          case "waitingScrapeHandle":
           case "cardOpening": {
             return (
               <>
-                {getAnimeList({ animeList, buttonType: "add" })}
+                {getAnimeCardList({ animeList, buttonType: "add" })}
                 <Backdrop
                   sx={{
                     color: "#fff",
@@ -200,7 +193,10 @@ export const AppContainer = () => {
           default: {
             return (
               <>
-                {getAnimeList({ animeList: savedData, buttonType: "delete" })}
+                {getAnimeCardList({
+                  animeList: savedData,
+                  buttonType: "delete",
+                })}
                 <Backdrop
                   sx={{
                     color: "#fff",
@@ -218,7 +214,6 @@ export const AppContainer = () => {
           }
         }
       }
-      // eslint-disable-next-line no-fallthrough
       default: {
         return null;
       }
@@ -227,7 +222,7 @@ export const AppContainer = () => {
 
   return (
     <StyledContainer isInit={false} disableClick={clickDisable}>
-      <Navigator refState={refState} hasInput={inputVisibility} />
+      <Navigator refState={refState} />
       {getAppView()}
     </StyledContainer>
   );

@@ -1,16 +1,15 @@
-import React, { FC, useRef } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../business/reducer";
 
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
-import Typography from "@mui/material/Typography";
-
-import logo from "../assets/pikachu_64.png";
 
 import { SearchItem } from "./SearchItem";
-import { State } from "../types";
+import { PageName, State } from "../types";
+import logo from "../assets/pikachu_64.png";
 
 const Logo = styled.div`
   background: url(${logo});
@@ -32,35 +31,42 @@ const SEARCH_TEXT = "search";
 const LIST_TEXT = "my list";
 
 export const Navigator: FC<{
-  hasInput: boolean;
   refState?: React.MutableRefObject<{
     value: string | null;
   }>;
-}> = ({ hasInput, refState }) => {
-  const dispatch = useDispatch();
-  const [currPage] = useSelector((state: State) => [state.currPage]);
-  const [value, setValue] = React.useState(0);
+}> = ({ refState }) => {
+  const dispatch = useAppDispatch();
+  const { currPage, phase } = useSelector((state: State) => state);
+  const pageName: PageName[] = ["search", "list"];
+  const currPageIndex = pageName.findIndex((page) => page === currPage);
+
+  const [phaseOuter] = phase.type.split(".");
+  const inputVisibilitySearch = !(
+    phaseOuter === "waitingScraping" || phaseOuter === "waitingDB"
+  );
+
+  const hasInput = currPage === "search" ? inputVisibilitySearch : true;
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     debugger;
-    setValue(newValue);
+
     dispatch({ type: "switchPage" });
   };
 
   return (
     <Box sx={{ width: "100%" }}>
-      <StyledHeader /* sx={{ borderBottom: 1, borderColor: "divider" }} */>
+      <StyledHeader>
         <Logo />
         <Tabs
-          value={value}
+          value={currPageIndex}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          {/*   Добавить disabled на пустой список-?! */}
+          {/* TODO:  Добавить disabled на пустой список-?! */}
           <Tab label={SEARCH_TEXT} />
-          <Tab label={LIST_TEXT} /* disabled={currPage === "search"}  */ />
+          <Tab label={LIST_TEXT} />
         </Tabs>
-        {hasInput && <SearchItem refState={refState} />}
+        {hasInput && <SearchItem refState={refState} page={currPage} />}
       </StyledHeader>
     </Box>
   );

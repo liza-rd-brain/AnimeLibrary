@@ -1,14 +1,14 @@
-import { CardOpeningPhase, State } from "../../../types";
-import { ActionType } from "../../reducer";
 import { dataScraping } from "../dataScraping";
+import { ActionType, ActionName } from "../../reducer";
+import { CardOpeningPhase, State } from "../../../types";
 
 export const waitingScraping = (state: State, action: ActionType): State => {
-  const [phaseOuter, phaseInner] = state.phase.type.split(".");
+  const [, phaseInner] = state.phase.type.split(".");
 
   switch (phaseInner) {
-    case "idle": {
+    case "waitingScrapeHandle": {
       switch (action.type) {
-        case "startedAnimeScraping": {
+        case ActionName.startedAnimeScraping: {
           const newState: State = {
             ...state,
             phase: { type: "waitingScraping.dataScraping" },
@@ -17,7 +17,7 @@ export const waitingScraping = (state: State, action: ActionType): State => {
           return newState;
         }
 
-        case "switchPage": {
+        case ActionName.switchPage: {
           const newPage = state.currPage === "list" ? "search" : "list";
           const newState: State = {
             ...state,
@@ -26,7 +26,7 @@ export const waitingScraping = (state: State, action: ActionType): State => {
           return newState;
         }
 
-        case "cardOpened": {
+        case ActionName.cardOpened: {
           const cardOpeningPhase = {
             type: "cardOpening",
             prevType: state.phase.type,

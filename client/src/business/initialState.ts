@@ -1,7 +1,7 @@
 import { State } from "../types";
 
 export const initialState: State = {
-  // phase: "waitingScraping.idle",
+  // phase: "waitingScraping.waitingScrapeHandle",
   phase: { type: "waitingDB" },
   data: null,
   savedData: null,
