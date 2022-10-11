@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "module": "commonjs",
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
-    "target": "es5",
-    "outDir": "dist"
+    "target": "es6",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "rootDir": "."
   },
-  "include": ["src/**/*"],
-  "exclude": ["dist", "node_modules"]
+  "include": ["src/**/*.ts", "*.ts", "*.d.ts", "*.test.js"],
+  "exclude": ["dist", "build", "node_modules"]
 }
