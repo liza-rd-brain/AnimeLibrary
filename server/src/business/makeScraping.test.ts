@@ -27,7 +27,21 @@ describe("Make scraping test cases", () => {
     TEST_TIMEOUT
   );
 
-  it.todo(
-    "Should close browser instance when controller aborted (e.g. user closes or reloads browser)"
+  it(
+    "Should close browser instance when controller aborted (e.g. user closes or reloads browser)",
+    async () => {
+      try {
+        const controller = new AbortController();
+        setTimeout(() => {
+          controller.abort();
+        }, 0);
+        const [, browser] = await makeScraping(TEST_ANIME_NAME, controller);
+
+        expectedToBeDisconnected(browser);
+      } catch ([, browser]) {
+        expectedToBeDisconnected(browser);
+      }
+    },
+    TEST_TIMEOUT
   );
 });
