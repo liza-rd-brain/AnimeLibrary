@@ -18,7 +18,10 @@ export const ActionName = {
   dataReceived: "dataReceived",
   endedAddAnime: "endedAddAnime",
   startedAddAnime: "startedAddAnime",
-  dataNotReceived: "dataNotReceived",
+  dataNotFound: "dataNotFound",
+  gotServerErr: "gotServerErr",
+
+  // dataNotReceived.: "dataNotReceived",
   endedDeleteAnime: "endedDeleteAnime",
   startedDeleteAnime: "startedDeleteAnime",
   startedAnimeScraping: "startedAnimeScraping",
@@ -27,7 +30,9 @@ export const ActionName = {
 export type ActionType =
   | { type: typeof ActionName.closeCard }
   | { type: typeof ActionName.switchPage }
-  | { type: typeof ActionName.dataNotReceived }
+  | { type: typeof ActionName.dataNotFound }
+  | { type: typeof ActionName.gotServerErr }
+  // | { type: typeof ActionName.dataNotReceived }
   | { type: typeof ActionName.startedDeleteAnime; payload: string }
   | { type: typeof ActionName.startedAnimeScraping; payload: string }
   | { type: typeof ActionName.startedAddAnime; payload: DetailAnime }

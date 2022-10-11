@@ -16,27 +16,34 @@ export function useScrapeData() {
       switch (doEffect?.type) {
         case "!dataScrape": {
           const dataPromise = findAnimeWebSocket(doEffect.data, controller);
-          console.log("data", dataPromise);
 
           dataPromise.then(
             (detailAnimeListJSON) => {
-              console.log("detailAnimeList", detailAnimeListJSON);
               const detailAnimeList = JSON.parse(detailAnimeListJSON);
+
+              const animeListNotEmpty = detailAnimeList.length;
+
               if (detailAnimeList) {
-                dispatch({
-                  type: "dataReceived",
-                  payload: detailAnimeList,
-                });
+                if (animeListNotEmpty) {
+                  dispatch({
+                    type: "dataReceived",
+                    payload: detailAnimeList,
+                  });
+                } else {
+                  dispatch({
+                    type: "dataNotFound",
+                  });
+                }
               } else {
                 dispatch({
-                  type: "dataNotReceived",
+                  type: "gotServerErr",
                 });
               }
             },
             (rej) => {
               console.log("rej", rej);
               dispatch({
-                type: "dataNotReceived",
+                type: "gotServerErr",
               });
             }
           );

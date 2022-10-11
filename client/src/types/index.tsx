@@ -1,12 +1,15 @@
 export type State = {
   phase: PhaseType;
-  data: AnimeListType;
+  data: AnimeListType | ErrText;
   savedData: AnimeListType | null;
   doEffect: EffectType;
   openedCard: DetailAnime | null;
   currPage: PageName;
   dataBase: IDBDatabase | null;
 };
+
+//TODO: уточнитть какие строки в типе
+export type ErrText = string;
 
 export type AnimeListType = DetailAnimeList | null;
 export type PageName = "search" | "list";
@@ -26,7 +29,7 @@ export type SimplePhaseType =
   | { type: "waitingScraping.dataScraping" }
   | { type: "waitingScrapeHandle" }
   | { type: "dataScraping" }
-  | { type: "scrapingErr" };
+  | { type: "errHandling" };
 
 type SimplePhaseName = SimplePhaseType["type"];
 

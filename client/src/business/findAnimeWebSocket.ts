@@ -60,13 +60,10 @@ export async function findAnimeWebSocket(
 
     webSocket.onmessage = (event) => {
       const resAnime: string = event.data;
-      console.log("resAnime", resAnime);
-
       resolve(resAnime);
     };
 
     webSocket.onclose = () => {
-      console.log("close from findAnimeWebSocket");
       reject("err");
     };
 
@@ -75,52 +72,7 @@ export async function findAnimeWebSocket(
     };
 
     controller.signal.addEventListener("abort", () => {
-      console.log("abort find socket");
       reject("abort socket");
     });
   });
-
-  /*   return sendName(webSocket, animeName).then(
-    (resAnime: ResponseType) => {
-      return resAnime;
-    },
-    (err) => {
-      return err;
-    }
-  ); */
-
-  // const getListPromise = await connectionPromise.then(
-  //   (webSocket) => {
-  //     return sendName(webSocket, animeName);
-  //   },
-  //   (err) => {
-  //     return err;
-  //   }
-  // );
-
-  // return await getListPromise.then(
-  //   (resAnime: ResponseType) => {
-  //     return resAnime.data;
-  //   },
-  //   (err: Error) => {
-  //     return err;
-  //   }
-  // );
-
-  // return await connectionPromise.then(
-  //   (webSocket) => {
-  //     return sendName(webSocket, animeName).then(
-  //       (resAnime: ResponseType) => {
-  //         return resAnime.data;
-  //       },
-  //       (err) => {
-  //         return err;
-  //       }
-  //     );
-  //   },
-  //   (err) => {}
-  // );
-
-  //ожидание ответа
-  // return new Promise(() => {});
 }

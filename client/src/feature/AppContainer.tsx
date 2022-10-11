@@ -22,8 +22,6 @@ import { CardPreview } from "../component/CardPreview";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
 
-const SCRAPING_ERR_TEXT = "Something went wrong!";
-
 type StyledContainerType = { isInit: boolean; disableClick: boolean };
 
 const StyledContainer = styled.div<StyledContainerType>`
@@ -81,16 +79,11 @@ const getAnimeCardList = ({
   buttonType: CardButtonType;
 }) => {
   if (animeList) {
-    const animeListNotEmpty = animeList.length;
-    if (animeListNotEmpty) {
-      const animeCardList = animeList?.map((animeItem, index) => (
-        <CardPreview key={index} data={animeItem} buttonType={buttonType} />
-      ));
+    const animeCardList = animeList?.map((animeItem, index) => (
+      <CardPreview key={index} data={animeItem} buttonType={buttonType} />
+    ));
 
-      return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
-    } else {
-      return <Error />;
-    }
+    return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
   }
 };
 
@@ -104,13 +97,9 @@ const Preloader: FC<{ isAnimated: boolean }> = ({ isAnimated }) => {
 };
 
 export const AppContainer = () => {
-  const {
-    data: animeList,
-    openedCard,
-    phase,
-    currPage,
-    savedData,
-  } = useSelector((state: State) => state);
+  const { data, openedCard, phase, currPage, savedData } = useSelector(
+    (state: State) => state
+  );
 
   const dispatch = useAppDispatch();
 
@@ -156,26 +145,34 @@ export const AppContainer = () => {
 
           case "waitingScrapeHandle":
           case "cardOpening": {
-            return (
-              <>
-                {getAnimeCardList({ animeList, buttonType: "add" })}
-                <Backdrop
-                  sx={{
-                    color: "#fff",
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                  }}
-                  open={phase.type === "cardOpening"}
-                  onClick={handleClose}
-                >
-                  {openedCard && <Card data={openedCard} buttonType={"add"} />}
-                </Backdrop>
-              </>
-            );
+            if (typeof data !== "string") {
+              return (
+                <>
+                  {getAnimeCardList({ animeList: data, buttonType: "add" })}
+                  <Backdrop
+                    sx={{
+                      color: "#fff",
+                      zIndex: (theme) => theme.zIndex.drawer + 1,
+                    }}
+                    open={phase.type === "cardOpening"}
+                    onClick={handleClose}
+                  >
+                    {openedCard && (
+                      <Card data={openedCard} buttonType={"add"} />
+                    )}
+                  </Backdrop>
+                </>
+              );
+            } else {
+              return null;
+            }
+          }
+          case "errHandling": {
+            if (typeof data === "string") {
+              return <Error text={data} />;
+            } else return null;
           }
 
-          case "scrapingErr": {
-            return <div>{SCRAPING_ERR_TEXT}</div>;
-          }
           default: {
             return null;
           }
