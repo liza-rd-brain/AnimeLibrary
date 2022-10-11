@@ -1,6 +1,8 @@
+import { ERR_TEXT } from "../shared/error";
+
 export type State = {
   phase: PhaseType;
-  data: AnimeListType | ErrText;
+  data: AnimeListType | ErrType;
   savedData: AnimeListType | null;
   doEffect: EffectType;
   openedCard: DetailAnime | null;
@@ -8,13 +10,12 @@ export type State = {
   dataBase: IDBDatabase | null;
 };
 
-//TODO: уточнитть какие строки в типе
-export type ErrText = string;
+//TODO: уточнить какие строки в типе
+
+export type ErrType = typeof ERR_TEXT[keyof typeof ERR_TEXT];
 
 export type AnimeListType = DetailAnimeList | null;
 export type PageName = "search" | "list";
-
-export type ErrorType = "err";
 
 export type PhaseState = {
   curr: PhaseType;

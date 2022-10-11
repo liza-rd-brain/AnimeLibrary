@@ -1,8 +1,6 @@
 import { State } from "../../../types";
 import { ActionType, ActionName } from "../../reducer";
-
-const SERVER_ERR_TEXT = "Something went wrong!";
-const ANIME_NOT_FOUND_TEXT = "Anime not found";
+import { ERR_TEXT } from "../../../shared/error";
 
 export const dataScraping = (state: State, action: ActionType): State => {
   switch (action.type) {
@@ -19,7 +17,7 @@ export const dataScraping = (state: State, action: ActionType): State => {
       const newState: State = {
         ...state,
         doEffect: null,
-        data: ANIME_NOT_FOUND_TEXT,
+        data: ERR_TEXT.animeNotFound,
         phase: { type: "errHandling" },
       };
       return newState;
@@ -28,7 +26,7 @@ export const dataScraping = (state: State, action: ActionType): State => {
       const newState: State = {
         ...state,
         doEffect: null,
-        data: SERVER_ERR_TEXT,
+        data: ERR_TEXT.serverErr,
         phase: { type: "errHandling" },
       };
       return newState;
