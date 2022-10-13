@@ -21,7 +21,7 @@ describe("Make scraping test cases", () => {
 
         expectedToBeDisconnected(browser);
       } catch ([, browser]) {
-        expectedToBeDisconnected(browser);
+        expectedToBeDisconnected(browser as puppeteer.Browser);
       }
     },
     TEST_TIMEOUT
@@ -39,7 +39,7 @@ describe("Make scraping test cases", () => {
 
         expectedToBeDisconnected(browser);
       } catch ([, browser]) {
-        expectedToBeDisconnected(browser);
+        expectedToBeDisconnected(browser as puppeteer.Browser);
       }
     },
     TEST_TIMEOUT

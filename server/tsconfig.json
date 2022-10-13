@@ -1,17 +1,5 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "moduleResolution": "node",
-    "module": "commonjs",
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": false,
-    "sourceMap": true,
-    "target": "es6",
-    "outDir": "dist",
-    "esModuleInterop": true,
-    "rootDir": "."
-  },
-  "include": ["src/**/*.ts", "*.ts", "*.d.ts", "*.test.js"],
-  "exclude": ["dist", "build", "node_modules"]
+  "extends": "tsconfig/server.json",
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"]
 }

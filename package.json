@@ -1,7 +1,9 @@
 {
   "name": "AnimeLibrary",
   "workspaces": [
-    "client"
+    "client",
+    "server",
+    "packages/*"
   ],
   "private": true,
   "version": "1.0.0",

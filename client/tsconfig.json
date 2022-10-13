@@ -1,17 +1,4 @@
 {
-  "extends": "tsconfig/base.json",
-  "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "module": "esnext",
-  },
-  "include": [
-    "src"
-  ]
+  "extends": "tsconfig/client.json",
+  "include": ["src"]
 }

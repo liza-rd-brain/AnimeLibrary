@@ -35,11 +35,14 @@ export const makeScraping = async (
         const listWithDetails = getDetailLinkList(initialList);
 
         for (let i = 0; i < listWithDetails.length; i++) {
-          const detailItem: RawDetailAnime = await getAnimeDetail(
+          const detailItem: RawDetailAnime | null = await getAnimeDetail(
             listWithDetails[i],
             page
           );
-          detailList.push(detailItem);
+
+          if (detailItem) {
+            detailList.push(detailItem);
+          }
         }
 
         const structuredDetailList: DetailAnimeList =
