@@ -13,7 +13,8 @@
   "license": "MIT",
   "scripts": {
     "start": "turbo run start",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "turbo:init": "turbo daemon"
   },
   "devDependencies": {
     "turbo": "latest"

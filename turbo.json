@@ -1,6 +1,9 @@
 {
   "pipeline": {
     "start": {},
-    "build": {}
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["build/**/*"]
+    }
   }
 }
