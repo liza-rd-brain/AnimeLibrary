@@ -1,5 +1,3 @@
-import { DetailAnimeList, ResponseType } from "../types";
-
 const createConnection = (currUrl: string): Promise<WebSocket> => {
   return new Promise((resolve, reject) => {
     const webSocket = new WebSocket(currUrl);
@@ -12,31 +10,6 @@ const createConnection = (currUrl: string): Promise<WebSocket> => {
     };
     webSocket.onclose = () => {
       console.log("close from createConnection ");
-      reject("err");
-    };
-  });
-};
-
-const sendName = (
-  webSocket: WebSocket,
-  animeName: string
-): Promise<ResponseType> => {
-  return new Promise((resolve, reject) => {
-    var msg = {
-      type: "message",
-      text: animeName,
-    };
-
-    webSocket.send(JSON.stringify(msg));
-
-    webSocket.onmessage = (event) => {
-      const resAnime: ResponseType = event.data;
-      console.log("resAnime", resAnime);
-
-      resolve(resAnime);
-    };
-
-    webSocket.onerror = () => {
       reject("err");
     };
   });

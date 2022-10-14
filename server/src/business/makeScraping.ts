@@ -1,8 +1,8 @@
-// const puppeteer = require("puppeteer");
 import * as puppeteer from "puppeteer";
 
+import { DetailAnimeList } from "types";
+import { RawDetailAnime } from "../types";
 import { takeLinkList } from "./takeLinkList";
-import { DetailAnimeList, RawDetailAnime } from "../types";
 import { getAnimeDetail } from "./getAnimeDetail";
 import { getDetailLinkList } from "./getDetailLinkList";
 import { getStructuredDetail } from "./getStructuredDetail";

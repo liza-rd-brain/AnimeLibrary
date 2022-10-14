@@ -1,4 +1,5 @@
 import { ERR_TEXT } from "../shared/error";
+import { DetailAnime, DetailAnimeList } from "types";
 
 export type State = {
   phase: PhaseType;
@@ -49,26 +50,6 @@ export type EffectType =
   | null;
 
 //TODO: вынести, общий с сервером
-
-export type DetailAnime = {
-  status?: string;
-  scores?: string;
-  studio?: string;
-  genre?: string[];
-  country?: string;
-  episode?: string;
-  duration?: string;
-  dateAired?: string;
-  animeName: string;
-  pictureUrl?: string;
-  otherNames?: string;
-  description?: string;
-  dateRelease?: string;
-};
-
-export type DetailAnimeList = Array<DetailAnime>;
-
-export type AnimeHashTable = Record<string, Omit<DetailAnime, "animeName">>;
 
 export type ResponseType = {
   data: string;

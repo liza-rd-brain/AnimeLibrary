@@ -1,10 +1,5 @@
-import {
-  AnimeHashTable,
-  DetailAnime,
-  DetailAnimeList,
-  RawDetailAnime,
-  UnStructuredDetailAnime,
-} from "../types";
+import { DetailAnime, DetailAnimeList } from "types";
+import { RawDetailAnime, UnStructuredDetailAnime } from "../types";
 
 const getKey = (name: string) => {
   const [firstWord, secondWord] = name.split(" ");

@@ -1,7 +1,9 @@
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
+
+import { State } from "../types";
 import { initialState } from "./initialState";
-import { DetailAnime, DetailAnimeList, State } from "../types";
+import { DetailAnime, DetailAnimeList } from "types";
 
 import { waitingDB } from "./phases/waitingDB";
 import { scrapingErr } from "./phases/scrapingErr";
@@ -20,8 +22,6 @@ export const ActionName = {
   startedAddAnime: "startedAddAnime",
   dataNotFound: "dataNotFound",
   gotServerErr: "gotServerErr",
-
-  // dataNotReceived.: "dataNotReceived",
   endedDeleteAnime: "endedDeleteAnime",
   startedDeleteAnime: "startedDeleteAnime",
   startedAnimeScraping: "startedAnimeScraping",
@@ -32,7 +32,6 @@ export type ActionType =
   | { type: typeof ActionName.switchPage }
   | { type: typeof ActionName.dataNotFound }
   | { type: typeof ActionName.gotServerErr }
-  // | { type: typeof ActionName.dataNotReceived }
   | { type: typeof ActionName.startedDeleteAnime; payload: string }
   | { type: typeof ActionName.startedAnimeScraping; payload: string }
   | { type: typeof ActionName.startedAddAnime; payload: DetailAnime }

@@ -1,9 +1,10 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { useAppDispatch } from "../business/reducer";
 
+import { DetailAnime } from "types";
 import Button from "@mui/material/Button";
-import { CardButtonType, DetailAnime } from "../types";
+import { CardButtonType } from "../types";
+import { useAppDispatch } from "../business/reducer";
 
 const CardContainer = styled.div`
   display: grid;
@@ -81,11 +82,12 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
 
   const buttonText = buttonType === "add" ? "add" : "delete";
 
+  //TODO: исправить assertion
   const handleButtonClick = () => {
     if (buttonType === "add") {
       dispatch({ type: "startedAddAnime", payload: data });
     } else if (buttonType === "delete") {
-      const animeName = data.animeName;
+      const animeName = data.animeName as string;
       dispatch({ type: "startedDeleteAnime", payload: animeName });
     }
   };
