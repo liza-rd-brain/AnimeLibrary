@@ -1,6 +1,7 @@
 import { ERR_TEXT } from "../shared/error";
 import { DetailAnime, DetailAnimeList } from "types";
 
+//TODO:data - AnimeListType, errType потом вынести в фазу
 export type State = {
   phase: PhaseType;
   data: AnimeListType | ErrType;
@@ -48,8 +49,6 @@ export type EffectType =
   | { type: "!startedDeleteAnime"; data: string }
   | { type: "!dataScrape"; data: string }
   | null;
-
-//TODO: вынести, общий с сервером
 
 export type ResponseType = {
   data: string;

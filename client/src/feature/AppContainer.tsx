@@ -1,7 +1,6 @@
 import { useRef, FC } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../business/reducer";
 
 import Backdrop from "@mui/material/Backdrop";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -12,11 +11,12 @@ import {
   useOpenDB,
   useScrapeData,
 } from "../effect";
+import { useAppDispatch } from "../business/reducer";
+import { CardButtonType, AnimeListType, State } from "../types";
 
 import { Error } from "./Error";
 import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
-import { CardButtonType, AnimeListType, State } from "../types";
 import { SearchItem } from "./SearchItem";
 import { CardPreview } from "../component/CardPreview";
 import logo from "../assets/pikachu_default.png";
