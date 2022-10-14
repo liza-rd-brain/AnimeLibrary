@@ -18,7 +18,6 @@ export const waitingScrapeHandle = (
     case ActionName.cardOpened: {
       const cardOpeningPhase = {
         type: "cardOpening",
-        prevType: state.phase.type,
       } as CardOpeningPhase;
 
       const newState: State = {

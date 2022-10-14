@@ -9,7 +9,7 @@ export const cardOpening = (state: State, action: ActionType): State => {
       const newState: State = {
         ...state,
         openedCard: null,
-        phase: { type: prevPhase.prevType },
+        phase: { type: "waitingScrapeHandle" },
       };
 
       return newState;
@@ -28,7 +28,7 @@ export const cardOpening = (state: State, action: ActionType): State => {
       if (action.payload) {
         const newState: State = {
           ...state,
-          phase: { type: prevPhase.prevType },
+          phase: { type: "waitingScrapeHandle" },
           doEffect: null,
           savedData: action.payload,
         };
@@ -36,7 +36,7 @@ export const cardOpening = (state: State, action: ActionType): State => {
       } else {
         const newState: State = {
           ...state,
-          phase: { type: prevPhase.prevType },
+          phase: { type: "waitingScrapeHandle" },
           doEffect: null,
         };
         return newState;

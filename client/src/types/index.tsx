@@ -38,7 +38,7 @@ type SimplePhaseName = SimplePhaseType["type"];
 
 export type CardOpeningPhase = {
   type: "cardOpening";
-  prevType: SimplePhaseName;
+  // prevType: SimplePhaseName;
 };
 
 export type CardDeletingPhase = {};
