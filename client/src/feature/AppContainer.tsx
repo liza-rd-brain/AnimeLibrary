@@ -26,11 +26,11 @@ type StyledContainerType = { isInit: boolean; disableClick: boolean };
 
 const StyledContainer = styled.div<StyledContainerType>`
   display: flex;
-  align-items: center;
-  flex-direction: column;
+  /*   align-items: center; */
+  flex-direction: row;
   margin: 20px auto 0;
   min-width: 320px;
-  max-width: 1060px;
+  max-width: 1500px;
   width: 100%;
 
   padding-top: ${({ isInit }) => {
@@ -47,6 +47,7 @@ const AnimeListContainer = styled.div`
   //если ширина меньше 1000 - по центру?
   /* justify-content: center; */
   gap: 20px;
+  margin: 20px;
 `;
 
 const StyledProgress = styled(LinearProgress)`
@@ -132,7 +133,8 @@ export const AppContainer = () => {
             );
           }
 
-          case "waitingScraping": {
+          case "waitingScraping":
+          case "waitingScrapeHandle": {
             return (
               <>
                 <Preloader
@@ -143,7 +145,7 @@ export const AppContainer = () => {
             );
           }
 
-          case "waitingScrapeHandle":
+          // case "waitingScrapeHandle":
           case "cardOpening": {
             if (typeof data !== "string") {
               return (
