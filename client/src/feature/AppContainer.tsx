@@ -135,14 +135,35 @@ export const AppContainer = () => {
 
           case "waitingScraping":
           case "waitingScrapeHandle": {
-            return (
-              <>
-                <Preloader
-                  isAnimated={phaseInner === "dataScraping" ? true : false}
-                />
-                <SearchItem refState={refState} page={"search"} />
-              </>
-            );
+            if (data && typeof data !== "string") {
+              return (
+                <div>
+                  <SearchItem refState={refState} page={currPage} />
+                  {getAnimeCardList({ animeList: data, buttonType: "add" })}
+                  <Backdrop
+                    sx={{
+                      color: "#fff",
+                      zIndex: (theme) => theme.zIndex.drawer + 1,
+                    }}
+                    open={phase.type === "cardOpening"}
+                    onClick={handleClose}
+                  >
+                    {openedCard && (
+                      <Card data={openedCard} buttonType={"add"} />
+                    )}
+                  </Backdrop>
+                </div>
+              );
+            } else {
+              return (
+                <>
+                  <Preloader
+                    isAnimated={phaseInner === "dataScraping" ? true : false}
+                  />
+                  <SearchItem refState={refState} page={"search"} />
+                </>
+              );
+            }
           }
 
           // case "waitingScrapeHandle":

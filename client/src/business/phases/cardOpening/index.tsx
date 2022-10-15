@@ -2,8 +2,6 @@ import { ActionType, ActionName } from "../../reducer";
 import { CardOpeningPhase, State } from "../../../types";
 
 export const cardOpening = (state: State, action: ActionType): State => {
-  const prevPhase = state.phase as CardOpeningPhase;
-
   switch (action.type) {
     case ActionName.closeCard: {
       const newState: State = {
