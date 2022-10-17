@@ -1,10 +1,5 @@
-import {
-  AnimeHashTable,
-  DetailAnime,
-  DetailAnimeList,
-  RawDetailAnime,
-  UnStructuredDetailAnime,
-} from "../types";
+import { DetailAnime, DetailAnimeList } from "types";
+import { RawDetailAnime, UnStructuredDetailAnime } from "../types";
 
 const getKey = (name: string) => {
   const [firstWord, secondWord] = name.split(" ");
@@ -23,11 +18,11 @@ const getKey = (name: string) => {
 const getStructuredObj = (rawObj: UnStructuredDetailAnime): DetailAnime => {
   //проверить наличие  полей scores,genre
   const prevScore = rawObj.scores;
-  const [currScore, maxScore] = prevScore.split("/");
+  const [currScore, maxScore] = prevScore!.split("/");
   const newScore = currScore.trim();
 
   const prevGenre = rawObj.genre;
-  const genreList = prevGenre.split(",").map((item) => item.trim());
+  const genreList = prevGenre!.split(",").map((item) => item.trim());
 
   return { ...rawObj, scores: newScore, genre: genreList };
 };

@@ -2,14 +2,12 @@ import { ActionType, ActionName } from "../../reducer";
 import { CardOpeningPhase, State } from "../../../types";
 
 export const cardOpening = (state: State, action: ActionType): State => {
-  const prevPhase = state.phase as CardOpeningPhase;
-
   switch (action.type) {
     case ActionName.closeCard: {
       const newState: State = {
         ...state,
         openedCard: null,
-        phase: { type: prevPhase.prevType },
+        phase: { type: "waitingScrapeHandle" },
       };
 
       return newState;
@@ -28,7 +26,7 @@ export const cardOpening = (state: State, action: ActionType): State => {
       if (action.payload) {
         const newState: State = {
           ...state,
-          phase: { type: prevPhase.prevType },
+          phase: { type: "waitingScrapeHandle" },
           doEffect: null,
           savedData: action.payload,
         };
@@ -36,7 +34,7 @@ export const cardOpening = (state: State, action: ActionType): State => {
       } else {
         const newState: State = {
           ...state,
-          phase: { type: prevPhase.prevType },
+          phase: { type: "waitingScrapeHandle" },
           doEffect: null,
         };
         return newState;

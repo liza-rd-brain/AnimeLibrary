@@ -1,4 +1,4 @@
-import { DetailAnimeList } from "../../types";
+import { DetailAnimeList } from "types";
 import { STORE_NAME } from "./constantList";
 
 export const getAnimeList = (

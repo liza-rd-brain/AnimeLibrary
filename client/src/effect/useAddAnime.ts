@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../business/reducer";
 
-import { DetailAnime, State } from "../types";
+import { State } from "../types";
+import { DetailAnime } from "types";
 import { STORE_NAME } from "./common/constantList";
 import { getAnimeList } from "./common/getAnimeList";
+import { useAppDispatch } from "../business/reducer";
 
 const addAnime = (
   dataBase: IDBDatabase,

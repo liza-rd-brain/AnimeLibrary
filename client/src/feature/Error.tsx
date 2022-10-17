@@ -1,5 +1,5 @@
-const errText = "Anime not found";
+import { FC } from "react";
 
-export const Error = () => {
-  return <div>{errText}</div>;
+export const Error: FC<{ text: string }> = ({ text }) => {
+  return <div>{text}</div>;
 };

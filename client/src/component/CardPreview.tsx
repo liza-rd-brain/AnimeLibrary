@@ -1,10 +1,11 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
-import Button from "@mui/material/Button";
+import { DetailAnime } from "types";
+import { CardButtonType } from "../types";
 
-import { CardButtonType, DetailAnime } from "../types";
+import Button from "@mui/material/Button";
 
 const CardContainer = styled.div`
   display: grid;

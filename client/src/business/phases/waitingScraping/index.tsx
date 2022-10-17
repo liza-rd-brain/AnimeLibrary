@@ -29,7 +29,7 @@ export const waitingScraping = (state: State, action: ActionType): State => {
         case ActionName.cardOpened: {
           const cardOpeningPhase = {
             type: "cardOpening",
-            prevType: state.phase.type,
+            /*  prevType: state.phase.type, */
           } as CardOpeningPhase;
 
           const newState: State = {

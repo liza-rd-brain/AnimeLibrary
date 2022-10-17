@@ -2,15 +2,21 @@
   "name": "server",
   "version": "1.0.0",
   "license": "MIT",
+  "type": "commonjs",
   "scripts": {
-    "start": "node -r esbuild-register ./src/index.ts",
+    "start": "node ./build/index.js",
     "build": "tsc --build",
-    "clean": "tsc --build --clean"
+    "clean": "tsc --build --clean",
+    "test": "jest"
   },
   "devDependencies": {
     "@types/express": "^4.17.12",
+    "@types/jest": "^29.1.2",
     "@types/node": "^15.12.2",
-    "typescript": "^4.5.3"
+    "jest": "^29.1.2",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.5.3",
+    "tsconfig": "*"
   },
   "dependencies": {
     "body-parser": "^1.20.0",

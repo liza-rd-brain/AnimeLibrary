@@ -1,7 +1,6 @@
 import { useRef, FC } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../business/reducer";
 
 import Backdrop from "@mui/material/Backdrop";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -12,27 +11,26 @@ import {
   useOpenDB,
   useScrapeData,
 } from "../effect";
+import { useAppDispatch } from "../business/reducer";
+import { CardButtonType, AnimeListType, State } from "../types";
 
 import { Error } from "./Error";
 import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
-import { CardButtonType, AnimeListType, State } from "../types";
 import { SearchItem } from "./SearchItem";
 import { CardPreview } from "../component/CardPreview";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
 
-const SCRAPING_ERR_TEXT = "Something went wrong!";
-
 type StyledContainerType = { isInit: boolean; disableClick: boolean };
 
 const StyledContainer = styled.div<StyledContainerType>`
   display: flex;
-  align-items: center;
-  flex-direction: column;
+  /*   align-items: center; */
+  flex-direction: row;
   margin: 20px auto 0;
   min-width: 320px;
-  max-width: 1060px;
+  max-width: 1500px;
   width: 100%;
 
   padding-top: ${({ isInit }) => {
@@ -49,6 +47,7 @@ const AnimeListContainer = styled.div`
   //если ширина меньше 1000 - по центру?
   /* justify-content: center; */
   gap: 20px;
+  margin: 20px;
 `;
 
 const StyledProgress = styled(LinearProgress)`
@@ -81,16 +80,11 @@ const getAnimeCardList = ({
   buttonType: CardButtonType;
 }) => {
   if (animeList) {
-    const animeListNotEmpty = animeList.length;
-    if (animeListNotEmpty) {
-      const animeCardList = animeList?.map((animeItem, index) => (
-        <CardPreview key={index} data={animeItem} buttonType={buttonType} />
-      ));
+    const animeCardList = animeList?.map((animeItem, index) => (
+      <CardPreview key={index} data={animeItem} buttonType={buttonType} />
+    ));
 
-      return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
-    } else {
-      return <Error />;
-    }
+    return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
   }
 };
 
@@ -104,13 +98,9 @@ const Preloader: FC<{ isAnimated: boolean }> = ({ isAnimated }) => {
 };
 
 export const AppContainer = () => {
-  const {
-    data: animeList,
-    openedCard,
-    phase,
-    currPage,
-    savedData,
-  } = useSelector((state: State) => state);
+  const { data, openedCard, phase, currPage, savedData } = useSelector(
+    (state: State) => state
+  );
 
   const dispatch = useAppDispatch();
 
@@ -143,39 +133,69 @@ export const AppContainer = () => {
             );
           }
 
-          case "waitingScraping": {
-            return (
-              <>
-                <Preloader
-                  isAnimated={phaseInner === "dataScraping" ? true : false}
-                />
-                <SearchItem refState={refState} page={"search"} />
-              </>
-            );
+          case "waitingScraping":
+          case "waitingScrapeHandle": {
+            if (data && typeof data !== "string") {
+              return (
+                <div>
+                  <SearchItem refState={refState} page={currPage} />
+                  {getAnimeCardList({ animeList: data, buttonType: "add" })}
+                  <Backdrop
+                    sx={{
+                      color: "#fff",
+                      zIndex: (theme) => theme.zIndex.drawer + 1,
+                    }}
+                    open={phase.type === "cardOpening"}
+                    onClick={handleClose}
+                  >
+                    {openedCard && (
+                      <Card data={openedCard} buttonType={"add"} />
+                    )}
+                  </Backdrop>
+                </div>
+              );
+            } else {
+              return (
+                <>
+                  <Preloader
+                    isAnimated={phaseInner === "dataScraping" ? true : false}
+                  />
+                  <SearchItem refState={refState} page={"search"} />
+                </>
+              );
+            }
           }
 
-          case "waitingScrapeHandle":
+          // case "waitingScrapeHandle":
           case "cardOpening": {
-            return (
-              <>
-                {getAnimeCardList({ animeList, buttonType: "add" })}
-                <Backdrop
-                  sx={{
-                    color: "#fff",
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                  }}
-                  open={phase.type === "cardOpening"}
-                  onClick={handleClose}
-                >
-                  {openedCard && <Card data={openedCard} buttonType={"add"} />}
-                </Backdrop>
-              </>
-            );
+            if (typeof data !== "string") {
+              return (
+                <>
+                  {getAnimeCardList({ animeList: data, buttonType: "add" })}
+                  <Backdrop
+                    sx={{
+                      color: "#fff",
+                      zIndex: (theme) => theme.zIndex.drawer + 1,
+                    }}
+                    open={phase.type === "cardOpening"}
+                    onClick={handleClose}
+                  >
+                    {openedCard && (
+                      <Card data={openedCard} buttonType={"add"} />
+                    )}
+                  </Backdrop>
+                </>
+              );
+            } else {
+              return null;
+            }
+          }
+          case "errHandling": {
+            if (typeof data === "string") {
+              return <Error text={data} />;
+            } else return null;
           }
 
-          case "scrapingErr": {
-            return <div>{SCRAPING_ERR_TEXT}</div>;
-          }
           default: {
             return null;
           }

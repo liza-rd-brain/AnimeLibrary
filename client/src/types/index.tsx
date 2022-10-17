@@ -1,6 +1,10 @@
+import { ERR_TEXT } from "../shared/error";
+import { DetailAnime, DetailAnimeList } from "types";
+
+//TODO:data - AnimeListType, errType потом вынести в фазу
 export type State = {
   phase: PhaseType;
-  data: AnimeListType;
+  data: AnimeListType | ErrType;
   savedData: AnimeListType | null;
   doEffect: EffectType;
   openedCard: DetailAnime | null;
@@ -8,10 +12,12 @@ export type State = {
   dataBase: IDBDatabase | null;
 };
 
+//TODO: уточнить какие строки в типе
+
+export type ErrType = typeof ERR_TEXT[keyof typeof ERR_TEXT];
+
 export type AnimeListType = DetailAnimeList | null;
 export type PageName = "search" | "list";
-
-export type ErrorType = "err";
 
 export type PhaseState = {
   curr: PhaseType;
@@ -26,13 +32,13 @@ export type SimplePhaseType =
   | { type: "waitingScraping.dataScraping" }
   | { type: "waitingScrapeHandle" }
   | { type: "dataScraping" }
-  | { type: "scrapingErr" };
+  | { type: "errHandling" };
 
 type SimplePhaseName = SimplePhaseType["type"];
 
 export type CardOpeningPhase = {
   type: "cardOpening";
-  prevType: SimplePhaseName;
+  // prevType: SimplePhaseName;
 };
 
 export type CardDeletingPhase = {};
@@ -43,28 +49,6 @@ export type EffectType =
   | { type: "!startedDeleteAnime"; data: string }
   | { type: "!dataScrape"; data: string }
   | null;
-
-//TODO: вынести, общий с сервером
-
-export type DetailAnime = {
-  status?: string;
-  scores?: string;
-  studio?: string;
-  genre?: string[];
-  country?: string;
-  episode?: string;
-  duration?: string;
-  dateAired?: string;
-  animeName: string;
-  pictureUrl?: string;
-  otherNames?: string;
-  description?: string;
-  dateRelease?: string;
-};
-
-export type DetailAnimeList = Array<DetailAnime>;
-
-export type AnimeHashTable = Record<string, Omit<DetailAnime, "animeName">>;
 
 export type ResponseType = {
   data: string;

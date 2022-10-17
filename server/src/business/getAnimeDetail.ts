@@ -4,7 +4,7 @@ export async function getAnimeDetail(item, page) {
   const descBlockItems = ".dp-i-content";
 
   await page.goto(item);
-  await page.screenshot({ path: `./screenshot/${Math.random()}.png` });
+  // await page.screenshot({ path: `./screenshot/${Math.random()}.png` });
 
   try {
     const animeDetailItem: RawDetailAnime = await page.$eval(

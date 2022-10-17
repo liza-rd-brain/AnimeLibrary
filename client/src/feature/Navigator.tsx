@@ -21,7 +21,7 @@ const Logo = styled.div`
   width: 40px;
 `;
 
-const StyledHeader = styled(Box)`
+const StyledNavigator = styled(Box)`
   display: flex;
   width: 100%;
   margin-bottom: 50px;
@@ -40,12 +40,12 @@ export const Navigator: FC<{
   const pageName: PageName[] = ["search", "list"];
   const currPageIndex = pageName.findIndex((page) => page === currPage);
 
-  const [phaseOuter] = phase.type.split(".");
-  const inputVisibilitySearch = !(
-    phaseOuter === "waitingScraping" || phaseOuter === "waitingDB"
-  );
+  // const [phaseOuter] = phase.type.split(".");
+  // const inputVisibilitySearch = !(
+  //   phaseOuter === "waitingScraping" || phaseOuter === "waitingDB"
+  // );
 
-  const hasInput = currPage === "search" ? inputVisibilitySearch : true;
+  // const hasInput = currPage === "search" ? inputVisibilitySearch : true;
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     debugger;
@@ -54,10 +54,11 @@ export const Navigator: FC<{
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <StyledHeader>
+    <Box /*  sx={{ width: "100%" }} */>
+      <StyledNavigator>
         <Logo />
         <Tabs
+          orientation="vertical"
           value={currPageIndex}
           onChange={handleChange}
           aria-label="basic tabs example"
@@ -66,8 +67,8 @@ export const Navigator: FC<{
           <Tab label={SEARCH_TEXT} />
           <Tab label={LIST_TEXT} />
         </Tabs>
-        {hasInput && <SearchItem refState={refState} page={currPage} />}
-      </StyledHeader>
+        {/* {hasInput && <SearchItem refState={refState} page={currPage} />} */}
+      </StyledNavigator>
     </Box>
   );
 };
