@@ -21,16 +21,18 @@ import { SearchItem } from "./SearchItem";
 import { CardPreview } from "../component/CardPreview";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
+import { Header } from "./Header";
 
 type StyledContainerType = { isInit: boolean; disableClick: boolean };
 
 const StyledContainer = styled.div<StyledContainerType>`
   display: flex;
   /*   align-items: center; */
-  flex-direction: row;
-  margin: 20px auto 0;
+  flex-direction: column;
+  margin: auto;
+  /* margin: 20px auto 0; */
   min-width: 320px;
-  max-width: 1500px;
+  max-width: 1300px;
   width: 100%;
 
   padding-top: ${({ isInit }) => {
@@ -41,13 +43,19 @@ const StyledContainer = styled.div<StyledContainerType>`
   }};
 `;
 
+const StyledBody = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
 const AnimeListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   //если ширина меньше 1000 - по центру?
   /* justify-content: center; */
   gap: 20px;
-  margin: 20px;
+  margin-top: 20px;
 `;
 
 const StyledProgress = styled(LinearProgress)`
@@ -70,6 +78,10 @@ const Logo = styled.div<{ isAnimated?: boolean }>`
 const PreloaderContainer = styled.div`
   display: grid;
   height: 200px;
+`;
+
+const StyledContent = styled.div`
+  width: 1060px;
 `;
 
 const getAnimeCardList = ({
@@ -242,8 +254,11 @@ export const AppContainer = () => {
 
   return (
     <StyledContainer isInit={false} disableClick={clickDisable}>
-      <Navigator refState={refState} />
-      {getAppView()}
+      <Header />
+      <StyledBody>
+        <Navigator refState={refState} />
+        <StyledContent>{getAppView()}</StyledContent>
+      </StyledBody>
     </StyledContainer>
   );
 };

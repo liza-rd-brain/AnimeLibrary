@@ -1,5 +1,6 @@
 import React, { FC } from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../business/reducer";
 
@@ -7,24 +8,23 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 
-import { SearchItem } from "./SearchItem";
 import { PageName, State } from "../types";
 import logo from "../assets/pikachu_64.png";
 
-const Logo = styled.div`
-  background: url(${logo});
-  background-repeat: no-repeat;
-  background-size: 40px;
-  /* background-position: -10px -10px; */
-  transform: scale(-1, 1);
-  height: 40px;
-  width: 40px;
-`;
-
 const StyledNavigator = styled(Box)`
   display: flex;
-  width: 100%;
+  width: 160px;
   margin-bottom: 50px;
+`;
+
+const StyledTab = styled(Tab)`
+  height: 80px;
+`;
+const StyledTabs = styled(Tabs)`
+  width: 100%;
+  & .Mui-selected {
+    background: #b5c1e8;
+  }
 `;
 
 const SEARCH_TEXT = "search";
@@ -56,17 +56,19 @@ export const Navigator: FC<{
   return (
     <Box /*  sx={{ width: "100%" }} */>
       <StyledNavigator>
-        <Logo />
-        <Tabs
+        <StyledTabs
           orientation="vertical"
           value={currPageIndex}
           onChange={handleChange}
           aria-label="basic tabs example"
+          visibleScrollbar={false}
+          // indicatorColor="secondary"
+          TabIndicatorProps={{ hidden: true }}
         >
           {/* TODO:  Добавить disabled на пустой список-?! */}
-          <Tab label={SEARCH_TEXT} />
-          <Tab label={LIST_TEXT} />
-        </Tabs>
+          <StyledTab label={SEARCH_TEXT} />
+          <StyledTab label={LIST_TEXT} />
+        </StyledTabs>
         {/* {hasInput && <SearchItem refState={refState} page={currPage} />} */}
       </StyledNavigator>
     </Box>
