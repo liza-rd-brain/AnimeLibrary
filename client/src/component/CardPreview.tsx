@@ -11,10 +11,15 @@ const CardContainer = styled.div`
   display: grid;
   gap: 15px;
   padding: 20px;
+  outline: 1px solid #efefef;
   border-radius: 10px;
-  box-shadow: 0px 1px 20px lightgrey;
+  /* box-shadow: 0px 1px 10px lightgray; */
+
   width: 300px;
   cursor: pointer;
+  &:hover {
+    box-shadow: 0px 1px 20px 5px lightgray;
+  }
 `;
 
 const CardItem = styled.div`
