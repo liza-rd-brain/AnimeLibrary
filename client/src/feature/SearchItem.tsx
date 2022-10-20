@@ -13,7 +13,7 @@ const StyledSearchItem = styled.div`
 `;
 
 const StyledTextInput = styled(TextField)`
-  width: 300px;
+  width: 600px;
 `;
 
 const StyledButton = styled(Button)`

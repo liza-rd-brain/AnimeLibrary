@@ -13,7 +13,7 @@ import logo from "../assets/pikachu_64.png";
 
 const StyledNavigator = styled(Box)`
   display: flex;
-  width: 160px;
+  width: 200px;
   margin-bottom: 50px;
 `;
 
@@ -23,7 +23,8 @@ const StyledTab = styled(Tab)`
 const StyledTabs = styled(Tabs)`
   width: 100%;
   & .Mui-selected {
-    background: #b5c1e8;
+    background: #77abdf;
+    /* background: #1976d2; */
   }
 `;
 
@@ -48,8 +49,6 @@ export const Navigator: FC<{
   // const hasInput = currPage === "search" ? inputVisibilitySearch : true;
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    debugger;
-
     dispatch({ type: "switchPage" });
   };
 

@@ -7,11 +7,11 @@ const StyledHeader = styled.div`
   display: flex;
   width: 100%;
   height: 60px;
-
-  background: #ece3e4;
   padding: 20px;
   box-sizing: border-box;
   align-items: center;
+  margin-bottom: 10px;
+  /*   background: #d2e8ff; */
 `;
 
 const Logo = styled.div`
@@ -27,6 +27,7 @@ export const Header = () => {
   return (
     <StyledHeader>
       <Logo />
+      AnimeLibrary
     </StyledHeader>
   );
 };

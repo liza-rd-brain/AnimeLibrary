@@ -15,13 +15,16 @@ import { useAppDispatch } from "../business/reducer";
 import { CardButtonType, AnimeListType, State } from "../types";
 
 import { Error } from "./Error";
+import { Header } from "./Header";
 import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
-import { SearchItem } from "./SearchItem";
+
 import { CardPreview } from "../component/CardPreview";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
-import { Header } from "./Header";
+
+import SubHeaderSearch from "../feature/SubHeaderSearch";
+import SubHeaderList from "./SubHeaderList";
 
 type StyledContainerType = { isInit: boolean; disableClick: boolean };
 
@@ -70,7 +73,7 @@ const Logo = styled.div<{ isAnimated?: boolean }>`
     return isAnimated ? `url(${logoAnimated})` : `url(${logo})`;
   }};
   background-repeat: no-repeat;
-  background-size: 300px;
+  background-size: 400px;
   background-position: center;
   transform: scale(-1, 1);
 `;
@@ -82,6 +85,9 @@ const PreloaderContainer = styled.div`
 
 const StyledContent = styled.div`
   width: 1060px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const getAnimeCardList = ({
@@ -132,99 +138,115 @@ export const AppContainer = () => {
   const clickDisable =
     phaseOuter === "dataScraping" || phaseInner === "dataScraping";
 
+  const getSearchView = () => {
+    switch (phaseOuter) {
+      case "waitingDB": {
+        return (
+          <>
+            <Preloader isAnimated={true} />
+          </>
+        );
+      }
+      case "dataScraping": {
+        return (
+          <>
+            <Preloader isAnimated={true} />
+            {/* <SearchItem refState={refState} page={currPage} /> */}
+          </>
+        );
+      }
+
+      case "waitingScraping":
+      case "waitingScrapeHandle": {
+        if (data && typeof data !== "string") {
+          return (
+            <div>
+              {/* <SearchItem refState={refState} page={currPage} /> */}
+              {getAnimeCardList({ animeList: data, buttonType: "add" })}
+              <Backdrop
+                sx={{
+                  color: "#fff",
+                  zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={phase.type === "cardOpening"}
+                onClick={handleClose}
+              >
+                {openedCard && <Card data={openedCard} buttonType={"add"} />}
+              </Backdrop>
+            </div>
+          );
+        } else {
+          return (
+            <>
+              <Preloader
+                isAnimated={phaseInner === "dataScraping" ? true : false}
+              />
+              {/* <SearchItem refState={refState} page={"search"} /> */}
+            </>
+          );
+        }
+      }
+
+      // case "waitingScrapeHandle":
+      case "cardOpening": {
+        if (typeof data !== "string") {
+          return (
+            <>
+              {getAnimeCardList({ animeList: data, buttonType: "add" })}
+              <Backdrop
+                sx={{
+                  color: "#fff",
+                  zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
+                open={phase.type === "cardOpening"}
+                onClick={handleClose}
+              >
+                {openedCard && <Card data={openedCard} buttonType={"add"} />}
+              </Backdrop>
+            </>
+          );
+        } else {
+          return null;
+        }
+      }
+
+      case "errHandling": {
+        if (typeof data === "string") {
+          return <Error text={data} />;
+        } else return null;
+      }
+
+      default: {
+        return null;
+      }
+    }
+  };
+
   const getAppView = () => {
     switch (currPage) {
       case "search": {
-        switch (phaseOuter) {
-          case "waitingDB":
-          case "dataScraping": {
-            return (
-              <>
-                <Preloader isAnimated={true} />
-              </>
-            );
-          }
-
-          case "waitingScraping":
-          case "waitingScrapeHandle": {
-            if (data && typeof data !== "string") {
-              return (
-                <div>
-                  <SearchItem refState={refState} page={currPage} />
-                  {getAnimeCardList({ animeList: data, buttonType: "add" })}
-                  <Backdrop
-                    sx={{
-                      color: "#fff",
-                      zIndex: (theme) => theme.zIndex.drawer + 1,
-                    }}
-                    open={phase.type === "cardOpening"}
-                    onClick={handleClose}
-                  >
-                    {openedCard && (
-                      <Card data={openedCard} buttonType={"add"} />
-                    )}
-                  </Backdrop>
-                </div>
-              );
-            } else {
-              return (
-                <>
-                  <Preloader
-                    isAnimated={phaseInner === "dataScraping" ? true : false}
-                  />
-                  <SearchItem refState={refState} page={"search"} />
-                </>
-              );
-            }
-          }
-
-          // case "waitingScrapeHandle":
-          case "cardOpening": {
-            if (typeof data !== "string") {
-              return (
-                <>
-                  {getAnimeCardList({ animeList: data, buttonType: "add" })}
-                  <Backdrop
-                    sx={{
-                      color: "#fff",
-                      zIndex: (theme) => theme.zIndex.drawer + 1,
-                    }}
-                    open={phase.type === "cardOpening"}
-                    onClick={handleClose}
-                  >
-                    {openedCard && (
-                      <Card data={openedCard} buttonType={"add"} />
-                    )}
-                  </Backdrop>
-                </>
-              );
-            } else {
-              return null;
-            }
-          }
-          case "errHandling": {
-            if (typeof data === "string") {
-              return <Error text={data} />;
-            } else return null;
-          }
-
-          default: {
-            return null;
-          }
-        }
+        return (
+          <>
+            <SubHeaderSearch page={currPage} refState={refState} />
+            {getSearchView()}
+          </>
+        );
       }
+
       case "list": {
         switch (phaseOuter) {
-          case "waitingDB": {
-            return (
-              <>
-                <Preloader isAnimated={true} />
-              </>
-            );
-          }
+          //TODO: нужна ли фаза waitingDB здесь?
+          // case "waitingDB": {
+          //   return (
+          //     <>
+          //       <Preloader isAnimated={true} />
+          //     </>
+          //   );
+          // }
           default: {
             return (
               <>
+                <SubHeaderList />
                 {getAnimeCardList({
                   animeList: savedData,
                   buttonType: "delete",
