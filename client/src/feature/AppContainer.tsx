@@ -227,7 +227,7 @@ export const AppContainer = () => {
       case "search": {
         return (
           <>
-            <SubHeaderSearch page={currPage} refState={refState} />
+            <SubHeaderSearch refState={refState} />
             {getSearchView()}
           </>
         );
@@ -246,7 +246,7 @@ export const AppContainer = () => {
           default: {
             return (
               <>
-                <SubHeaderList />
+                <SubHeaderList refState={refState} />
                 {getAnimeCardList({
                   animeList: savedData,
                   buttonType: "delete",

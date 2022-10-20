@@ -16,10 +16,14 @@ const SubHeaderContainer = styled.div`
   /* background: #ece3e4; */
 `;
 
-const SubHeader: FC<{}> = ({}) => {
+const SubHeader: FC<{
+  refState: React.MutableRefObject<{
+    value: string | null;
+  }>;
+}> = ({ refState }) => {
   return (
     <SubHeaderContainer>
-      {/* {<SearchItem refState={refState} page={page} />} */}
+      <SearchItem refState={refState} />
     </SubHeaderContainer>
   );
 };

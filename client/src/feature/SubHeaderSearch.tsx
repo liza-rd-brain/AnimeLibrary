@@ -20,11 +20,10 @@ const SubHeaderSearch: FC<{
   refState?: React.MutableRefObject<{
     value: string | null;
   }>;
-  page: PageName;
-}> = ({ refState, page }) => {
+}> = ({ refState }) => {
   return (
     <SubHeaderContainer>
-      <SearchItem refState={refState} page={page} />
+      <SearchItem refState={refState} />
     </SubHeaderContainer>
   );
 };

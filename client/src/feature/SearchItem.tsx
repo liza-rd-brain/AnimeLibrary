@@ -5,8 +5,6 @@ import { useAppDispatch } from "../business/reducer";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-import { PageName } from "../types";
-
 const StyledSearchItem = styled.div`
   display: grid;
   gap: 10px;
@@ -25,8 +23,7 @@ export const SearchItem: FC<{
   refState?: React.MutableRefObject<{
     value: string | null;
   }>;
-  page: PageName;
-}> = ({ refState, page }) => {
+}> = ({ refState }) => {
   const dispatch = useAppDispatch();
 
   const textInput = useRef<HTMLInputElement>(null);
@@ -50,14 +47,6 @@ export const SearchItem: FC<{
     }
   };
 
-  const makeSearch = () => {
-    if (page === "search") {
-      scrapeAnimeData();
-    } else if (page === "list") {
-      console.log("поиск в списке");
-    }
-  };
-
   const SearchItem: FC<{ isAnimated?: boolean }> = ({ isAnimated }) => {
     return (
       <StyledSearchItem>
@@ -66,7 +55,7 @@ export const SearchItem: FC<{
             inputRef={textInput}
             defaultValue={refState?.current.value}
           />
-          <StyledButton variant="outlined" onClick={makeSearch}>
+          <StyledButton variant="outlined" onClick={scrapeAnimeData}>
             find
           </StyledButton>
         </div>
