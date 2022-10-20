@@ -24,7 +24,6 @@ const StyledTabs = styled(Tabs)`
   width: 100%;
   & .Mui-selected {
     background: #77abdf;
-    /* background: #1976d2; */
   }
 `;
 

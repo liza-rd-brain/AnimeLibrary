@@ -18,13 +18,11 @@ import { Error } from "./Error";
 import { Header } from "./Header";
 import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
-
+import SubHeaderList from "./SubHeaderList";
+import SubHeaderSearch from "../feature/SubHeaderSearch";
 import { CardPreview } from "../component/CardPreview";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
-
-import SubHeaderSearch from "../feature/SubHeaderSearch";
-import SubHeaderList from "./SubHeaderList";
 
 type StyledContainerType = { isInit: boolean; disableClick: boolean };
 
@@ -35,9 +33,8 @@ const StyledContainer = styled.div<StyledContainerType>`
   margin: auto;
   /* margin: 20px auto 0; */
   min-width: 320px;
-  max-width: 1300px;
+  max-width: 1350px;
   width: 100%;
-
   padding-top: ${({ isInit }) => {
     return isInit ? "250px" : "0px";
   }};
@@ -59,6 +56,29 @@ const AnimeListContainer = styled.div`
   /* justify-content: center; */
   gap: 20px;
   margin-top: 20px;
+  /* height: 1000px; */
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 82vh;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    position: fixed;
+    /* background-color: #d6d6d6; */
+    border-radius: 4px;
+    position: fixed;
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 4px;
+    background: rgb(186, 183, 183);
+    border: 3px solid transparent;
+    background-clip: content-box; /* THIS IS IMPORTANT */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #77abdf;
+    border-radius: 4px;
+  }
 `;
 
 const StyledProgress = styled(LinearProgress)`
@@ -84,10 +104,19 @@ const PreloaderContainer = styled.div`
 `;
 
 const StyledContent = styled.div`
-  width: 1060px;
+  width: 1260px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* height: 1000px; */
+`;
+
+const AnimeListWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  padding: 34px;
+  gap: 20px;
 `;
 
 const getAnimeCardList = ({
@@ -102,7 +131,11 @@ const getAnimeCardList = ({
       <CardPreview key={index} data={animeItem} buttonType={buttonType} />
     ));
 
-    return <AnimeListContainer>{animeCardList}</AnimeListContainer>;
+    return (
+      <AnimeListContainer>
+        <AnimeListWrapper>{animeCardList}</AnimeListWrapper>
+      </AnimeListContainer>
+    );
   }
 };
 

@@ -1,2 +1,0 @@
-- [] Scrollbar: remove shift when scrollbar visible
-- [] Style logo
