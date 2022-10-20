@@ -58,8 +58,8 @@ const AnimeListContainer = styled.div`
   margin-top: 20px;
   /* height: 1000px; */
   overflow-x: hidden;
-  overflow-y: scroll;
-  height: 82vh;
+  overflow-y: auto;
+  max-height: 80vh;
 
   ::-webkit-scrollbar {
     width: 8px;
