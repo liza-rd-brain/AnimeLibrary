@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-// import styled from "styled-components";
-import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
+import { useTheme, makeStyles, withTheme, styled } from "@mui/material/styles";
+
 import { useAppDispatch } from "../business/reducer";
 
 import Tab from "@mui/material/Tab";
@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 
 import { PageName, State } from "../types";
-import logo from "../assets/pikachu_64.png";
+import { theme } from "../theme";
 
 const StyledNavigator = styled(Box)`
   display: flex;
@@ -17,12 +17,24 @@ const StyledNavigator = styled(Box)`
   margin-bottom: 50px;
 `;
 
+//example theme using
+const MyThemeComponent = styled("div")(({ theme }) => ({
+  // color: theme.palette.grey[100],
+  color: theme.palette.primary.dark,
+  backgroundColor: theme.palette.primary.medium,
+  padding: theme.spacing(1),
+  borderRadius: theme.shape.borderRadius,
+}));
+
+/* background: ${(props) => props.theme.palette.action.disabled}; */
 const StyledTab = styled(Tab)`
   height: 80px;
+  border-radius: 6px;
 `;
 const StyledTabs = styled(Tabs)`
   width: 100%;
   & .Mui-selected {
+    /* backgroundColor: theme.palette.primary.main, */
     background: #77abdf;
   }
 `;
@@ -35,8 +47,9 @@ export const Navigator: FC<{
     value: string | null;
   }>;
 }> = ({ refState }) => {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
-  const { currPage, phase } = useSelector((state: State) => state);
+  const { currPage } = useSelector((state: State) => state);
   const pageName: PageName[] = ["search", "list"];
   const currPageIndex = pageName.findIndex((page) => page === currPage);
 
