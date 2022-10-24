@@ -113,6 +113,10 @@ const AnimeListWrapper = styled.div`
   gap: 20px;
 `;
 
+const StyledBackdrop = styled(Backdrop)`
+  padding-left: 200px;
+`;
+
 const getAnimeCardList = ({
   animeList,
   buttonType,
@@ -190,7 +194,7 @@ export const AppContainer = () => {
             <div>
               {/* <SearchItem refState={refState} page={currPage} /> */}
               {getAnimeCardList({ animeList: data, buttonType: "add" })}
-              <Backdrop
+              <StyledBackdrop
                 sx={{
                   color: "#fff",
                   zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -199,7 +203,7 @@ export const AppContainer = () => {
                 onClick={handleClose}
               >
                 {openedCard && <Card data={openedCard} buttonType={"add"} />}
-              </Backdrop>
+              </StyledBackdrop>
             </div>
           );
         } else {
@@ -220,7 +224,7 @@ export const AppContainer = () => {
           return (
             <>
               {getAnimeCardList({ animeList: data, buttonType: "add" })}
-              <Backdrop
+              <StyledBackdrop
                 sx={{
                   color: "#fff",
                   zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -229,7 +233,7 @@ export const AppContainer = () => {
                 onClick={handleClose}
               >
                 {openedCard && <Card data={openedCard} buttonType={"add"} />}
-              </Backdrop>
+              </StyledBackdrop>
             </>
           );
         } else {
@@ -278,7 +282,7 @@ export const AppContainer = () => {
                   animeList: savedData,
                   buttonType: "delete",
                 })}
-                <Backdrop
+                <StyledBackdrop
                   sx={{
                     color: "#fff",
                     zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -289,7 +293,7 @@ export const AppContainer = () => {
                   {openedCard && (
                     <Card data={openedCard} buttonType={"delete"} />
                   )}
-                </Backdrop>
+                </StyledBackdrop>
               </>
             );
           }
