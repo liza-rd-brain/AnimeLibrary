@@ -34,12 +34,12 @@ declare module "@mui/material/styles/createPalette" {
 const themeOptions = {
   palette: {
     primary: {
-      main: "#7000E3",
-      medium: "#6000C2",
-      dark: "#490094",
-      light: "#D8B7FA",
-      line: "#ECEAFA",
-      background: "#F8F5FB",
+      main: "#317cec",
+      medium: "#2d70d6",
+      dark: "#2256a4",
+      light: "#4d8eef",
+      line: "#afcefe",
+      background: "#ffffff",
     },
   },
 } as const;
@@ -57,10 +57,3 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   return <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>;
 };
-
-// export function makeStyles<Theme = CustomTheme, Props extends object = {}, ClassKey extends string = string>(
-//   styles: Styles<Theme, Props, ClassKey>,
-//   options?: Omit<WithStylesOptions<Theme>, 'withTheme'>
-// ) {
-//   return makeCoreStyles<Theme, Props, ClassKey>(styles, options);
-// }

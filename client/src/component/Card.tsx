@@ -13,21 +13,28 @@ const CardContainer = styled.div`
   border-radius: 10px;
   background: white;
   color: black;
-  max-width: 800px;
+  width: 800px;
+  height: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 
 const CardItem = styled.div`
   display: grid;
   gap: 15px;
-  grid-template-columns: 280px 400px;
+  grid-template-columns: 280px 500px;
 `;
 
 const Table = styled.div`
   display: grid;
-  gap: 15px;
+  grid-template-columns: repeat(2, 1fr);
+  /* column-count: 2; */
+  /* gap: 10px; */
+  height: 200px;
 `;
 
 const ImageContainer = styled.div``;
+const TextWrapper = styled.div``;
 const StyledButton = styled(Button)`
   width: 100%;
   height: 56px;
@@ -46,14 +53,35 @@ const StyledHeader = styled.div`
 `;
 
 const StyledRow = styled.div`
-  width: 100%;
+  display: flex;
+
+  width: 200px;
 `;
 
 const StyledTitle = styled.span`
   font-weight: bold;
 `;
 
-const Description = styled.span`
+const DescriptionWrapper = styled.div`
+  height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    position: fixed;
+    /* background-color: #d6d6d6; */
+    border-radius: 4px;
+    position: fixed;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #77abdf;
+    border-radius: 4px;
+  }
+`;
+
+const Description = styled.div`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -74,7 +102,7 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
       return (
         <StyledRow key={index}>
           <StyledTitle>{`${key}: `}</StyledTitle>
-          <span>{value}</span>
+          <div>{value}</div>
         </StyledRow>
       );
     });
@@ -106,10 +134,13 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
             {buttonText}
           </StyledButton>
         </ImageContainer>
-
-        <Table>{getDetailTable()}</Table>
+        <TextWrapper>
+          <Table>{getDetailTable()}</Table>
+          <DescriptionWrapper>
+            <Description>{description}</Description>
+          </DescriptionWrapper>
+        </TextWrapper>
       </CardItem>
-      <Description>{description}</Description>
     </CardContainer>
   );
 };
