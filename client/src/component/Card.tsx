@@ -101,6 +101,22 @@ const Description = styled.div`
   overflow: hidden;
 `;
 
+const DetailAnimeText = {
+  status: "Status",
+  scores: "Scores",
+  studio: "Studio",
+  genre: "Genre",
+  country: "Country",
+  episode: "Episode",
+  duration: "Duration",
+  dateAired: "Date aired",
+  animeName: "Anime name",
+  otherNames: "Other names",
+  dateRelease: "Date release",
+};
+
+export type DetailAnimeTextType = keyof typeof DetailAnimeText;
+
 export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
   data,
   buttonType,
@@ -122,18 +138,22 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
     });
   };
 
+  const getKeyValue = (key: string) => {
+    return (
+      <StyledTitle>{`${
+        DetailAnimeText[key as DetailAnimeTextType]
+      }: `}</StyledTitle>
+    );
+  };
+
   const getDetailTable = () => {
     return detailList.map((item, index) => {
       const [key, value] = item;
       const isValueArray = Array.isArray(value);
 
-      console.log();
       return (
         <StyledRow key={index}>
-          <StyledTitle>{`${key}: `}</StyledTitle>
-          {/* <StyledRowItem>
-            <div>{value}</div>
-          </StyledRowItem> */}
+          {getKeyValue(key)}
           {isValueArray ? (
             <StyledRowItem> {getListValue(value)}</StyledRowItem>
           ) : (
