@@ -13,8 +13,9 @@ const CardContainer = styled.div`
   border-radius: 10px;
   background: white;
   color: black;
+  min-width: 800px;
   width: 800px;
-  height: 600px;
+  height: 550px;
   overflow-x: hidden;
   overflow-y: auto;
 `;
@@ -22,19 +23,27 @@ const CardContainer = styled.div`
 const CardItem = styled.div`
   display: grid;
   gap: 15px;
-  grid-template-columns: 280px 500px;
+  grid-template-columns: 35% 64%;
 `;
 
 const Table = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* grid-template-columns: repeat(2, 1fr); */
   /* column-count: 2; */
   /* gap: 10px; */
   height: 200px;
 `;
 
-const ImageContainer = styled.div``;
-const TextWrapper = styled.div``;
+const ImageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; ;
+`;
 const StyledButton = styled(Button)`
   width: 100%;
   height: 56px;
@@ -54,8 +63,13 @@ const StyledHeader = styled.div`
 
 const StyledRow = styled.div`
   display: flex;
+  gap: 10px;
+`;
 
-  width: 200px;
+const StyledRowItem = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
 `;
 
 const StyledTitle = styled.span`
@@ -63,7 +77,7 @@ const StyledTitle = styled.span`
 `;
 
 const DescriptionWrapper = styled.div`
-  height: 300px;
+  height: 200px;
   overflow-x: hidden;
   overflow-y: auto;
 
@@ -96,13 +110,37 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
 
   const detailList = Object.entries(detailTable);
 
+  const getListValue = (list: Array<string>) => {
+    return list.map((item, index) => {
+      const isNotLastElem = index !== list.length - 1;
+
+      if (isNotLastElem) {
+        return <span>{`${item},`}</span>;
+      } else {
+        return <span>{`${item}`}</span>;
+      }
+    });
+  };
+
   const getDetailTable = () => {
     return detailList.map((item, index) => {
       const [key, value] = item;
+      const isValueArray = Array.isArray(value);
+
+      console.log();
       return (
         <StyledRow key={index}>
           <StyledTitle>{`${key}: `}</StyledTitle>
-          <div>{value}</div>
+          {/* <StyledRowItem>
+            <div>{value}</div>
+          </StyledRowItem> */}
+          {isValueArray ? (
+            <StyledRowItem> {getListValue(value)}</StyledRowItem>
+          ) : (
+            <StyledRowItem>
+              <div>{value}</div>
+            </StyledRowItem>
+          )}
         </StyledRow>
       );
     });
