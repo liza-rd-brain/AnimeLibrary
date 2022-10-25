@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 
-import { State } from "../types";
+import { State, SimplePhaseName } from "../types";
 import { initialState } from "./initialState";
 import { DetailAnime, DetailAnimeList } from "types";
 
@@ -63,6 +63,7 @@ export const reducer = (
 
   switch (phaseOuter) {
     case "waitingDB": {
+      //ждем загрузки БД
       return waitingDB(state, action);
     }
 
@@ -82,7 +83,7 @@ export const reducer = (
       return cardOpening(state, action);
     }
 
-    case "scrapingErr": {
+    case "errHandling": {
       return scrapingErr(state, action);
     }
 

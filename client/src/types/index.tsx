@@ -28,17 +28,16 @@ export type PhaseType = SimplePhaseType | CardOpeningPhase;
 
 export type SimplePhaseType =
   | { type: "waitingDB" }
-  | { type: "waitingScraping.waitingScrapeHandle" }
   | { type: "waitingScraping.dataScraping" }
+  | { type: "waitingScraping.waitingScrapeHandle" }
   | { type: "waitingScrapeHandle" }
   | { type: "dataScraping" }
   | { type: "errHandling" };
 
-type SimplePhaseName = SimplePhaseType["type"];
+export type SimplePhaseName = SimplePhaseType["type"];
 
 export type CardOpeningPhase = {
   type: "cardOpening";
-  // prevType: SimplePhaseName;
 };
 
 export type CardDeletingPhase = {};

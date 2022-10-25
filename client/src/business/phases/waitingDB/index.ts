@@ -15,14 +15,6 @@ export const waitingDB = (state: State, action: ActionType): State => {
       return newState;
     }
 
-    /*     case ActionName.switchPage: {
-      const newPage = state.currPage === "list" ? "search" : "list";
-      const newState: State = {
-        ...state,
-        currPage: newPage,
-      };
-      return newState;
-    } */
     default: {
       return state;
     }

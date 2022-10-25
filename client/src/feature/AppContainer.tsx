@@ -107,6 +107,7 @@ const StyledContent = styled.div`
 
 const AnimeListWrapper = styled.div`
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   overflow: hidden;
   padding: 34px;

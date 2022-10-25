@@ -1,12 +1,16 @@
 
 * Style:
 - [x] Scrollbar: remove shift when scrollbar visible
-- [ ] Style logo (letters)
+- [x] Style logo (letters)
 - [ ] Custom theme
 - [ ] Check proportion
+- [ ] Interface elem fade when scraping
+- [x] Error view 
+
 
 
 * Logic:
--[ ] Button for stop scraping
+- [ ] Button for stop scraping
+- [ ] Clean up phase
 
 

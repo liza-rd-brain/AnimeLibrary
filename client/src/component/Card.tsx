@@ -99,6 +99,7 @@ const Description = styled.div`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  padding-right: 5px;
 `;
 
 const DetailAnimeText = {
