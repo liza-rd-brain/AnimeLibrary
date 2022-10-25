@@ -165,13 +165,13 @@ export const AppContainer = () => {
   useAddAnime();
   useDeleteAnime();
 
-  const [phaseOuter, phaseInner] = phase.type.split(".");
+  const currPhaseName = phase.type;
 
-  const clickDisable =
-    phaseOuter === "dataScraping" || phaseInner === "dataScraping";
+  const isScrapingView =
+    currPhaseName === "dataScraping" || currPhaseName === "waitingDB";
 
   const getSearchView = () => {
-    switch (phaseOuter) {
+    switch (currPhaseName) {
       case "waitingDB": {
         return (
           <>
@@ -183,24 +183,21 @@ export const AppContainer = () => {
         return (
           <>
             <Preloader isAnimated={true} />
-            {/* <SearchItem refState={refState} page={currPage} /> */}
           </>
         );
       }
 
-      case "waitingScraping":
-      case "waitingScrapeHandle": {
+      case "idle": {
         if (data && typeof data !== "string") {
           return (
             <div>
-              {/* <SearchItem refState={refState} page={currPage} /> */}
               {getAnimeCardList({ animeList: data, buttonType: "add" })}
               <StyledBackdrop
                 sx={{
                   color: "#fff",
                   zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
-                open={phase.type === "cardOpening"}
+                open={false}
                 onClick={handleClose}
               >
                 {openedCard && <Card data={openedCard} buttonType={"add"} />}
@@ -210,16 +207,12 @@ export const AppContainer = () => {
         } else {
           return (
             <>
-              <Preloader
-                isAnimated={phaseInner === "dataScraping" ? true : false}
-              />
-              {/* <SearchItem refState={refState} page={"search"} /> */}
+              <Preloader isAnimated={false} />
             </>
           );
         }
       }
 
-      // case "waitingScrapeHandle":
       case "cardOpening": {
         if (typeof data !== "string") {
           return (
@@ -266,7 +259,7 @@ export const AppContainer = () => {
       }
 
       case "list": {
-        switch (phaseOuter) {
+        switch (currPhaseName) {
           //TODO: нужна ли фаза waitingDB здесь?
           // case "waitingDB": {
           //   return (
@@ -307,10 +300,10 @@ export const AppContainer = () => {
   };
 
   return (
-    <StyledContainer isInit={false} disableClick={clickDisable}>
-      <Header />
+    <StyledContainer isInit={false} disableClick={isScrapingView}>
+      <Header /*  isFaded={isScrapingView} */ />
       <StyledBody>
-        <Navigator refState={refState} />
+        <Navigator refState={refState} isFaded={isScrapingView} />
         <StyledContent>{getAppView()}</StyledContent>
       </StyledBody>
     </StyledContainer>

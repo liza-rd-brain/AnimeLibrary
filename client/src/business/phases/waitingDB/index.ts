@@ -6,7 +6,7 @@ export const waitingDB = (state: State, action: ActionType): State => {
     case ActionName.loadedDB: {
       const newState: State = {
         ...state,
-        phase: { type: "waitingScraping.waitingScrapeHandle" },
+        phase: { type: "idle" },
         dataBase: action.payload.dataBase,
         doEffect: null,
         savedData: action.payload.animeList,

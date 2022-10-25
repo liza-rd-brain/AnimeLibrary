@@ -28,9 +28,7 @@ export type PhaseType = SimplePhaseType | CardOpeningPhase;
 
 export type SimplePhaseType =
   | { type: "waitingDB" }
-  | { type: "waitingScraping.dataScraping" }
-  | { type: "waitingScraping.waitingScrapeHandle" }
-  | { type: "waitingScrapeHandle" }
+  | { type: "idle" }
   | { type: "dataScraping" }
   | { type: "errHandling" };
 

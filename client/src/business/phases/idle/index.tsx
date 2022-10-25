@@ -1,10 +1,7 @@
 import { ActionType, ActionName } from "../../reducer";
 import { CardOpeningPhase, State } from "../../../types";
 
-export const waitingScrapeHandle = (
-  state: State,
-  action: ActionType
-): State => {
+export const idle = (state: State, action: ActionType): State => {
   switch (action.type) {
     case ActionName.startedAnimeScraping: {
       const newState: State = {
@@ -50,7 +47,7 @@ export const waitingScrapeHandle = (
       if (action.payload) {
         const newState: State = {
           ...state,
-          phase: { type: "waitingScrapeHandle" },
+          phase: { type: "idle" },
           doEffect: null,
           savedData: action.payload,
         };
@@ -58,7 +55,7 @@ export const waitingScrapeHandle = (
       } else {
         const newState: State = {
           ...state,
-          phase: { type: "waitingScrapeHandle" },
+          phase: { type: "idle" },
           doEffect: null,
         };
         return newState;

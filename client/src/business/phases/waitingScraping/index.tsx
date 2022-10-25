@@ -11,7 +11,7 @@ export const waitingScraping = (state: State, action: ActionType): State => {
         case ActionName.startedAnimeScraping: {
           const newState: State = {
             ...state,
-            phase: { type: "waitingScraping.dataScraping" },
+            phase: { type: "dataScraping" },
             doEffect: { type: "!dataScrape", data: action.payload },
           };
           return newState;

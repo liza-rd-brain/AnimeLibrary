@@ -10,7 +10,7 @@ import { scrapingErr } from "./phases/scrapingErr";
 import { cardOpening } from "./phases/cardOpening";
 import { dataScraping } from "./phases/dataScraping";
 import { waitingScraping } from "./phases/waitingScraping";
-import { waitingScrapeHandle } from "./phases/waitingScrapeHandle";
+import { idle } from "./phases/idle";
 
 export const ActionName = {
   loadedDB: "loadedDB",
@@ -59,20 +59,16 @@ export const reducer = (
   state: State = initialState,
   action: ActionType
 ): State => {
-  const [phaseOuter] = state.phase.type.split(".");
+  const phase = state.phase.type;
 
-  switch (phaseOuter) {
+  switch (phase) {
     case "waitingDB": {
       //ждем загрузки БД
       return waitingDB(state, action);
     }
 
-    case "waitingScraping": {
-      return waitingScraping(state, action);
-    }
-
-    case "waitingScrapeHandle": {
-      return waitingScrapeHandle(state, action);
+    case "idle": {
+      return idle(state, action);
     }
 
     case "dataScraping": {

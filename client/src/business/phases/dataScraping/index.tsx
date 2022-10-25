@@ -9,7 +9,7 @@ export const dataScraping = (state: State, action: ActionType): State => {
         ...state,
         doEffect: null,
         data: action.payload,
-        phase: { type: "waitingScrapeHandle" },
+        phase: { type: "idle" },
       };
       return newState;
     }
