@@ -129,8 +129,15 @@ const AnimeListWrapper = styled.div`
   gap: 20px;
 `;
 
-const StyledBackdrop = styled(Backdrop)`
+const CardBackdrop = styled(Backdrop)`
   padding-left: 200px;
+`;
+
+const PreloaderBackdrop = styled(Backdrop)<{ withButton?: boolean }>`
+  padding-left: 200px;
+  margin-top: ${({ withButton }) => {
+    return withButton ? "-320px" : "-400px";
+  }};
 `;
 
 const StyledButton = styled(Button)`
@@ -139,6 +146,13 @@ const StyledButton = styled(Button)`
   z-index: 2;
   cursor: pointer;
   pointer-events: initial;
+`;
+
+const ScrapingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 `;
 
 const getAnimeCardList = ({
@@ -203,17 +217,36 @@ export const AppContainer = () => {
       case "waitingDB": {
         return (
           <>
-            <Preloader isAnimated={true} />
+            <PreloaderBackdrop
+              sx={{
+                color: "#fff",
+                zIndex: (theme) => theme.zIndex.drawer + 1,
+              }}
+              open={true}
+            >
+              <Preloader isAnimated={true} />
+            </PreloaderBackdrop>
           </>
         );
       }
       case "dataScraping": {
         return (
           <>
-            <Preloader isAnimated={true} />
-            <StyledButton variant="contained" onClick={stopScraping}>
-              {SEARCH_INTERRUPT_TEXT}
-            </StyledButton>
+            <PreloaderBackdrop
+              sx={{
+                color: "#fff",
+                zIndex: (theme) => theme.zIndex.drawer + 1,
+              }}
+              open={true}
+              withButton={true}
+            >
+              <ScrapingContainer>
+                <Preloader isAnimated={true} />
+                <StyledButton variant="contained" onClick={stopScraping}>
+                  {SEARCH_INTERRUPT_TEXT}
+                </StyledButton>
+              </ScrapingContainer>
+            </PreloaderBackdrop>
           </>
         );
       }
@@ -223,7 +256,7 @@ export const AppContainer = () => {
           return (
             <div>
               {getAnimeCardList({ animeList: data, buttonType: "add" })}
-              <StyledBackdrop
+              <CardBackdrop
                 sx={{
                   color: "#fff",
                   zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -232,7 +265,7 @@ export const AppContainer = () => {
                 onClick={handleClose}
               >
                 {openedCard && <Card data={openedCard} buttonType={"add"} />}
-              </StyledBackdrop>
+              </CardBackdrop>
             </div>
           );
         } else {
@@ -249,16 +282,16 @@ export const AppContainer = () => {
           return (
             <>
               {getAnimeCardList({ animeList: data, buttonType: "add" })}
-              <StyledBackdrop
+              <CardBackdrop
                 sx={{
                   color: "#fff",
                   zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
-                open={phase.type === "cardOpening"}
+                open={true}
                 onClick={handleClose}
               >
                 {openedCard && <Card data={openedCard} buttonType={"add"} />}
-              </StyledBackdrop>
+              </CardBackdrop>
             </>
           );
         } else {
@@ -307,7 +340,7 @@ export const AppContainer = () => {
                   animeList: savedData,
                   buttonType: "delete",
                 })}
-                <StyledBackdrop
+                <CardBackdrop
                   sx={{
                     color: "#fff",
                     zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -318,7 +351,7 @@ export const AppContainer = () => {
                   {openedCard && (
                     <Card data={openedCard} buttonType={"delete"} />
                   )}
-                </StyledBackdrop>
+                </CardBackdrop>
               </>
             );
           }
