@@ -1,6 +1,4 @@
-import React, { FC } from "react";
 import styled from "styled-components";
-
 import logo from "../assets/pikachu_64.png";
 
 const LOGO_TEXT = "Anime Library";

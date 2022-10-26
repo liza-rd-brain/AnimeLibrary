@@ -1,10 +1,7 @@
-import React, { createContext, MutableRefObject } from "react";
-import { FilterDataType } from "./types";
+import { createContext } from "react";
 
 //TODO: добавить scraping string
-type ContextType = {
-  filter: MutableRefObject<FilterDataType>;
-};
+type ContextType = {};
 
 type EmptyContextType = Record<string, never>;
 

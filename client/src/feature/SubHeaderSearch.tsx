@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { SearchItem } from "../feature/SearchItem";
-import { PageName } from "../types";
 
 const SubHeaderContainer = styled.div`
   display: flex;

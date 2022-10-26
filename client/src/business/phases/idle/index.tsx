@@ -62,9 +62,17 @@ export const idle = (state: State, action: ActionType): State => {
       }
     }
 
-    case ActionName.filterList: {
+    case ActionName.filterListByName: {
       console.log("filterList", action.payload);
-      return state;
+
+      const newState = {
+        ...state,
+        filter: {
+          name: action.payload,
+        },
+      };
+
+      return newState;
     }
     default: {
       return state;

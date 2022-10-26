@@ -1,10 +1,8 @@
-import React, { FC, useContext, useRef, useState } from "react";
+import React, { FC, useRef } from "react";
 import styled from "styled-components";
 
-import { AppContext } from "../AppContext";
 import { useAppDispatch, ActionName } from "../business/reducer";
 
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 const StyledSearchItem = styled.div`
@@ -14,11 +12,6 @@ const StyledSearchItem = styled.div`
 
 const StyledTextInput = styled(TextField)`
   width: 600px;
-`;
-
-const StyledButton = styled(Button)`
-  width: 56px;
-  height: 56px;
 `;
 
 export const FindItem: FC<{
@@ -32,7 +25,7 @@ export const FindItem: FC<{
 
   const changeInput = (event: any) => {
     dispatch({
-      type: ActionName.filterList,
+      type: ActionName.filterListByName,
       payload: textInput.current?.value as string,
     });
   };
@@ -41,6 +34,7 @@ export const FindItem: FC<{
     <StyledSearchItem>
       <div>
         <StyledTextInput
+          autoComplete="off"
           placeholder="anime name"
           inputRef={textInput}
           onChange={(event) => changeInput(event)}

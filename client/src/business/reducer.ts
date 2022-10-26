@@ -1,29 +1,28 @@
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 
-import { State, SimplePhaseName } from "../types";
+import { State } from "../types";
 import { initialState } from "./initialState";
 import { DetailAnime, DetailAnimeList } from "types";
 
+import { idle } from "./phases/idle";
 import { waitingDB } from "./phases/waitingDB";
 import { scrapingErr } from "./phases/scrapingErr";
 import { cardOpening } from "./phases/cardOpening";
 import { dataScraping } from "./phases/dataScraping";
-import { waitingScraping } from "./phases/waitingScraping";
-import { idle } from "./phases/idle";
 
 export const ActionName = {
   loadedDB: "loadedDB",
   cardClosed: "cardClosed",
   cardOpened: "cardOpened",
   switchPage: "switchPage",
-  filterList: "filterList",
   dataNotFound: "dataNotFound",
   dataReceived: "dataReceived",
   endedAddAnime: "endedAddAnime",
   toIdleSwitched: "toIdleSwitched",
   startedAddAnime: "startedAddAnime",
   endedDeleteAnime: "endedDeleteAnime",
+  filterListByName: "filterListByName",
   startedDeleteAnime: "startedDeleteAnime",
   scrapingInterrupted: "scrapingInterrupted",
   scrappingAborted: "scrappingAborted",
@@ -37,7 +36,7 @@ export type ActionType =
   | { type: typeof ActionName.toIdleSwitched }
   | { type: typeof ActionName.scrappingAborted }
   | { type: typeof ActionName.scrapingInterrupted }
-  | { type: typeof ActionName.filterList; payload: string }
+  | { type: typeof ActionName.filterListByName; payload: string }
   | { type: typeof ActionName.startedDeleteAnime; payload: string }
   | { type: typeof ActionName.startedAnimeScraping; payload: string }
   | { type: typeof ActionName.startedAddAnime; payload: DetailAnime }

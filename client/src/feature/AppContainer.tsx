@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { AppContext } from "../AppContext";
 import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
-import LinearProgress from "@mui/material/LinearProgress";
+// import LinearProgress from "@mui/material/LinearProgress";
 
 import {
   useAddAnime,
@@ -14,7 +14,7 @@ import {
   useScrapeData,
 } from "../effect";
 import { useAppDispatch } from "../business/reducer";
-import { CardButtonType, AnimeListType, State, FilterDataType } from "../types";
+import { State, FilterDataType } from "../types";
 
 import { Error } from "./Error";
 import { Header } from "./Header";
@@ -22,7 +22,9 @@ import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
 import SubHeaderList from "./SubHeaderList";
 import SubHeaderSearch from "../feature/SubHeaderSearch";
-import { CardPreview } from "../component/CardPreview";
+
+import { DetailAnimeList } from "types";
+import { AnimeCardList } from "./AnimeCardList";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
 
@@ -62,33 +64,10 @@ const StyledBody = styled.div`
   justify-content: space-between;
 `;
 
-const AnimeListContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-
-  gap: 20px;
-
-  overflow-x: hidden;
-  overflow-y: auto;
-  max-height: 80vh;
-
-  ::-webkit-scrollbar {
-    width: 8px;
-    position: fixed;
-    border-radius: 4px;
-    position: fixed;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #77abdf;
-    border-radius: 4px;
-  }
-`;
-
-const StyledProgress = styled(LinearProgress)`
-  transform: scale(-1, 1);
-  width: 300px;
-`;
+// const StyledProgress = styled(LinearProgress)`
+//   transform: scale(-1, 1);
+//   width: 300px;
+// `;
 
 const Logo = styled.div<{ isAnimated?: boolean }>`
   width: 500px;
@@ -112,15 +91,6 @@ const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-`;
-
-const AnimeListWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  overflow: hidden;
-  padding: 34px;
   gap: 20px;
 `;
 
@@ -150,27 +120,6 @@ const ScrapingContainer = styled.div`
   gap: 20px;
 `;
 
-//TODO:добавить фильтры
-const getAnimeCardList = ({
-  animeList,
-  buttonType,
-}: {
-  animeList: AnimeListType;
-  buttonType: CardButtonType;
-}) => {
-  if (animeList) {
-    const animeCardList = animeList?.map((animeItem, index) => (
-      <CardPreview key={index} data={animeItem} buttonType={buttonType} />
-    ));
-
-    return (
-      <AnimeListContainer>
-        <AnimeListWrapper>{animeCardList}</AnimeListWrapper>
-      </AnimeListContainer>
-    );
-  }
-};
-
 const Preloader: FC<{ isAnimated: boolean }> = ({ isAnimated }) => {
   return (
     <PreloaderContainer>
@@ -182,7 +131,7 @@ const Preloader: FC<{ isAnimated: boolean }> = ({ isAnimated }) => {
 };
 
 export const AppContainer = () => {
-  const { data, openedCard, phase, currPage, savedData } = useSelector(
+  const { data, openedCard, phase, currPage, savedData, filter } = useSelector(
     (state: State) => state
   );
 
@@ -196,8 +145,30 @@ export const AppContainer = () => {
     dispatch({ type: "scrapingInterrupted" });
   };
 
+  //TODO: нужно будет потом поправить на хэш таблицу
+
+  const getFilteredData = (name: string, savedData: DetailAnimeList) => {
+    return savedData.filter((animeItem) => {
+      return animeItem.animeName
+        ?.toLocaleLowerCase()
+        ?.includes(name.toLocaleLowerCase());
+    });
+    // return savedData.reduce(
+    //   (prevItem: {} | DetailAnimeList, currAnimeItem: DetailAnime) => {
+    //     return {};
+    //   },
+    //   {}
+    // );
+  };
+
   //TODO: rename to smth like refSearchState
   const refFilterNameState = useRef<FilterDataType>({ name: null });
+
+  //TODO:пока фильтрация по имени
+  const filteredListData =
+    filter?.name && savedData
+      ? getFilteredData(filter.name, savedData)
+      : savedData;
 
   const refState = useRef<{ value: string | null }>({ value: null });
 
@@ -254,7 +225,7 @@ export const AppContainer = () => {
         if (data && typeof data !== "string") {
           return (
             <div>
-              {getAnimeCardList({ animeList: data, buttonType: "add" })}
+              <AnimeCardList animeList={data} buttonType={"add"} />
               <CardBackdrop
                 sx={{
                   color: "#fff",
@@ -280,7 +251,7 @@ export const AppContainer = () => {
         if (typeof data !== "string") {
           return (
             <>
-              {getAnimeCardList({ animeList: data, buttonType: "add" })}
+              <AnimeCardList animeList={data} buttonType={"add"} />
               <CardBackdrop
                 sx={{
                   color: "#fff",
@@ -325,10 +296,7 @@ export const AppContainer = () => {
         return (
           <>
             <SubHeaderList refState={refState} />
-            {getAnimeCardList({
-              animeList: savedData,
-              buttonType: "delete",
-            })}
+            <AnimeCardList animeList={filteredListData} buttonType={"delete"} />
             <CardBackdrop
               sx={{
                 color: "#fff",

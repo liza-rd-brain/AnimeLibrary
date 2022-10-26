@@ -10,6 +10,7 @@ export type State = {
   openedCard: DetailAnime | null;
   currPage: PageName;
   dataBase: IDBDatabase | null;
+  filter: FilterDataType | null;
 };
 
 //TODO: уточнить какие строки в типе

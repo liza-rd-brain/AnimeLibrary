@@ -1,6 +1,6 @@
-import React, { FC } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { useTheme, makeStyles, withTheme, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 
 import { useAppDispatch } from "../business/reducer";
 
@@ -9,7 +9,6 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 
 import { PageName, State } from "../types";
-import { theme } from "../theme";
 
 const StyledNavigator = styled(Box)`
   display: flex;
@@ -17,16 +16,6 @@ const StyledNavigator = styled(Box)`
   margin-bottom: 50px;
 `;
 
-//example theme using
-const MyThemeComponent = styled("div")(({ theme }) => ({
-  // color: theme.palette.grey[100],
-  color: theme.palette.primary.dark,
-  backgroundColor: theme.palette.primary.medium,
-  padding: theme.spacing(1),
-  borderRadius: theme.shape.borderRadius,
-}));
-
-/* background: ${(props) => props.theme.palette.action.disabled}; */
 const StyledTab = styled(Tab)`
   height: 80px;
   border-radius: 6px;
@@ -34,7 +23,6 @@ const StyledTab = styled(Tab)`
 const StyledTabs = styled(Tabs)`
   width: 100%;
   & .Mui-selected {
-    /* backgroundColor: theme.palette.primary.main, */
     background: #77abdf;
   }
 `;

@@ -28,6 +28,7 @@ export const SearchItem: FC<{
 
   const textInput = useRef<HTMLInputElement>(null);
   //написать условие: если инпут повторный и дата не null
+
   const scrapeAnimeData = () => {
     if (textInput.current?.value) {
       if (refState) {
@@ -51,6 +52,7 @@ export const SearchItem: FC<{
     <StyledSearchItem>
       <div>
         <StyledTextInput
+          autoComplete="off"
           inputRef={textInput}
           defaultValue={refState?.current.value}
         />

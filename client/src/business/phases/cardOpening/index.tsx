@@ -1,5 +1,5 @@
+import { State } from "../../../types";
 import { ActionType, ActionName } from "../../reducer";
-import { CardOpeningPhase, State } from "../../../types";
 
 export const cardOpening = (state: State, action: ActionType): State => {
   switch (action.type) {

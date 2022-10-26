@@ -6,7 +6,7 @@ import { State } from "../types";
 
 import { findAnimeWebSocket } from "../business/findAnimeWebSocket";
 
-const ErrorType = { type: "abort socket" };
+// const ErrorType = { type: "abort socket" };
 
 export function useScrapeData() {
   const [doEffect] = useSelector((state: State) => [state.doEffect]);
