@@ -6,6 +6,7 @@ import { DetailAnime } from "types";
 import { CardButtonType } from "../types";
 
 import Button from "@mui/material/Button";
+import { ActionName } from "../business/reducer";
 
 const CardContainer = styled.div`
   display: grid;
@@ -73,7 +74,7 @@ export const CardPreview: FC<{
   return (
     <CardContainer
       onClick={() => {
-        dispatch({ type: "cardOpened", payload: data });
+        dispatch({ type: ActionName.cardOpened, payload: data });
       }}
     >
       <CardItem>
@@ -90,7 +91,7 @@ export const CardPreview: FC<{
           variant="outlined"
           onClick={(e) => {
             e.stopPropagation();
-            dispatch({ type: "startedAddAnime", payload: data });
+            dispatch({ type: ActionName.startedAddAnime, payload: data });
           }}
         >
           add

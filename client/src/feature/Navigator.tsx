@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 
-import { useAppDispatch } from "../business/reducer";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -37,7 +37,7 @@ export const Navigator = () => {
   const currPageIndex = pageName.findIndex((page) => page === currPage);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    dispatch({ type: "switchPage" });
+    dispatch({ type: ActionName.switchPage });
   };
 
   return (

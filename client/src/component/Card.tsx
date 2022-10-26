@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { DetailAnime } from "types";
 import Button from "@mui/material/Button";
 import { CardButtonType } from "../types";
-import { useAppDispatch } from "../business/reducer";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
 const CardContainer = styled.div`
   display: grid;
@@ -172,10 +172,10 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
   //TODO: исправить assertion
   const handleButtonClick = () => {
     if (buttonType === "add") {
-      dispatch({ type: "startedAddAnime", payload: data });
+      dispatch({ type: ActionName.startedAddAnime, payload: data });
     } else if (buttonType === "delete") {
       const animeName = data.animeName as string;
-      dispatch({ type: "startedDeleteAnime", payload: animeName });
+      dispatch({ type: ActionName.startedDeleteAnime, payload: animeName });
     }
   };
 

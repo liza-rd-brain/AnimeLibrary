@@ -29,12 +29,12 @@ export function useScrapeData() {
               if (detailAnimeList) {
                 if (animeListNotEmpty) {
                   dispatch({
-                    type: "dataReceived",
+                    type: ActionName.dataReceived,
                     payload: detailAnimeList,
                   });
                 } else {
                   dispatch({
-                    type: "dataNotFound",
+                    type: ActionName.dataNotFound,
                   });
                 }
               } else {

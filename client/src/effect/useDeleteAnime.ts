@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../business/reducer";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
 import { State } from "../types";
 import { STORE_NAME } from "./common/constantList";
@@ -49,14 +49,14 @@ export function useDeleteAnime() {
               (res) => {
                 getAnimeList(dataBase, controller).then((animeList) => {
                   dispatch({
-                    type: "endedDeleteAnime",
+                    type: ActionName.endedDeleteAnime,
                     payload: animeList,
                   });
                 });
               },
               (error) => {
                 dispatch({
-                  type: "endedDeleteAnime",
+                  type: ActionName.endedDeleteAnime,
                 });
               }
             );

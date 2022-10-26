@@ -13,8 +13,8 @@ import {
   useOpenDB,
   useScrapeData,
 } from "../effect";
-import { useAppDispatch } from "../business/reducer";
 import { State, FilterDataType } from "../types";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
 import { Error } from "./Error";
 import { Header } from "./Header";
@@ -138,11 +138,11 @@ export const AppContainer = () => {
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    dispatch({ type: "cardClosed" });
+    dispatch({ type: ActionName.cardClosed });
   };
 
   const stopScraping = () => {
-    dispatch({ type: "scrapingInterrupted" });
+    dispatch({ type: ActionName.scrapingInterrupted });
   };
 
   //TODO: нужно будет потом поправить на хэш таблицу

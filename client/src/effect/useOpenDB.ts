@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../business/reducer";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
 import { State } from "../types";
 import { getAnimeList } from "./common/getAnimeList";
@@ -47,7 +47,7 @@ export function useOpenDB() {
               getAnimeList(db, controller).then((animeList) => {
                 setTimeout(() => {
                   dispatch({
-                    type: "loadedDB",
+                    type: ActionName.loadedDB,
                     payload: { dataBase: db, animeList },
                   });
                 }, 2000);

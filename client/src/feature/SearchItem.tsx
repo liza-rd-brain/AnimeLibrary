@@ -1,6 +1,6 @@
 import React, { FC, useRef } from "react";
 import styled from "styled-components";
-import { useAppDispatch } from "../business/reducer";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -35,13 +35,13 @@ export const SearchItem: FC<{
         if (refState.current.value !== textInput.current?.value) {
           refState.current.value = textInput.current?.value;
           dispatch({
-            type: "startedAnimeScraping",
+            type: ActionName.startedAnimeScraping,
             payload: textInput.current?.value,
           });
         }
       } else {
         dispatch({
-          type: "startedAnimeScraping",
+          type: ActionName.startedAnimeScraping,
           payload: textInput.current?.value,
         });
       }

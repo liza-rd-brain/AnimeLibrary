@@ -5,7 +5,7 @@ import { State } from "../types";
 import { DetailAnime } from "types";
 import { STORE_NAME } from "./common/constantList";
 import { getAnimeList } from "./common/getAnimeList";
-import { useAppDispatch } from "../business/reducer";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
 const addAnime = (
   dataBase: IDBDatabase,
@@ -47,14 +47,14 @@ export function useAddAnime() {
               (res) => {
                 getAnimeList(dataBase, controller).then((animeList) => {
                   dispatch({
-                    type: "endedAddAnime",
+                    type: ActionName.endedAddAnime,
                     payload: animeList,
                   });
                 });
               },
               (error) => {
                 dispatch({
-                  type: "endedAddAnime",
+                  type: ActionName.endedAddAnime,
                 });
               }
             );
