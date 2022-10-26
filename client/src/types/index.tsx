@@ -42,9 +42,10 @@ export type CardDeletingPhase = {};
 
 export type EffectType =
   | { type: "!openDB" }
+  | { type: "!dataScrape"; data: string }
+  | { type: "!scrapeInterrupt" }
   | { type: "!startedAddAnime"; data: DetailAnime }
   | { type: "!startedDeleteAnime"; data: string }
-  | { type: "!dataScrape"; data: string }
   | null;
 
 export type ResponseType = {

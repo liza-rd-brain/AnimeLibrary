@@ -2,6 +2,7 @@ import { useRef, FC } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
+import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
 import LinearProgress from "@mui/material/LinearProgress";
 
@@ -25,6 +26,19 @@ import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
 
 type StyledContainerType = { isInit: boolean; disableClick: boolean };
+
+const SEARCH_INTERRUPT_TEXT = "stop search";
+
+const ContainerWrapper = styled.div<{ isFaded: boolean }>`
+  height: 100vh;
+  width: 100%;
+  /* backdrop-filter: ${({ isFaded }) => {
+    return isFaded ? "  brightness(90%)" : "none";
+  }}; */
+  background-color: ${({ isFaded }) => {
+    return isFaded ? "#d1d1d17d" : "none";
+  }};
+`;
 
 const StyledContainer = styled.div<StyledContainerType>`
   display: flex;
@@ -55,7 +69,6 @@ const AnimeListContainer = styled.div`
   //если ширина меньше 1000 - по центру?
   /* justify-content: center; */
   gap: 20px;
-  margin-top: 20px;
   /* height: 1000px; */
   overflow-x: hidden;
   overflow-y: auto;
@@ -81,20 +94,21 @@ const StyledProgress = styled(LinearProgress)`
 `;
 
 const Logo = styled.div<{ isAnimated?: boolean }>`
-  width: 300px;
-  height: 150px;
+  width: 500px;
+  height: 300px;
   background: ${({ isAnimated }) => {
     return isAnimated ? `url(${logoAnimated})` : `url(${logo})`;
   }};
   background-repeat: no-repeat;
-  background-size: 400px;
+  background-size: 500px;
   background-position: center;
   transform: scale(-1, 1);
+  border-radius: 10px;
 `;
 
 const PreloaderContainer = styled.div`
   display: grid;
-  height: 200px;
+  /* height: 200px; */
 `;
 
 const StyledContent = styled.div`
@@ -102,6 +116,7 @@ const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
   /* height: 1000px; */
 `;
 
@@ -116,6 +131,14 @@ const AnimeListWrapper = styled.div`
 
 const StyledBackdrop = styled(Backdrop)`
   padding-left: 200px;
+`;
+
+const StyledButton = styled(Button)`
+  width: 200px;
+  height: 56px;
+  z-index: 2;
+  cursor: pointer;
+  pointer-events: initial;
 `;
 
 const getAnimeCardList = ({
@@ -142,7 +165,8 @@ const Preloader: FC<{ isAnimated: boolean }> = ({ isAnimated }) => {
   return (
     <PreloaderContainer>
       <Logo isAnimated={isAnimated} />
-      {isAnimated && <StyledProgress />}
+      {/*TODO: нужен ли StyledProgress?? */}
+      {/* {isAnimated && <StyledProgress />} */}
     </PreloaderContainer>
   );
 };
@@ -155,7 +179,11 @@ export const AppContainer = () => {
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    dispatch({ type: "closeCard" });
+    dispatch({ type: "cardClosed" });
+  };
+
+  const stopScraping = () => {
+    dispatch({ type: "scrapingInterrupted" });
   };
 
   const refState = useRef<{ value: string | null }>({ value: null });
@@ -183,6 +211,9 @@ export const AppContainer = () => {
         return (
           <>
             <Preloader isAnimated={true} />
+            <StyledButton variant="contained" onClick={stopScraping}>
+              {SEARCH_INTERRUPT_TEXT}
+            </StyledButton>
           </>
         );
       }
@@ -300,12 +331,14 @@ export const AppContainer = () => {
   };
 
   return (
-    <StyledContainer isInit={false} disableClick={isScrapingView}>
-      <Header /*  isFaded={isScrapingView} */ />
-      <StyledBody>
-        <Navigator refState={refState} isFaded={isScrapingView} />
-        <StyledContent>{getAppView()}</StyledContent>
-      </StyledBody>
-    </StyledContainer>
+    <ContainerWrapper isFaded={isScrapingView}>
+      <StyledContainer isInit={false} disableClick={isScrapingView}>
+        <Header />
+        <StyledBody>
+          <Navigator refState={refState} />
+          <StyledContent>{getAppView()}</StyledContent>
+        </StyledBody>
+      </StyledContainer>
+    </ContainerWrapper>
   );
 };

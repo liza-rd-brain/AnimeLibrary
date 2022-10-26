@@ -3,7 +3,7 @@ import { CardOpeningPhase, State } from "../../../types";
 
 export const cardOpening = (state: State, action: ActionType): State => {
   switch (action.type) {
-    case ActionName.closeCard: {
+    case ActionName.cardClosed: {
       const newState: State = {
         ...state,
         openedCard: null,

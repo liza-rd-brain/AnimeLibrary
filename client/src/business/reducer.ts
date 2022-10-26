@@ -14,24 +14,30 @@ import { idle } from "./phases/idle";
 
 export const ActionName = {
   loadedDB: "loadedDB",
-  closeCard: "closeCard",
+  cardClosed: "cardClosed",
   cardOpened: "cardOpened",
   switchPage: "switchPage",
+  // gotServerErr: "gotServerErr",
+
+  dataNotFound: "dataNotFound",
   dataReceived: "dataReceived",
   endedAddAnime: "endedAddAnime",
+  toIdleSwitched: "toIdleSwitched",
   startedAddAnime: "startedAddAnime",
-  dataNotFound: "dataNotFound",
-  gotServerErr: "gotServerErr",
   endedDeleteAnime: "endedDeleteAnime",
   startedDeleteAnime: "startedDeleteAnime",
+  scrapingInterrupted: "scrapingInterrupted",
+  scrappingAborted: "scrappingAborted",
   startedAnimeScraping: "startedAnimeScraping",
 } as const;
 
 export type ActionType =
-  | { type: typeof ActionName.closeCard }
+  | { type: typeof ActionName.cardClosed }
   | { type: typeof ActionName.switchPage }
+  | { type: typeof ActionName.toIdleSwitched }
   | { type: typeof ActionName.dataNotFound }
-  | { type: typeof ActionName.gotServerErr }
+  | { type: typeof ActionName.scrappingAborted }
+  | { type: typeof ActionName.scrapingInterrupted }
   | { type: typeof ActionName.startedDeleteAnime; payload: string }
   | { type: typeof ActionName.startedAnimeScraping; payload: string }
   | { type: typeof ActionName.startedAddAnime; payload: DetailAnime }
