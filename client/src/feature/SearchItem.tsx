@@ -27,7 +27,7 @@ export const SearchItem: FC<{
   const dispatch = useAppDispatch();
 
   const textInput = useRef<HTMLInputElement>(null);
-
+  //написать условие: если инпут повторный и дата не null
   const scrapeAnimeData = () => {
     if (textInput.current?.value) {
       if (refState) {
@@ -47,21 +47,17 @@ export const SearchItem: FC<{
     }
   };
 
-  const SearchItem: FC<{ isAnimated?: boolean }> = ({ isAnimated }) => {
-    return (
-      <StyledSearchItem>
-        <div>
-          <StyledTextInput
-            inputRef={textInput}
-            defaultValue={refState?.current.value}
-          />
-          <StyledButton variant="outlined" onClick={scrapeAnimeData}>
-            find
-          </StyledButton>
-        </div>
-      </StyledSearchItem>
-    );
-  };
-
-  return <SearchItem />;
+  return (
+    <StyledSearchItem>
+      <div>
+        <StyledTextInput
+          inputRef={textInput}
+          defaultValue={refState?.current.value}
+        />
+        <StyledButton variant="outlined" onClick={scrapeAnimeData}>
+          find
+        </StyledButton>
+      </div>
+    </StyledSearchItem>
+  );
 };

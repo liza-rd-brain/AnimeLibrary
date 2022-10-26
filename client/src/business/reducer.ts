@@ -17,8 +17,7 @@ export const ActionName = {
   cardClosed: "cardClosed",
   cardOpened: "cardOpened",
   switchPage: "switchPage",
-  // gotServerErr: "gotServerErr",
-
+  filterList: "filterList",
   dataNotFound: "dataNotFound",
   dataReceived: "dataReceived",
   endedAddAnime: "endedAddAnime",
@@ -34,10 +33,11 @@ export const ActionName = {
 export type ActionType =
   | { type: typeof ActionName.cardClosed }
   | { type: typeof ActionName.switchPage }
-  | { type: typeof ActionName.toIdleSwitched }
   | { type: typeof ActionName.dataNotFound }
+  | { type: typeof ActionName.toIdleSwitched }
   | { type: typeof ActionName.scrappingAborted }
   | { type: typeof ActionName.scrapingInterrupted }
+  | { type: typeof ActionName.filterList; payload: string }
   | { type: typeof ActionName.startedDeleteAnime; payload: string }
   | { type: typeof ActionName.startedAnimeScraping; payload: string }
   | { type: typeof ActionName.startedAddAnime; payload: DetailAnime }

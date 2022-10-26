@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { SearchItem } from "../feature/SearchItem";
-import { PageName } from "../types";
+
+import { FindItem } from "./FindItem";
 
 const SubHeaderContainer = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ const SubHeader: FC<{
 }> = ({ refState }) => {
   return (
     <SubHeaderContainer>
-      <SearchItem refState={refState} />
+      <FindItem refState={refState} />
     </SubHeaderContainer>
   );
 };

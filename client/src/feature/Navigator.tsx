@@ -42,23 +42,11 @@ const StyledTabs = styled(Tabs)`
 const SEARCH_TEXT = "search";
 const LIST_TEXT = "my list";
 
-export const Navigator: FC<{
-  refState?: React.MutableRefObject<{
-    value: string | null;
-  }>;
-}> = ({ refState }) => {
-  const theme = useTheme();
+export const Navigator = () => {
   const dispatch = useAppDispatch();
   const { currPage } = useSelector((state: State) => state);
   const pageName: PageName[] = ["search", "list"];
   const currPageIndex = pageName.findIndex((page) => page === currPage);
-
-  // const [phaseOuter] = phase.type.split(".");
-  // const inputVisibilitySearch = !(
-  //   phaseOuter === "waitingScraping" || phaseOuter === "waitingDB"
-  // );
-
-  // const hasInput = currPage === "search" ? inputVisibilitySearch : true;
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     dispatch({ type: "switchPage" });

@@ -2,6 +2,7 @@ import { useRef, FC } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
+import { AppContext } from "../AppContext";
 import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -13,7 +14,7 @@ import {
   useScrapeData,
 } from "../effect";
 import { useAppDispatch } from "../business/reducer";
-import { CardButtonType, AnimeListType, State } from "../types";
+import { CardButtonType, AnimeListType, State, FilterDataType } from "../types";
 
 import { Error } from "./Error";
 import { Header } from "./Header";
@@ -42,10 +43,8 @@ const ContainerWrapper = styled.div<{ isFaded: boolean }>`
 
 const StyledContainer = styled.div<StyledContainerType>`
   display: flex;
-  /*   align-items: center; */
   flex-direction: column;
   margin: auto;
-  /* margin: 20px auto 0; */
   min-width: 320px;
   max-width: 1350px;
   width: 100%;
@@ -66,10 +65,9 @@ const StyledBody = styled.div`
 const AnimeListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  //если ширина меньше 1000 - по центру?
-  /* justify-content: center; */
+
   gap: 20px;
-  /* height: 1000px; */
+
   overflow-x: hidden;
   overflow-y: auto;
   max-height: 80vh;
@@ -77,7 +75,6 @@ const AnimeListContainer = styled.div`
   ::-webkit-scrollbar {
     width: 8px;
     position: fixed;
-    /* background-color: #d6d6d6; */
     border-radius: 4px;
     position: fixed;
   }
@@ -108,7 +105,6 @@ const Logo = styled.div<{ isAnimated?: boolean }>`
 
 const PreloaderContainer = styled.div`
   display: grid;
-  /* height: 200px; */
 `;
 
 const StyledContent = styled.div`
@@ -117,7 +113,6 @@ const StyledContent = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  /* height: 1000px; */
 `;
 
 const AnimeListWrapper = styled.div`
@@ -155,6 +150,7 @@ const ScrapingContainer = styled.div`
   gap: 20px;
 `;
 
+//TODO:добавить фильтры
 const getAnimeCardList = ({
   animeList,
   buttonType,
@@ -199,6 +195,9 @@ export const AppContainer = () => {
   const stopScraping = () => {
     dispatch({ type: "scrapingInterrupted" });
   };
+
+  //TODO: rename to smth like refSearchState
+  const refFilterNameState = useRef<FilterDataType>({ name: null });
 
   const refState = useRef<{ value: string | null }>({ value: null });
 
@@ -323,40 +322,27 @@ export const AppContainer = () => {
       }
 
       case "list": {
-        switch (currPhaseName) {
-          //TODO: нужна ли фаза waitingDB здесь?
-          // case "waitingDB": {
-          //   return (
-          //     <>
-          //       <Preloader isAnimated={true} />
-          //     </>
-          //   );
-          // }
-          default: {
-            return (
-              <>
-                <SubHeaderList refState={refState} />
-                {getAnimeCardList({
-                  animeList: savedData,
-                  buttonType: "delete",
-                })}
-                <CardBackdrop
-                  sx={{
-                    color: "#fff",
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                  }}
-                  open={phase.type === "cardOpening"}
-                  onClick={handleClose}
-                >
-                  {openedCard && (
-                    <Card data={openedCard} buttonType={"delete"} />
-                  )}
-                </CardBackdrop>
-              </>
-            );
-          }
-        }
+        return (
+          <>
+            <SubHeaderList refState={refState} />
+            {getAnimeCardList({
+              animeList: savedData,
+              buttonType: "delete",
+            })}
+            <CardBackdrop
+              sx={{
+                color: "#fff",
+                zIndex: (theme) => theme.zIndex.drawer + 1,
+              }}
+              open={phase.type === "cardOpening"}
+              onClick={handleClose}
+            >
+              {openedCard && <Card data={openedCard} buttonType={"delete"} />}
+            </CardBackdrop>
+          </>
+        );
       }
+
       default: {
         return null;
       }
@@ -365,13 +351,19 @@ export const AppContainer = () => {
 
   return (
     <ContainerWrapper isFaded={isScrapingView}>
-      <StyledContainer isInit={false} disableClick={isScrapingView}>
-        <Header />
-        <StyledBody>
-          <Navigator refState={refState} />
-          <StyledContent>{getAppView()}</StyledContent>
-        </StyledBody>
-      </StyledContainer>
+      <AppContext.Provider
+        value={{
+          filter: refFilterNameState,
+        }}
+      >
+        <StyledContainer isInit={false} disableClick={isScrapingView}>
+          <Header />
+          <StyledBody>
+            <Navigator />
+            <StyledContent>{getAppView()}</StyledContent>
+          </StyledBody>
+        </StyledContainer>
+      </AppContext.Provider>
     </ContainerWrapper>
   );
 };

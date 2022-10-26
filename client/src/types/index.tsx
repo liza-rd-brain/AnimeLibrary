@@ -53,3 +53,7 @@ export type ResponseType = {
 };
 
 export type CardButtonType = "add" | "delete";
+
+export type FilterDataType = {
+  name: string | null;
+};
