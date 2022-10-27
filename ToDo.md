@@ -11,6 +11,7 @@
 
 * Logic:
 - [ ] Button for stop scraping
-- [ ] Clean up phase
+- [x] Clean up phase
+- [ ] Clear filter when switch view?
 
 

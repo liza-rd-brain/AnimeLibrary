@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { useAppDispatch, ActionName } from "../business/reducer";
 
 import TextField from "@mui/material/TextField";
+import { useSelector } from "react-redux";
+import { State } from "../types";
 
 const StyledSearchItem = styled.div`
   display: grid;
@@ -20,8 +22,13 @@ export const FindItem: FC<{
   }>;
 }> = ({ refState }) => {
   const dispatch = useAppDispatch();
+  const { filter } = useSelector((state: State) => state);
 
-  const textInput = useRef<HTMLInputElement>(null);
+  console.log("filter", filter);
+
+  const currValue = filter?.name || null;
+  const textInput = useRef<{ value: string | null }>({ value: currValue });
+  console.log("textInput", textInput.current);
 
   const changeInput = (event: any) => {
     dispatch({
@@ -38,6 +45,7 @@ export const FindItem: FC<{
           placeholder="anime name"
           inputRef={textInput}
           onChange={(event) => changeInput(event)}
+          value={currValue}
         />
       </div>
     </StyledSearchItem>
