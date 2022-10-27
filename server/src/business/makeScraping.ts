@@ -43,7 +43,8 @@ export const makeScraping = async (
           );
 
           if (detailItem) {
-            detailList.push(detailItem);
+            const detailItemWithLink = { ...detailItem, link: linkList[i] };
+            detailList.push(detailItemWithLink);
           }
         }
 

@@ -2,11 +2,11 @@ import * as puppeteer from "puppeteer";
 import { RawDetailAnime } from "../types";
 
 export async function getAnimeDetail(link: string, page: puppeteer.Page) {
+  console.log("in getAnimeDetail");
   const descBlockItems = ".dp-i-content";
 
   await page.goto(link);
   // await page.screenshot({ path: `./screenshot/${Math.random()}.png` });
-
   try {
     const animeDetailItem: RawDetailAnime = await page.$eval(
       descBlockItems,
@@ -18,7 +18,10 @@ export async function getAnimeDetail(link: string, page: puppeteer.Page) {
 
         const pictureElem: HTMLImageElement | null =
           item.querySelector(pictureSelector);
+
         const pictureUrl = pictureElem ? pictureElem.src : undefined;
+
+        console.log("pictureUrl", pictureUrl);
 
         const animeNameElem: HTMLElement | null =
           item.querySelector(animeNameSelector);
@@ -40,14 +43,13 @@ export async function getAnimeDetail(link: string, page: puppeteer.Page) {
           animeName,
           pictureUrl,
           description,
-          link,
           detailTextList,
         };
 
         return newDetailItem;
       }
     );
-
+    console.log("animeDetailItem", animeDetailItem);
     return animeDetailItem;
   } catch (err) {
     return null;
