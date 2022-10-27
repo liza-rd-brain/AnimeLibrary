@@ -99,10 +99,9 @@ const CardBackdrop = styled(Backdrop)`
 `;
 
 const PreloaderBackdrop = styled(Backdrop)<{ withButton?: boolean }>`
-  padding-left: 200px;
-  margin-top: ${({ withButton }) => {
-    return withButton ? "-320px" : "-400px";
-  }};
+  padding: 170px 0 0 200px;
+  align-items: start;
+  justify-content: center;
 `;
 
 const StyledButton = styled(Button)`
