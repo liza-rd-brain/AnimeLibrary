@@ -145,19 +145,12 @@ export const AppContainer = () => {
   };
 
   //TODO: нужно будет потом поправить на хэш таблицу
-
   const getFilteredData = (name: string, savedData: DetailAnimeList) => {
     return savedData.filter((animeItem) => {
       return animeItem.animeName
         ?.toLocaleLowerCase()
         ?.includes(name.toLocaleLowerCase());
     });
-    // return savedData.reduce(
-    //   (prevItem: {} | DetailAnimeList, currAnimeItem: DetailAnime) => {
-    //     return {};
-    //   },
-    //   {}
-    // );
   };
 
   //TODO: rename to smth like refSearchState

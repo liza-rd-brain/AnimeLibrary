@@ -1,10 +1,10 @@
 import * as puppeteer from "puppeteer";
 import { RawDetailAnime } from "../types";
 
-export async function getAnimeDetail(item: string, page: puppeteer.Page) {
+export async function getAnimeDetail(link: string, page: puppeteer.Page) {
   const descBlockItems = ".dp-i-content";
 
-  await page.goto(item);
+  await page.goto(link);
   // await page.screenshot({ path: `./screenshot/${Math.random()}.png` });
 
   try {
@@ -40,6 +40,7 @@ export async function getAnimeDetail(item: string, page: puppeteer.Page) {
           animeName,
           pictureUrl,
           description,
+          link,
           detailTextList,
         };
 

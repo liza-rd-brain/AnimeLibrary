@@ -21,12 +21,13 @@ wss.on("connection", (ws: WebSocket) => {
   });
 
   ws.on("message", (message: string) => {
-    const animeName = JSON.parse(message).text;
+    const animeName: string = JSON.parse(message).text;
 
     makeScraping(animeName, controller)
       .then(
         ([detailAnimeList]) => {
           const detailAnimeJSON = JSON.stringify(detailAnimeList);
+          console.log(detailAnimeJSON);
           ws.send(detailAnimeJSON);
         },
         ([err]) => {

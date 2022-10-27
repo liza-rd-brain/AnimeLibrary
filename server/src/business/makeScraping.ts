@@ -32,11 +32,13 @@ export const makeScraping = async (
         let detailList: Array<RawDetailAnime> = [];
         const initialList = await takeLinkList(page, animeName);
 
-        const listWithDetails = getDetailLinkList(initialList);
+        const linkList: Array<string> = getDetailLinkList(initialList);
 
-        for (let i = 0; i < listWithDetails.length; i++) {
+        console.log(linkList, "linkList");
+
+        for (let i = 0; i < linkList.length; i++) {
           const detailItem: RawDetailAnime | null = await getAnimeDetail(
-            listWithDetails[i],
+            linkList[i],
             page
           );
 
@@ -47,6 +49,8 @@ export const makeScraping = async (
 
         const structuredDetailList: DetailAnimeList =
           getStructuredDetail(detailList);
+
+        console.log(structuredDetailList);
 
         resolve([structuredDetailList, browser]);
       } catch (err) {

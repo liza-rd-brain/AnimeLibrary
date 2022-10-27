@@ -19,6 +19,13 @@ const AnimeListContainer = styled.div`
     position: fixed;
   }
 
+  ::-webkit-scrollbar-track {
+    border-radius: 3px;
+    background: rgb(186, 183, 183);
+    border: 3px solid transparent;
+    background-clip: content-box; /* THIS IS IMPORTANT */
+  }
+
   ::-webkit-scrollbar-thumb {
     background-color: #77abdf;
     border-radius: 4px;
