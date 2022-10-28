@@ -11,6 +11,7 @@ const AnimeListContainer = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   max-height: 80vh;
+  width: 100%;
 
   ::-webkit-scrollbar {
     width: 8px;
@@ -34,11 +35,20 @@ const AnimeListContainer = styled.div`
 
 const AnimeListWrapper = styled.div`
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  overflow: hidden;
   padding: 34px;
+  width: 100%;
+`;
+
+const CardListWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 340px);
   gap: 20px;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+  & > {
+    padding: 12px;
+  }
 `;
 
 export const AnimeCardList: FC<{
@@ -51,7 +61,9 @@ export const AnimeCardList: FC<{
 
   return (
     <AnimeListContainer>
-      <AnimeListWrapper>{animeCardList}</AnimeListWrapper>
+      <AnimeListWrapper>
+        <CardListWrapper>{animeCardList}</CardListWrapper>
+      </AnimeListWrapper>
     </AnimeListContainer>
   );
 };

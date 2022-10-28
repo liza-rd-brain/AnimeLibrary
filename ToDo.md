@@ -3,10 +3,11 @@
 - [x] Scrollbar: remove shift when scrollbar visible
 - [x] Style logo (letters)
 - [x] Error view 
+- [x] Interface elem fade when scraping
 - [ ] Custom theme
 - [ ] Check proportion
 - [ ] Font and color in theme
-- [ ] Interface elem fade when scraping
+- [ ] Floating action button (to top of list)
 
 
 
