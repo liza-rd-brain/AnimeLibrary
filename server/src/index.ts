@@ -27,7 +27,7 @@ wss.on("connection", (ws: WebSocket) => {
       .then(
         ([detailAnimeList]) => {
           const detailAnimeJSON = JSON.stringify(detailAnimeList);
-          console.log(detailAnimeJSON);
+
           ws.send(detailAnimeJSON);
         },
         ([err]) => {

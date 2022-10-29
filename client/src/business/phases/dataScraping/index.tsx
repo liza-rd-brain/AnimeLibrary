@@ -43,7 +43,6 @@ export const dataScraping = (state: State, action: ActionType): State => {
 
     case ActionName.scrappingAborted: {
       const manualStopScraping = state.doEffect?.type === "!scrapeInterrupt";
-      console.log("state", state);
 
       if (manualStopScraping) {
         const newState: State = {

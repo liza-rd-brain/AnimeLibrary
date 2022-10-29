@@ -43,6 +43,7 @@ export function useOpenDB() {
           openDataBasePromise(controller).then(
             (db) => {
               getAnimeList(db, controller).then((animeList) => {
+                console.log("animeList open db", animeList);
                 setTimeout(() => {
                   dispatch({
                     type: ActionName.loadedDB,

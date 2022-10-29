@@ -34,10 +34,8 @@ export const makeScraping = async (
         const linkList: Array<string> = getDetailLinkList(initialList);
 
         for (let i = 0; i < linkList.length; i++) {
-          const detailItem: RawDetailAnime | null = await getAnimeDetail(
-            linkList[i],
-            page
-          );
+          const detailItem: Omit<RawDetailAnime, "link"> | null =
+            await getAnimeDetail(linkList[i], page);
 
           if (detailItem) {
             const detailItemWithLink = { ...detailItem, link: linkList[i] };

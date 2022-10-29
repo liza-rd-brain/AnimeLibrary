@@ -28,7 +28,6 @@ export const FindItem: FC<{
 
   const currValue = filter?.name || null;
   const textInput = useRef<{ value: string | null }>({ value: currValue });
-  console.log("textInput", textInput.current);
 
   const changeInput = (event: any) => {
     dispatch({

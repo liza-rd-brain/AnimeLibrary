@@ -1,4 +1,3 @@
-export { Error } from "./Error";
 export { Header } from "./Header";
 export { FindItem } from "./FindItem";
 export { Navigator } from "./Navigator";

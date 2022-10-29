@@ -295,7 +295,7 @@ export const AppContainer = () => {
         return (
           <>
             <SubHeaderList refState={refState} />
-            <AnimeCardList animeList={filteredListData} buttonType={"delete"} />
+            <AnimeCardList animeList={filteredListData} />
             <CardBackdrop
               sx={{
                 color: "#fff",

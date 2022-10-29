@@ -3,8 +3,11 @@ import styled from "styled-components";
 
 import { DetailAnime } from "types";
 import Button from "@mui/material/Button";
-import { CardButtonType } from "../types";
+import { CardButtonType, State } from "../types";
 import { ActionName, useAppDispatch } from "../business/reducer";
+import { useSelector } from "react-redux";
+import { getInteractItemType } from "../shared/getInteractItemType";
+import { getInteractItem } from "../shared/getInteractItem";
 
 const CardContainer = styled.div`
   display: grid;
@@ -128,6 +131,7 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
   buttonType,
 }) => {
   const { pictureUrl, animeName, description, ...detailTable } = data;
+  const { savedData, currPage } = useSelector((state: State) => state);
   const dispatch = useAppDispatch();
 
   const detailList = Object.entries(detailTable);
@@ -179,10 +183,17 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
     if (buttonType === "add") {
       dispatch({ type: ActionName.startedAddAnime, payload: data });
     } else if (buttonType === "delete") {
-      const animeName = data.animeName as string;
-      dispatch({ type: ActionName.startedDeleteAnime, payload: animeName });
+      const animeKey = data.link;
+      dispatch({ type: ActionName.startedDeleteAnime, payload: animeKey });
     }
   };
+
+  const currPreviewItem = getInteractItemType({
+    buttonType: buttonType,
+    animeItem: data,
+    savedData: savedData,
+    currPage: currPage,
+  });
 
   return (
     <CardContainer
@@ -194,9 +205,14 @@ export const Card: FC<{ data: DetailAnime; buttonType: CardButtonType }> = ({
       <CardItem>
         <ImageContainer>
           <StyledImage src={pictureUrl} alt="" />
-          <StyledButton variant="outlined" onClick={handleButtonClick}>
+          {getInteractItem({
+            previewItemType: currPreviewItem,
+            handleClick: handleButtonClick,
+            buttonText,
+          })}
+          {/* <StyledButton variant="outlined" onClick={handleButtonClick}>
             {buttonText}
-          </StyledButton>
+          </StyledButton> */}
         </ImageContainer>
         <TextWrapper>
           <Table>{getDetailTable()}</Table>

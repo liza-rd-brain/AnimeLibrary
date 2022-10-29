@@ -58,3 +58,5 @@ export type CardButtonType = "add" | "delete";
 export type FilterDataType = {
   name: string | null;
 };
+
+export type PreviewItemType = "markAdded" | "button" | null;

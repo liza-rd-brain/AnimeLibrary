@@ -7,7 +7,7 @@ export async function getAnimeDetail(link: string, page: puppeteer.Page) {
   await page.goto(link);
   // await page.screenshot({ path: `./screenshot/${Math.random()}.png` });
   try {
-    const animeDetailItem: RawDetailAnime = await page.$eval(
+    const animeDetailItem: Omit<RawDetailAnime, "link"> = await page.$eval(
       descBlockItems,
       (item: Element) => {
         const descriptionSelector = ".description p";
@@ -19,8 +19,6 @@ export async function getAnimeDetail(link: string, page: puppeteer.Page) {
           item.querySelector(pictureSelector);
 
         const pictureUrl = pictureElem ? pictureElem.src : undefined;
-
-        console.log("pictureUrl", pictureUrl);
 
         const animeNameElem: HTMLElement | null =
           item.querySelector(animeNameSelector);
@@ -38,7 +36,7 @@ export async function getAnimeDetail(link: string, page: puppeteer.Page) {
 
         const detailTextList = entityItemList.map((item) => item.innerText);
 
-        const newDetailItem: RawDetailAnime = {
+        const newDetailItem: Omit<RawDetailAnime, "link"> = {
           animeName,
           pictureUrl,
           description,

@@ -63,8 +63,6 @@ export const idle = (state: State, action: ActionType): State => {
     }
 
     case ActionName.filterListByName: {
-      console.log("filterList", action.payload);
-
       const newState = {
         ...state,
         filter: {

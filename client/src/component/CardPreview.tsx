@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
 import { DetailAnime } from "types";
-import { CardButtonType } from "../types";
+import { PreviewItemType } from "../types";
 import Button from "@mui/material/Button";
 import { ActionName } from "../business/reducer";
+import { getInteractItem } from "../shared/getInteractItem";
 
 const CardContainer = styled.div`
   display: grid;
@@ -33,7 +34,6 @@ const ImageContainer = styled.div`
 
 const StyledButton = styled(Button)`
   width: 100%;
-
   height: 50px;
 `;
 
@@ -60,15 +60,17 @@ const Title = styled.div`
   overflow: hidden;
 `;
 
-// const RowItem: FC;
-
 export const CardPreview: FC<{
   data: DetailAnime;
-  buttonType: CardButtonType;
-}> = ({ data, buttonType }) => {
+  previewItemType: PreviewItemType;
+}> = ({ data, previewItemType }) => {
   const { pictureUrl, animeName } = data;
 
   const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch({ type: ActionName.startedAddAnime, payload: data });
+  };
 
   return (
     <CardContainer
@@ -85,17 +87,9 @@ export const CardPreview: FC<{
       <Header>
         <Title>{animeName}</Title>
       </Header>
-      {buttonType === "add" ? (
-        <StyledButton
-          variant="outlined"
-          onClick={(e) => {
-            e.stopPropagation();
-            dispatch({ type: ActionName.startedAddAnime, payload: data });
-          }}
-        >
-          add
-        </StyledButton>
-      ) : null}
+      {/* {getPreviewItem(previewItemType)} */}
+      {getInteractItem({ previewItemType, handleClick, buttonText: "add" })}
+
       {/* <Description>{description}</Description> */}
     </CardContainer>
   );

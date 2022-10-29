@@ -1,8 +1,18 @@
 import { FC } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { DetailAnime } from "types";
 
 import { CardPreview } from "../component";
-import { AnimeListType, CardButtonType } from "../types";
+import { getInteractItemType } from "../shared/getInteractItemType";
+
+import {
+  State,
+  AnimeListType,
+  CardButtonType,
+  PreviewItemType,
+  PageName,
+} from "../types";
 
 const AnimeListContainer = styled.div`
   display: flex;
@@ -53,13 +63,29 @@ const CardListWrapper = styled.div`
 
 export const AnimeCardList: FC<{
   animeList: AnimeListType;
-  buttonType: CardButtonType;
+  buttonType?: CardButtonType;
 }> = ({ animeList, buttonType }) => {
+  const { savedData, currPage } = useSelector((state: State) => state);
+  //пройтись по data
+
   const listForPainting = animeList && Object.values(animeList);
 
-  const animeCardList = listForPainting?.map((animeItem, index) => (
-    <CardPreview key={index} data={animeItem} buttonType={buttonType} />
-  ));
+  const animeCardList = listForPainting?.map((animeItem, index) => {
+    const currPreviewItem = getInteractItemType({
+      buttonType: buttonType,
+      animeItem: animeItem,
+      savedData: savedData,
+      currPage: currPage,
+    });
+
+    return (
+      <CardPreview
+        key={index}
+        data={animeItem}
+        previewItemType={currPreviewItem}
+      />
+    );
+  });
 
   return (
     <AnimeListContainer>
