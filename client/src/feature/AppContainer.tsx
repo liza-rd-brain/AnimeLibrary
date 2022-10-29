@@ -216,7 +216,7 @@ export const AppContainer = () => {
       case "idle": {
         if (data && typeof data !== "string") {
           return (
-            <div>
+            <>
               <AnimeCardList animeList={data} buttonType={"add"} />
               <CardBackdrop
                 sx={{
@@ -228,7 +228,7 @@ export const AppContainer = () => {
               >
                 {openedCard && <Card data={openedCard} buttonType={"add"} />}
               </CardBackdrop>
-            </div>
+            </>
           );
         } else {
           return (
