@@ -2,13 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 
+import { PageName, State } from "../types";
 import { ActionName, useAppDispatch } from "../business/reducer";
 
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
-
-import { PageName, State } from "../types";
 
 const StyledNavigator = styled(Box)`
   display: flex;

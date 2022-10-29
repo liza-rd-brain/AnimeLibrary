@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 
 import { DetailAnime } from "types";
 import { CardButtonType } from "../types";
-
 import Button from "@mui/material/Button";
 import { ActionName } from "../business/reducer";
 

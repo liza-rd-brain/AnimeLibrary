@@ -28,9 +28,6 @@ const CardItem = styled.div`
 
 const Table = styled.div`
   display: grid;
-  /* grid-template-columns: repeat(2, 1fr); */
-  /* column-count: 2; */
-  /* gap: 10px; */
   height: 200px;
 `;
 
@@ -39,11 +36,13 @@ const ImageContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
+
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between; ;
 `;
+
 const StyledButton = styled(Button)`
   width: 100%;
   height: 56px;
@@ -84,7 +83,6 @@ const DescriptionWrapper = styled.div`
   ::-webkit-scrollbar {
     width: 8px;
     position: fixed;
-    /* background-color: #d6d6d6; */
     border-radius: 4px;
     position: fixed;
   }

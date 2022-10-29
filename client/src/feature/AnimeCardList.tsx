@@ -1,7 +1,7 @@
 import { FC } from "react";
 import styled from "styled-components";
 
-import { CardPreview } from "../component/CardPreview";
+import { CardPreview } from "../component";
 import { AnimeListType, CardButtonType } from "../types";
 
 const AnimeListContainer = styled.div`

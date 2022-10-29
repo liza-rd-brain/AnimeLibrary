@@ -13,19 +13,20 @@ import {
   useOpenDB,
   useScrapeData,
 } from "../effect";
+import { AnimeHashTable } from "types";
 import { State, FilterDataType } from "../types";
 import { ActionName, useAppDispatch } from "../business/reducer";
 
-import { Error } from "./Error";
-import { Header } from "./Header";
-import { Navigator } from "./Navigator";
-import { Card } from "../component/Card";
-import SubHeaderList from "./SubHeaderList";
-import SubHeaderSearch from "../feature/SubHeaderSearch";
+import { Error, Card } from "../component";
 import { convertListToHashTable } from "../shared/helpers";
+import {
+  Header,
+  Navigator,
+  SubHeaderList,
+  SubHeaderSearch,
+  AnimeCardList,
+} from "./index";
 
-import { AnimeHashTable } from "types";
-import { AnimeCardList } from "./AnimeCardList";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
 

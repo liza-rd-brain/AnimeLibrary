@@ -1,11 +1,11 @@
 import React, { FC, useRef } from "react";
 import styled from "styled-components";
 
+import { State } from "../types";
+import { useSelector } from "react-redux";
 import { useAppDispatch, ActionName } from "../business/reducer";
 
 import TextField from "@mui/material/TextField";
-import { useSelector } from "react-redux";
-import { State } from "../types";
 
 const StyledSearchItem = styled.div`
   display: grid;
