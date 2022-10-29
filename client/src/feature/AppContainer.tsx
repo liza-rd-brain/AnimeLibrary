@@ -165,8 +165,8 @@ export const AppContainer = () => {
   const refState = useRef<{ value: string | null }>({ value: null });
 
   useOpenDB();
-  useScrapeData();
   useAddAnime();
+  useScrapeData();
   useDeleteAnime();
 
   const currPhaseName = phase.type;

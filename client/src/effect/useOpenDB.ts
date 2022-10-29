@@ -5,11 +5,9 @@ import { ActionName, useAppDispatch } from "../business/reducer";
 import { State } from "../types";
 import { getAnimeList } from "./common/getAnimeList";
 
-// const DATABASE_ERR = "Failed to load DataBase";
-
-const DATABASE_NAME = "animeBase";
+const KEY_NAME = "link";
 const STORE_NAME = "animeList";
-const KEY_NAME = "animeName";
+const DATABASE_NAME = "animeBase";
 
 const openDataBasePromise = (
   controller: AbortController
