@@ -17,5 +17,5 @@ export type DetailAnime = {
 
 export type DetailAnimeList = Array<DetailAnime>;
 
-// export type AnimeHashTable = Record<string, DetailAnime>;
-export type AnimeHashTable = Record<string, Omit<DetailAnime, "animeName">>;
+export type AnimeHashTable = Record<string, DetailAnime>;
+// export type AnimeHashTable = Record<string, Omit<DetailAnime, "animeName">>;

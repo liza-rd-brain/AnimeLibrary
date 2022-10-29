@@ -23,7 +23,7 @@ import { Card } from "../component/Card";
 import SubHeaderList from "./SubHeaderList";
 import SubHeaderSearch from "../feature/SubHeaderSearch";
 
-import { DetailAnimeList } from "types";
+import { AnimeHashTable, DetailAnime, DetailAnimeList } from "types";
 import { AnimeCardList } from "./AnimeCardList";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
@@ -144,24 +144,40 @@ export const AppContainer = () => {
     dispatch({ type: ActionName.scrapingInterrupted });
   };
 
-  //TODO: нужно будет потом поправить на хэш таблицу
-  const getFilteredData = (name: string, savedData: DetailAnimeList) => {
-    return savedData.filter((animeItem) => {
+  const getFilteredData = (name: string, savedData: AnimeHashTable) => {
+    const dataList = Object.values(savedData);
+
+    const filteredList = dataList.filter((animeItem) => {
       return animeItem.animeName
         ?.toLocaleLowerCase()
         ?.includes(name.toLocaleLowerCase());
     });
+
+    // const filteredHashTable = filteredList.map((listItem) => {
+    //   return { [listItem.link as string]: listItem };
+    // });
+
+    const filteredHashTable = filteredList.reduce(
+      (prev: AnimeHashTable, item: DetailAnime) => {
+        if (item.link) {
+          return { ...prev, [item.link]: item };
+        } else return prev;
+      },
+      {}
+    );
+
+    return filteredHashTable;
   };
 
   //TODO: rename to smth like refSearchState
   const refFilterNameState = useRef<FilterDataType>({ name: null });
 
   //TODO:пока фильтрация по имени
-  /* const filteredListData =
+  const filteredListData =
     filter?.name && savedData
       ? getFilteredData(filter.name, savedData)
       : savedData;
- */
+
   const refState = useRef<{ value: string | null }>({ value: null });
 
   useOpenDB();
@@ -288,7 +304,7 @@ export const AppContainer = () => {
         return (
           <>
             <SubHeaderList refState={refState} />
-            <AnimeCardList animeList={savedData} buttonType={"delete"} />
+            <AnimeCardList animeList={filteredListData} buttonType={"delete"} />
             <CardBackdrop
               sx={{
                 color: "#fff",
