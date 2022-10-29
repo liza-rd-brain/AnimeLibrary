@@ -5,7 +5,6 @@ import { RawDetailAnime, RawHashTable } from "../types";
 import { takeLinkList } from "./takeLinkList";
 import { getAnimeDetail } from "./getAnimeDetail";
 import { getDetailLinkList } from "./getDetailLinkList";
-import { getStructuredDetail } from "./getStructuredDetail";
 import { getStructuredDetailHash } from "./getStructuredDetailHash";
 
 const chromeOptions = {

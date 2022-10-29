@@ -1,5 +1,5 @@
 export type DetailAnime = {
-  link?: string;
+  link: string;
   status?: string;
   scores?: string;
   studio?: string;

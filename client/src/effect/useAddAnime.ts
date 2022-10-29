@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { State } from "../types";
-import { AnimeHashTable, DetailAnime } from "types";
+import { DetailAnime } from "types";
 import { STORE_NAME } from "./common/constantList";
+import { convertListToHashTable } from "../shared/helpers";
 import { getAnimeList } from "./common/getAnimeList";
 import { ActionName, useAppDispatch } from "../business/reducer";
 
@@ -46,14 +47,7 @@ export function useAddAnime() {
             addAnimePromise.then(
               (res) => {
                 getAnimeList(dataBase, controller).then((animeList) => {
-                  const hashAnime = animeList.reduce(
-                    (prev: AnimeHashTable, item: DetailAnime) => {
-                      if (item.link) {
-                        return { ...prev, [item.link]: item };
-                      } else return prev;
-                    },
-                    {}
-                  );
+                  const hashAnime = convertListToHashTable(animeList);
                   dispatch({
                     type: ActionName.endedAddAnime,
                     payload: hashAnime,

@@ -22,8 +22,9 @@ import { Navigator } from "./Navigator";
 import { Card } from "../component/Card";
 import SubHeaderList from "./SubHeaderList";
 import SubHeaderSearch from "../feature/SubHeaderSearch";
+import { convertListToHashTable } from "../shared/helpers";
 
-import { AnimeHashTable, DetailAnime, DetailAnimeList } from "types";
+import { AnimeHashTable } from "types";
 import { AnimeCardList } from "./AnimeCardList";
 import logo from "../assets/pikachu_default.png";
 import logoAnimated from "../assets/pikachu_preloader.gif";
@@ -153,18 +154,7 @@ export const AppContainer = () => {
         ?.includes(name.toLocaleLowerCase());
     });
 
-    // const filteredHashTable = filteredList.map((listItem) => {
-    //   return { [listItem.link as string]: listItem };
-    // });
-
-    const filteredHashTable = filteredList.reduce(
-      (prev: AnimeHashTable, item: DetailAnime) => {
-        if (item.link) {
-          return { ...prev, [item.link]: item };
-        } else return prev;
-      },
-      {}
-    );
+    const filteredHashTable = convertListToHashTable(filteredList);
 
     return filteredHashTable;
   };
