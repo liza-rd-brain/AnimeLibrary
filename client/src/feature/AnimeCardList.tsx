@@ -53,7 +53,7 @@ const CardListWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, 340px);
   gap: 20px;
-  justify-content: center;
+  /* justify-content: center; */
   width: 100%;
   margin: 0 auto;
   & > {

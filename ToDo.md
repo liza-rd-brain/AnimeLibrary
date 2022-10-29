@@ -14,11 +14,12 @@
 * Logic:
 - [x] Button for stop scraping
 - [x] Clean up phase
-- [ ] Key to url - unique!
+- [x] Key to url - unique!
 - [ ] Clear filter when switch view?
-- [ ] Data structure to hashTable
-- [ ] When rendering scrape data, mark anime that already in base
-- [ ] Add tags and 
+- [x] Data structure to hashTable
+- [x] When rendering scrape data, mark anime that already in base
+- [ ] Add tags 
+- [ ] Ask before delete?
 
 
 * Deploy:

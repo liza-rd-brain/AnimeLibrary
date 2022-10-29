@@ -50,7 +50,7 @@ const StyledContainer = styled.div<StyledContainerType>`
   flex-direction: column;
   margin: auto;
   min-width: 320px;
-  max-width: 1350px;
+  max-width: 1400px;
   width: 100%;
   padding-top: ${({ isInit }) => {
     return isInit ? "250px" : "0px";
@@ -64,6 +64,7 @@ const StyledBody = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 50px;
 `;
 
 // const StyledProgress = styled(LinearProgress)`
@@ -101,7 +102,7 @@ const CardBackdrop = styled(Backdrop)`
 `;
 
 const PreloaderBackdrop = styled(Backdrop)<{ withButton?: boolean }>`
-  padding: 170px 0 0 200px;
+  padding: 170px 0 0 250px;
   align-items: start;
   justify-content: center;
 `;
