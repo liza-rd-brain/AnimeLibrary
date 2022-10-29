@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { State } from "../types";
 import { initialState } from "./initialState";
-import { DetailAnime, DetailAnimeList } from "types";
+import { AnimeHashTable, DetailAnime, DetailAnimeList } from "types";
 
 import { idle } from "./phases/idle";
 import { waitingDB } from "./phases/waitingDB";
@@ -40,11 +40,11 @@ export type ActionType =
   | { type: typeof ActionName.startedDeleteAnime; payload: string }
   | { type: typeof ActionName.startedAnimeScraping; payload: string }
   | { type: typeof ActionName.startedAddAnime; payload: DetailAnime }
-  | { type: typeof ActionName.endedAddAnime; payload?: DetailAnimeList }
-  | { type: typeof ActionName.endedDeleteAnime; payload?: DetailAnimeList }
+  | { type: typeof ActionName.endedAddAnime; payload?: AnimeHashTable }
+  | { type: typeof ActionName.endedDeleteAnime; payload?: AnimeHashTable }
   | {
       type: typeof ActionName.dataReceived;
-      payload: DetailAnimeList;
+      payload: AnimeHashTable;
     }
   | {
       type: typeof ActionName.cardOpened;

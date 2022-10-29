@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { AnimeHashTable, DetailAnime } from "types";
 import { ActionName, useAppDispatch } from "../business/reducer";
 
 import { State } from "../types";
@@ -48,9 +49,17 @@ export function useDeleteAnime() {
             addAnimePromise.then(
               (res) => {
                 getAnimeList(dataBase, controller).then((animeList) => {
+                  const hashAnime = animeList.reduce(
+                    (prev: AnimeHashTable, item: DetailAnime) => {
+                      if (item.link) {
+                        return { ...prev, [item.link]: item };
+                      } else return prev;
+                    },
+                    {}
+                  );
                   dispatch({
                     type: ActionName.endedDeleteAnime,
-                    payload: animeList,
+                    payload: hashAnime,
                   });
                 });
               },

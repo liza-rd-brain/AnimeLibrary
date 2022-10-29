@@ -157,11 +157,11 @@ export const AppContainer = () => {
   const refFilterNameState = useRef<FilterDataType>({ name: null });
 
   //TODO:пока фильтрация по имени
-  const filteredListData =
+  /* const filteredListData =
     filter?.name && savedData
       ? getFilteredData(filter.name, savedData)
       : savedData;
-
+ */
   const refState = useRef<{ value: string | null }>({ value: null });
 
   useOpenDB();
@@ -288,7 +288,7 @@ export const AppContainer = () => {
         return (
           <>
             <SubHeaderList refState={refState} />
-            <AnimeCardList animeList={filteredListData} buttonType={"delete"} />
+            <AnimeCardList animeList={savedData} buttonType={"delete"} />
             <CardBackdrop
               sx={{
                 color: "#fff",

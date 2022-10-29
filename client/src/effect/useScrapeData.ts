@@ -24,7 +24,9 @@ export function useScrapeData() {
             (detailAnimeListJSON) => {
               const detailAnimeList = JSON.parse(detailAnimeListJSON);
 
-              const animeListNotEmpty = detailAnimeList.length;
+              console.log("detailAnimeList", detailAnimeList);
+
+              const animeListNotEmpty = Object.keys(detailAnimeList).length;
 
               if (detailAnimeList) {
                 if (animeListNotEmpty) {

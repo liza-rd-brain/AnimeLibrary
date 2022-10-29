@@ -2,7 +2,6 @@ import * as puppeteer from "puppeteer";
 import { RawDetailAnime } from "../types";
 
 export async function getAnimeDetail(link: string, page: puppeteer.Page) {
-  console.log("in getAnimeDetail");
   const descBlockItems = ".dp-i-content";
 
   await page.goto(link);
@@ -49,7 +48,7 @@ export async function getAnimeDetail(link: string, page: puppeteer.Page) {
         return newDetailItem;
       }
     );
-    console.log("animeDetailItem", animeDetailItem);
+
     return animeDetailItem;
   } catch (err) {
     return null;

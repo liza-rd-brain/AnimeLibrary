@@ -78,6 +78,7 @@ const getStructuredObj = (rawObj: UnStructuredDetailAnime): DetailAnime => {
 //   return detailTextList;
 // };
 
+//
 export const getStructuredDetail = (
   detailList: RawDetailAnime[]
 ): DetailAnimeList => {

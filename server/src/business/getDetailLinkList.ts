@@ -3,9 +3,9 @@ export const getDetailLinkList = (initList) => {
     const arr = ["watch", "-episode"];
     const animePart = "anime";
 
-    const a = new RegExp(arr.join("|"), "i");
+    const separator = new RegExp(arr.join("|"), "i");
 
-    const [url, animeToken] = item.split(a);
+    const [url, animeToken] = item.split(separator);
 
     const animeHref = `${url}${animePart}${animeToken}`;
 

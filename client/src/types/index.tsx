@@ -1,5 +1,5 @@
 import { ERR_TEXT } from "../shared/error";
-import { DetailAnime, DetailAnimeList } from "types";
+import { AnimeHashTable, DetailAnime, DetailAnimeList } from "types";
 
 //TODO:data - AnimeListType, errType потом вынести в фазу
 export type State = {
@@ -17,7 +17,7 @@ export type State = {
 
 export type ErrType = typeof ERR_TEXT[keyof typeof ERR_TEXT];
 
-export type AnimeListType = DetailAnimeList | null;
+export type AnimeListType = AnimeHashTable | null;
 export type PageName = "search" | "list";
 
 export type PhaseState = {

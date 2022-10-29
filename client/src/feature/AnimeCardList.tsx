@@ -55,7 +55,9 @@ export const AnimeCardList: FC<{
   animeList: AnimeListType;
   buttonType: CardButtonType;
 }> = ({ animeList, buttonType }) => {
-  const animeCardList = animeList?.map((animeItem, index) => (
+  const listForPainting = animeList && Object.values(animeList);
+
+  const animeCardList = listForPainting?.map((animeItem, index) => (
     <CardPreview key={index} data={animeItem} buttonType={buttonType} />
   ));
 

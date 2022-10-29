@@ -1,11 +1,12 @@
 import * as puppeteer from "puppeteer";
 
-import { DetailAnimeList } from "types";
-import { RawDetailAnime } from "../types";
+import { AnimeHashTable, DetailAnimeList } from "types";
+import { RawDetailAnime, RawHashTable } from "../types";
 import { takeLinkList } from "./takeLinkList";
 import { getAnimeDetail } from "./getAnimeDetail";
 import { getDetailLinkList } from "./getDetailLinkList";
 import { getStructuredDetail } from "./getStructuredDetail";
+import { getStructuredDetailHash } from "./getStructuredDetailHash";
 
 const chromeOptions = {
   headless: false,
@@ -16,10 +17,10 @@ const chromeOptions = {
 export const makeScraping = async (
   animeName: string,
   controller: AbortController
-): Promise<[DetailAnimeList, puppeteer.Browser]> => {
+): Promise<[AnimeHashTable, puppeteer.Browser]> => {
   const browser = await puppeteer.launch(chromeOptions);
 
-  return new Promise<[DetailAnimeList, puppeteer.Browser]>(
+  return new Promise<[AnimeHashTable, puppeteer.Browser]>(
     async (resolve, reject) => {
       try {
         controller.signal.addEventListener("abort", () => {
@@ -28,13 +29,10 @@ export const makeScraping = async (
         });
 
         const page = await browser.newPage();
-
         let detailList: Array<RawDetailAnime> = [];
         const initialList = await takeLinkList(page, animeName);
 
         const linkList: Array<string> = getDetailLinkList(initialList);
-
-        console.log(linkList, "linkList");
 
         for (let i = 0; i < linkList.length; i++) {
           const detailItem: RawDetailAnime | null = await getAnimeDetail(
@@ -48,10 +46,10 @@ export const makeScraping = async (
           }
         }
 
-        const structuredDetailList: DetailAnimeList =
-          getStructuredDetail(detailList);
+        const structuredDetailList: AnimeHashTable =
+          getStructuredDetailHash(detailList);
 
-        console.log(structuredDetailList);
+        /*     console.log("structuredDetailList", structuredDetailList); */
 
         resolve([structuredDetailList, browser]);
       } catch (err) {
