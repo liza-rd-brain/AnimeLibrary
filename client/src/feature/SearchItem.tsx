@@ -1,11 +1,9 @@
 import React, { FC, useRef } from "react";
 import styled from "styled-components";
-import { useAppDispatch } from "../business/reducer";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-
-import { PageName } from "../types";
 
 const StyledSearchItem = styled.div`
   display: grid;
@@ -13,7 +11,7 @@ const StyledSearchItem = styled.div`
 `;
 
 const StyledTextInput = styled(TextField)`
-  width: 300px;
+  width: 600px;
 `;
 
 const StyledButton = styled(Button)`
@@ -25,11 +23,11 @@ export const SearchItem: FC<{
   refState?: React.MutableRefObject<{
     value: string | null;
   }>;
-  page: PageName;
-}> = ({ refState, page }) => {
+}> = ({ refState }) => {
   const dispatch = useAppDispatch();
 
   const textInput = useRef<HTMLInputElement>(null);
+  //написать условие: если инпут повторный и дата не null
 
   const scrapeAnimeData = () => {
     if (textInput.current?.value) {
@@ -37,42 +35,31 @@ export const SearchItem: FC<{
         if (refState.current.value !== textInput.current?.value) {
           refState.current.value = textInput.current?.value;
           dispatch({
-            type: "startedAnimeScraping",
+            type: ActionName.startedAnimeScraping,
             payload: textInput.current?.value,
           });
         }
       } else {
         dispatch({
-          type: "startedAnimeScraping",
+          type: ActionName.startedAnimeScraping,
           payload: textInput.current?.value,
         });
       }
     }
   };
 
-  const makeSearch = () => {
-    if (page === "search") {
-      scrapeAnimeData();
-    } else if (page === "list") {
-      console.log("поиск в списке");
-    }
-  };
-
-  const SearchItem: FC<{ isAnimated?: boolean }> = ({ isAnimated }) => {
-    return (
-      <StyledSearchItem>
-        <div>
-          <StyledTextInput
-            inputRef={textInput}
-            defaultValue={refState?.current.value}
-          />
-          <StyledButton variant="outlined" onClick={makeSearch}>
-            find
-          </StyledButton>
-        </div>
-      </StyledSearchItem>
-    );
-  };
-
-  return <SearchItem />;
+  return (
+    <StyledSearchItem>
+      <div>
+        <StyledTextInput
+          autoComplete="off"
+          inputRef={textInput}
+          defaultValue={refState?.current.value}
+        />
+        <StyledButton variant="outlined" onClick={scrapeAnimeData}>
+          find
+        </StyledButton>
+      </div>
+    </StyledSearchItem>
+  );
 };

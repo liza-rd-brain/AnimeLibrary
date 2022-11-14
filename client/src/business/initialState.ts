@@ -8,4 +8,5 @@ export const initialState: State = {
   openedCard: null,
   currPage: "search",
   dataBase: null,
+  filter: null,
 };

@@ -11,7 +11,7 @@ export const waitingScraping = (state: State, action: ActionType): State => {
         case ActionName.startedAnimeScraping: {
           const newState: State = {
             ...state,
-            phase: { type: "waitingScraping.dataScraping" },
+            phase: { type: "dataScraping" },
             doEffect: { type: "!dataScrape", data: action.payload },
           };
           return newState;
@@ -29,7 +29,6 @@ export const waitingScraping = (state: State, action: ActionType): State => {
         case ActionName.cardOpened: {
           const cardOpeningPhase = {
             type: "cardOpening",
-            /*  prevType: state.phase.type, */
           } as CardOpeningPhase;
 
           const newState: State = {

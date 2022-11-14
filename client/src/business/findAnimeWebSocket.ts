@@ -46,6 +46,7 @@ export async function findAnimeWebSocket(
 
     controller.signal.addEventListener("abort", () => {
       reject("abort socket");
+      webSocket.close();
     });
   });
 }

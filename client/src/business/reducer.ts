@@ -3,43 +3,48 @@ import { useDispatch } from "react-redux";
 
 import { State } from "../types";
 import { initialState } from "./initialState";
-import { DetailAnime, DetailAnimeList } from "types";
+import { AnimeHashTable, DetailAnime, DetailAnimeList } from "types";
 
+import { idle } from "./phases/idle";
 import { waitingDB } from "./phases/waitingDB";
 import { scrapingErr } from "./phases/scrapingErr";
 import { cardOpening } from "./phases/cardOpening";
 import { dataScraping } from "./phases/dataScraping";
-import { waitingScraping } from "./phases/waitingScraping";
-import { waitingScrapeHandle } from "./phases/waitingScrapeHandle";
 
 export const ActionName = {
   loadedDB: "loadedDB",
-  closeCard: "closeCard",
+  cardClosed: "cardClosed",
   cardOpened: "cardOpened",
   switchPage: "switchPage",
+  dataNotFound: "dataNotFound",
   dataReceived: "dataReceived",
   endedAddAnime: "endedAddAnime",
+  toIdleSwitched: "toIdleSwitched",
   startedAddAnime: "startedAddAnime",
-  dataNotFound: "dataNotFound",
-  gotServerErr: "gotServerErr",
   endedDeleteAnime: "endedDeleteAnime",
+  filterListByName: "filterListByName",
   startedDeleteAnime: "startedDeleteAnime",
+  scrapingInterrupted: "scrapingInterrupted",
+  scrappingAborted: "scrappingAborted",
   startedAnimeScraping: "startedAnimeScraping",
 } as const;
 
 export type ActionType =
-  | { type: typeof ActionName.closeCard }
+  | { type: typeof ActionName.cardClosed }
   | { type: typeof ActionName.switchPage }
   | { type: typeof ActionName.dataNotFound }
-  | { type: typeof ActionName.gotServerErr }
+  | { type: typeof ActionName.toIdleSwitched }
+  | { type: typeof ActionName.scrappingAborted }
+  | { type: typeof ActionName.scrapingInterrupted }
+  | { type: typeof ActionName.filterListByName; payload: string }
   | { type: typeof ActionName.startedDeleteAnime; payload: string }
   | { type: typeof ActionName.startedAnimeScraping; payload: string }
   | { type: typeof ActionName.startedAddAnime; payload: DetailAnime }
-  | { type: typeof ActionName.endedAddAnime; payload?: DetailAnimeList }
-  | { type: typeof ActionName.endedDeleteAnime; payload?: DetailAnimeList }
+  | { type: typeof ActionName.endedAddAnime; payload?: AnimeHashTable }
+  | { type: typeof ActionName.endedDeleteAnime; payload?: AnimeHashTable }
   | {
       type: typeof ActionName.dataReceived;
-      payload: DetailAnimeList;
+      payload: AnimeHashTable;
     }
   | {
       type: typeof ActionName.cardOpened;
@@ -59,19 +64,16 @@ export const reducer = (
   state: State = initialState,
   action: ActionType
 ): State => {
-  const [phaseOuter] = state.phase.type.split(".");
+  const phase = state.phase.type;
 
-  switch (phaseOuter) {
+  switch (phase) {
     case "waitingDB": {
+      //ждем загрузки БД
       return waitingDB(state, action);
     }
 
-    case "waitingScraping": {
-      return waitingScraping(state, action);
-    }
-
-    case "waitingScrapeHandle": {
-      return waitingScrapeHandle(state, action);
+    case "idle": {
+      return idle(state, action);
     }
 
     case "dataScraping": {
@@ -82,7 +84,7 @@ export const reducer = (
       return cardOpening(state, action);
     }
 
-    case "scrapingErr": {
+    case "errHandling": {
       return scrapingErr(state, action);
     }
 

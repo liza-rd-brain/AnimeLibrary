@@ -4,8 +4,9 @@ import { useSelector } from "react-redux";
 import { State } from "../types";
 import { DetailAnime } from "types";
 import { STORE_NAME } from "./common/constantList";
+import { convertListToHashTable } from "../shared/helpers";
 import { getAnimeList } from "./common/getAnimeList";
-import { useAppDispatch } from "../business/reducer";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
 const addAnime = (
   dataBase: IDBDatabase,
@@ -46,15 +47,16 @@ export function useAddAnime() {
             addAnimePromise.then(
               (res) => {
                 getAnimeList(dataBase, controller).then((animeList) => {
+                  const hashAnime = convertListToHashTable(animeList);
                   dispatch({
-                    type: "endedAddAnime",
-                    payload: animeList,
+                    type: ActionName.endedAddAnime,
+                    payload: hashAnime,
                   });
                 });
               },
               (error) => {
                 dispatch({
-                  type: "endedAddAnime",
+                  type: ActionName.endedAddAnime,
                 });
               }
             );

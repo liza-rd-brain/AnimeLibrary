@@ -1,14 +1,15 @@
-import React from "react";
-import { AppContainer } from "./feature/AppContainer";
-
 import { Provider } from "react-redux";
+import { ThemeProvider } from "./theme";
 
 import { store } from "./business/store";
+import { AppContainer } from "./feature";
 
 const App = () => {
   return (
     <Provider store={store}>
-      <AppContainer />
+      <ThemeProvider>
+        <AppContainer />
+      </ThemeProvider>
     </Provider>
   );
 };

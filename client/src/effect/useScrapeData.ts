@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../business/reducer";
+import { useAppDispatch, ActionName } from "../business/reducer";
 
 import { State } from "../types";
+
 import { findAnimeWebSocket } from "../business/findAnimeWebSocket";
+
+// const ErrorType = { type: "abort socket" };
 
 export function useScrapeData() {
   const [doEffect] = useSelector((state: State) => [state.doEffect]);
@@ -20,30 +23,30 @@ export function useScrapeData() {
           dataPromise.then(
             (detailAnimeListJSON) => {
               const detailAnimeList = JSON.parse(detailAnimeListJSON);
-
-              const animeListNotEmpty = detailAnimeList.length;
+              const animeListNotEmpty = Object.keys(detailAnimeList).length;
 
               if (detailAnimeList) {
                 if (animeListNotEmpty) {
                   dispatch({
-                    type: "dataReceived",
+                    type: ActionName.dataReceived,
                     payload: detailAnimeList,
                   });
                 } else {
                   dispatch({
-                    type: "dataNotFound",
+                    type: ActionName.dataNotFound,
                   });
                 }
               } else {
                 dispatch({
-                  type: "gotServerErr",
+                  type: ActionName.scrappingAborted,
                 });
               }
             },
             (rej) => {
               console.log("rej", rej);
+
               dispatch({
-                type: "gotServerErr",
+                type: ActionName.scrappingAborted,
               });
             }
           );
@@ -55,6 +58,7 @@ export function useScrapeData() {
             controller.abort();
           };
         }
+
         default: {
           break;
         }

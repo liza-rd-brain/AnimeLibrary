@@ -1,20 +1,25 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../business/reducer";
 
 import { State } from "../types";
 import { STORE_NAME } from "./common/constantList";
 import { getAnimeList } from "./common/getAnimeList";
+import { convertListToHashTable } from "../shared/helpers";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
-const deleteAnime = (
-  dataBase: IDBDatabase,
-  animeName: string,
-  controller: AbortController
-): Promise<undefined> => {
+const deleteAnime = ({
+  dataBase,
+  animeKey,
+  controller,
+}: {
+  dataBase: IDBDatabase;
+  animeKey: string;
+  controller: AbortController;
+}): Promise<undefined> => {
   return new Promise((resolve, reject) => {
     const transaction = dataBase.transaction(STORE_NAME, "readwrite");
     const animeList = transaction.objectStore(STORE_NAME);
-    const request = animeList.delete(animeName);
+    const request = animeList.delete(animeKey);
 
     request.onerror = () => {
       reject(request.error);
@@ -38,25 +43,26 @@ export function useDeleteAnime() {
       switch (doEffect?.type) {
         case "!startedDeleteAnime":
           if (dataBase) {
-            const animeName = doEffect.data;
-            const addAnimePromise = deleteAnime(
-              dataBase,
-              animeName,
-              controller
-            );
+            const animeKey = doEffect.data;
+            const addAnimePromise = deleteAnime({
+              dataBase: dataBase,
+              animeKey: animeKey,
+              controller: controller,
+            });
             //возвращает  key
             addAnimePromise.then(
               (res) => {
                 getAnimeList(dataBase, controller).then((animeList) => {
+                  const hashAnime = convertListToHashTable(animeList);
                   dispatch({
-                    type: "endedDeleteAnime",
-                    payload: animeList,
+                    type: ActionName.endedDeleteAnime,
+                    payload: hashAnime,
                   });
                 });
               },
               (error) => {
                 dispatch({
-                  type: "endedDeleteAnime",
+                  type: ActionName.endedDeleteAnime,
                 });
               }
             );

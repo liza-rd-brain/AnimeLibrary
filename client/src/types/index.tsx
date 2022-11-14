@@ -1,5 +1,5 @@
 import { ERR_TEXT } from "../shared/error";
-import { DetailAnime, DetailAnimeList } from "types";
+import { AnimeHashTable, DetailAnime, DetailAnimeList } from "types";
 
 //TODO:data - AnimeListType, errType потом вынести в фазу
 export type State = {
@@ -10,13 +10,14 @@ export type State = {
   openedCard: DetailAnime | null;
   currPage: PageName;
   dataBase: IDBDatabase | null;
+  filter: FilterDataType | null;
 };
 
 //TODO: уточнить какие строки в типе
 
 export type ErrType = typeof ERR_TEXT[keyof typeof ERR_TEXT];
 
-export type AnimeListType = DetailAnimeList | null;
+export type AnimeListType = AnimeHashTable | null;
 export type PageName = "search" | "list";
 
 export type PhaseState = {
@@ -28,26 +29,24 @@ export type PhaseType = SimplePhaseType | CardOpeningPhase;
 
 export type SimplePhaseType =
   | { type: "waitingDB" }
-  | { type: "waitingScraping.waitingScrapeHandle" }
-  | { type: "waitingScraping.dataScraping" }
-  | { type: "waitingScrapeHandle" }
+  | { type: "idle" }
   | { type: "dataScraping" }
   | { type: "errHandling" };
 
-type SimplePhaseName = SimplePhaseType["type"];
+export type SimplePhaseName = SimplePhaseType["type"];
 
 export type CardOpeningPhase = {
   type: "cardOpening";
-  // prevType: SimplePhaseName;
 };
 
 export type CardDeletingPhase = {};
 
 export type EffectType =
   | { type: "!openDB" }
+  | { type: "!dataScrape"; data: string }
+  | { type: "!scrapeInterrupt" }
   | { type: "!startedAddAnime"; data: DetailAnime }
   | { type: "!startedDeleteAnime"; data: string }
-  | { type: "!dataScrape"; data: string }
   | null;
 
 export type ResponseType = {
@@ -55,3 +54,9 @@ export type ResponseType = {
 };
 
 export type CardButtonType = "add" | "delete";
+
+export type FilterDataType = {
+  name: string | null;
+};
+
+export type PreviewItemType = "markAdded" | "button" | null;

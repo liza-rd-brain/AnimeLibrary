@@ -3,18 +3,24 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
 import { DetailAnime } from "types";
-import { CardButtonType } from "../types";
-
+import { PreviewItemType } from "../types";
 import Button from "@mui/material/Button";
+import { ActionName } from "../business/reducer";
+import { getInteractItem } from "../shared/getInteractItem";
 
 const CardContainer = styled.div`
   display: grid;
   gap: 15px;
   padding: 20px;
+  outline: 1px solid #efefef;
   border-radius: 10px;
-  box-shadow: 0px 1px 20px lightgrey;
+  /* box-shadow: 0px 1px 10px lightgray; */
+
   width: 300px;
   cursor: pointer;
+  &:hover {
+    box-shadow: 0px 1px 20px 5px lightgray;
+  }
 `;
 
 const CardItem = styled.div`
@@ -28,7 +34,6 @@ const ImageContainer = styled.div`
 
 const StyledButton = styled(Button)`
   width: 100%;
-
   height: 50px;
 `;
 
@@ -55,20 +60,22 @@ const Title = styled.div`
   overflow: hidden;
 `;
 
-// const RowItem: FC;
-
 export const CardPreview: FC<{
   data: DetailAnime;
-  buttonType: CardButtonType;
-}> = ({ data, buttonType }) => {
+  previewItemType: PreviewItemType;
+}> = ({ data, previewItemType }) => {
   const { pictureUrl, animeName } = data;
 
   const dispatch = useDispatch();
 
+  const handleClick = () => {
+    dispatch({ type: ActionName.startedAddAnime, payload: data });
+  };
+
   return (
     <CardContainer
       onClick={() => {
-        dispatch({ type: "cardOpened", payload: data });
+        dispatch({ type: ActionName.cardOpened, payload: data });
       }}
     >
       <CardItem>
@@ -80,17 +87,9 @@ export const CardPreview: FC<{
       <Header>
         <Title>{animeName}</Title>
       </Header>
-      {buttonType === "add" ? (
-        <StyledButton
-          variant="outlined"
-          onClick={(e) => {
-            e.stopPropagation();
-            dispatch({ type: "startedAddAnime", payload: data });
-          }}
-        >
-          add
-        </StyledButton>
-      ) : null}
+      {/* {getPreviewItem(previewItemType)} */}
+      {getInteractItem({ previewItemType, handleClick, buttonText: "add" })}
+
       {/* <Description>{description}</Description> */}
     </CardContainer>
   );

@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../business/reducer";
+import { ActionName, useAppDispatch } from "../business/reducer";
 
 import { State } from "../types";
 import { getAnimeList } from "./common/getAnimeList";
 
-// const DATABASE_ERR = "Failed to load DataBase";
-
-const DATABASE_NAME = "animeBase";
+const KEY_NAME = "link";
 const STORE_NAME = "animeList";
-const KEY_NAME = "animeName";
+const DATABASE_NAME = "animeBase";
 
 const openDataBasePromise = (
   controller: AbortController
@@ -45,9 +43,10 @@ export function useOpenDB() {
           openDataBasePromise(controller).then(
             (db) => {
               getAnimeList(db, controller).then((animeList) => {
+                console.log("animeList open db", animeList);
                 setTimeout(() => {
                   dispatch({
-                    type: "loadedDB",
+                    type: ActionName.loadedDB,
                     payload: { dataBase: db, animeList },
                   });
                 }, 2000);
