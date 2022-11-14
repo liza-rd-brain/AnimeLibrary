@@ -15,9 +15,9 @@
 - [x] Button for stop scraping
 - [x] Clean up phase
 - [x] Key to url - unique!
-- [ ] Clear filter when switch view?
 - [x] Data structure to hashTable
 - [x] When rendering scrape data, mark anime that already in base
+- [ ] Clear filter when switch view?
 - [ ] Add tags 
 - [ ] Ask before delete?
 

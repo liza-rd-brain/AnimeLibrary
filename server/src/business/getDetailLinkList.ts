@@ -1,4 +1,5 @@
 export const getDetailLinkList = (initList) => {
+  console.log("initList", initList);
   return initList.map((item) => {
     const arr = ["watch", "-episode"];
     const animePart = "anime";

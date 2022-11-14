@@ -1,14 +1,14 @@
 import * as puppeteer from "puppeteer";
 
-import { AnimeHashTable, DetailAnimeList } from "types";
-import { RawDetailAnime, RawHashTable } from "../types";
+import { AnimeHashTable } from "types";
+import { RawDetailAnime } from "../types";
 import { takeLinkList } from "./takeLinkList";
 import { getAnimeDetail } from "./getAnimeDetail";
 import { getDetailLinkList } from "./getDetailLinkList";
 import { getStructuredDetailHash } from "./getStructuredDetailHash";
 
 const chromeOptions = {
-  headless: false,
+  headless: true,
   defaultViewport: null,
   slowMo: 100,
 };
@@ -45,8 +45,6 @@ export const makeScraping = async (
 
         const structuredDetailList: AnimeHashTable =
           getStructuredDetailHash(detailList);
-
-        /*     console.log("structuredDetailList", structuredDetailList); */
 
         resolve([structuredDetailList, browser]);
       } catch (err) {
