@@ -1,6 +1,7 @@
 const cors = require("cors");
-const express = require("express");
-const bodyParser = require("body-parser");
+
+import express from "express";
+import bodyParser from "body-parser";
 
 import * as http from "http";
 import * as WebSocket from "ws";
@@ -47,6 +48,12 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.send("Hello!");
 });
+
+app.get("/ping", (_, res) => {
+  res.send("Pong!");
+});
+
+module.exports = app;
