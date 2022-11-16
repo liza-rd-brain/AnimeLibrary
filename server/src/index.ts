@@ -64,7 +64,7 @@ app.post("/findName", (req: Request, res) => {
 
   const scrapedDate: Promise<AnimeHashTable> = new Promise(
     (resolve, reject) => {
-      makeScraping(animeName)
+      makeScraping()
         .then((data) => {
           console.log("makeScraping", data);
           resolve(data);
