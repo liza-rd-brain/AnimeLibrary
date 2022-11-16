@@ -19,6 +19,7 @@ export async function findAnimeWebSocket(
   animeName: string,
   controller: AbortController
 ): Promise<string> {
+  //TODO: добавить переменную для url
   const currUrl = "ws://localhost:3000/findName";
 
   const webSocket = await createConnection(currUrl);

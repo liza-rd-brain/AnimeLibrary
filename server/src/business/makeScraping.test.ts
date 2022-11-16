@@ -6,6 +6,7 @@ import { makeScraping } from "./makeScraping";
 const TEST_ANIME_NAME = "dorohedoro";
 const TEST_TIMEOUT = 3 * 60 * 1000;
 
+//test for websoket only
 const expectedToBeDisconnected = (browser: puppeteer.Browser) => {
   expect(browser.constructor instanceof Browser);
   expect(browser.isConnected()).toBe(false);
