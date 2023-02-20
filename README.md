@@ -26,8 +26,8 @@ For some simplicity, I took indexedDB for data storage.
 
   Tech stack:
 
-- Back-end: Node, Puppetier, Express, MaterialUI5.
-- Front-end: React, TypeScript, Redux.
+- Back-end: Node, Puppetier, Express.
+- Front-end: React, TypeScript, Redux, MaterialUI5.
 - Other technology: TyrboRepo, CRA.
 
 
